@@ -125,6 +125,350 @@ In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of co
 </section>
 
 <section>
+<h2>Initializing a git repository</h2>
+    <pre><code data-trim>
+FileRepositoryBuilder builder = new FileRepositoryBuilder();
+Repository repository = 
+    builder.setGitDir(new File(path))
+				.readEnvironment() 
+				.findGitDir() 
+				.build();
+
+RevWalk walk = new RevWalk(repository);
+    </code></pre>
+<aside class="notes">
+readEnvironment - scan environment GIT_* variables
+findGitDir - scan up the file system tree
+System.out.println("Loaded " + repository.getBranch() + " of " + path);
+
+</aside>
+</section>
+
+<section>
+<h2>Initializing the Solr Connection</h2>
+    <pre><code data-trim>
+HttpSolrServer server = new HttpSolrServer(
+     "http://localhost:8080/solr/collection1");
+
+Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+    </code></pre>
+<aside class="notes">
+is this the right library API for 3.4?
+</aside>
+</section>
+<section>
+<h2>Walking the commit hierarchy</h2>
+    <pre><code data-trim>
+		for (RevCommit commit : walk) {
+			try {
+				cnt++;
+				StringBuffer search = new StringBuffer();
+
+				SolrInputDocument doc1 = new SolrInputDocument();
+				if (commit.getParentCount() > 0) {
+					RevCommit parent = walk.parseCommit(commit.getParent(0)
+							.getId());
+    </code></pre>
+<aside class="notes">
+Is this necessary?
+
+	for (Ref ref : repository.getAllRefs().values()) {
+			try {
+				walk.markStart(walk.parseCommit(ref.getObjectId()));
+			} catch (Exception notACommit) {
+				System.out.println(notACommit.getMessage());
+				continue;
+			}
+		}
+    </aside>
+    </section>
+
+<section>
+<h2>Reading Diffs</h2>
+    <pre><code data-trim>
+				DiffFormatter df = new DiffFormatter(
+							DisabledOutputStream.INSTANCE);
+					df.setRepository(repository);
+					df.setDiffComparator(RawTextComparator.DEFAULT);
+					df.setDetectRenames(true);
+
+					java.util.List<DiffEntry> diffs = df.scan(parent.getTree(),
+							commit.getTree());
+
+					String[] projects = new String[diffs.size()];
+					String[] filetypes = new String[diffs.size()];
+
+					int i = 0;
+					for (Object obj : diffs) {
+						DiffEntry diff = (DiffEntry) obj;
+
+    </code></pre>
+<aside class="notes">
+</aside>
+</section>
+<section>
+<h2>Querying Solr</h2>
+    <pre><code data-trim>
+	params.put("collectionName", "collection1");
+		params.put("q", "*:*");
+		params.put("start", "0");
+		params.put("rows", "" + Integer.MAX_VALUE);
+		SolrParams solrParams = new MapSolrParams(params);
+		
+		StreamingResponseCallback callback = new StreamingResponseCallback() {
+
+			@Override
+			public void streamDocListInfo(long arg0, long arg1, Float arg2) {
+				
+			}
+
+			@Override
+			public void streamSolrDocument(SolrDocument doc) {
+				String query = "INSERT INTO " +
+							   "data   (author, id, email, company, date, message, name, github, search) " +
+			                   "VALUES (?,      ?,  ?,     ?,       ?,    ?,       ?,    ?,      ?)";
+				
+				PreparedStatement  s;
+				try {
+					s = connection.prepareStatement(query);
+					s.setString(1, doc.getFieldValue("author").toString());
+					s.setString(2, doc.getFieldValue("id").toString());
+					s.setString(3, doc.getFieldValue("email").toString());
+					s.setString(4, doc.getFieldValue("company").toString());
+					s.setString(5, doc.getFieldValue("date").toString());
+					s.setString(6, doc.getFieldValue("message").toString());
+					s.setString(7, doc.getFieldValue("name").toString());
+					s.setString(8, doc.getFieldValue("github").toString());
+					s.setString(9, doc.getFieldValue("search").toString());
+					
+					s.execute();
+					
+					s.close();
+				}
+				catch (Exception e)
+				{
+					System.out.println(e.getMessage());
+					System.out.println(e.getStackTrace());
+				}
+			}
+			
+		};
+		
+		server.queryAndStreamResponse(solrParams, callback);
+		connection.close();		
+
+    </code></pre>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>Solr - Types</h2>
+    <pre><code data-trim>
+
+
+    <fieldType name="git_author" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" enablePositionIncrements="true" />
+        <filter class="solr.SynonymFilterFactory" synonyms="authors.txt" ignoreCase="true" expand="false"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.SynonymFilterFactory" synonyms="authors.txt" ignoreCase="true" expand="false"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+    </code></pre>
+<aside class="notes">
+</aside>
+</section>
+
+
+<section>
+<h2>Solr - Schema</h2>
+    <pre><code data-trim>
+   <field name="id" type="string" indexed="true" stored="false" required="true" /> 
+   <field name="name" type="string" indexed="true" stored="false" required="true" /> 
+   <field name="author" type="git_author" indexed="true" stored="true" required="true" /> 
+   <field name="author_facet" type="git_author" indexed="true" stored="true" required="true" /> 
+   <field name="email" type="string" indexed="true" stored="false" required="true" /> 
+   <field name="date" type="string" indexed="true" stored="false" required="true" /> 
+   <field name="message" type="string" indexed="true" stored="false" required="true" /> 
+   <field name="jira" type="string" indexed="true" stored="false" required="false" /> 
+   <field name="ide" type="string" indexed="true" stored="false" required="false" /> 
+   <field name="file" type="string" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="project" type="string" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="layer" type="string" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="filetype" type="string" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="changetype" type="string" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="linesChanged" type="int" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="linesModified" type="int" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="added" type="int" indexed="true" stored="true" required="false" multiValued="true" /> 
+   <field name="deleted" type="int" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="modified" type="int" indexed="true" stored="false" required="false" multiValued="true" /> 
+   <field name="search" type="text_general" indexed="true" stored="false" required="false" multiValued="false" /> 
+   <copyField source="author" dest="author_facet"/>
+
+    </code></pre>
+<aside class="notes">
+</aside>
+</section>
+
+
+<section>
+<h2>Handling Diffs</h2>
+    <pre><code data-trim>
+						String file = diff.getNewPath().toLowerCase();
+
+						ChangeType mode = diff.getChangeType();
+						if (ChangeType.DELETE.equals(mode)) {
+							file = diff.getOldPath().toLowerCase();
+//							fullName = diff.getOldPath();
+						}
+
+						projects[i] = "";
+						if (file.indexOf("/") >= 0) {
+							projects[i] = file.substring(0, file.indexOf("/"));
+
+							search.append(" ");
+							search.append(projects[i].replace("_", " "));
+							search.append(" ");
+							search.append(projects[i]);
+						}
+
+						filetypes[i] = "";
+						if (file.lastIndexOf(".") >= 0) {
+							filetypes[i] = file
+									.substring(file.lastIndexOf("."));
+						}
+
+						search.append(" ");
+						search.append(file);
+
+						Matcher m = capitals.matcher(file);
+						String fileStuff = m.replaceAll(" \1");
+						fileStuff = fileStuff.replace("/", " / ");
+
+						i++;
+					}
+    </code></pre>
+<aside class="notes">
+</aside>
+</section>
+<section>
+<h2>Preparing Data for Solr</h2>
+    <pre><code data-trim>
+	doc1.addField("id", remoteGithub + "." + commit.getId(), 1.0f);
+				String author = commit.getAuthorIdent().getName();
+				author = author.replace(".", " ");
+
+				doc1.addField("author", author, 1.0f);
+				doc1.addField("author_facet", author, 1.0f);
+				doc1.addField("email", nvl(commit.getAuthorIdent().getEmailAddress(), " "));
+				
+				doc1.addField("company", getCompany(commit.getAuthorIdent().getEmailAddress()), 1.0f);
+								
+				doc1.addField("date", commit.getAuthorIdent().getWhen(), 1.0f);
+				doc1.addField("message", commit.getFullMessage(), 1.0f);
+				doc1.addField("name", commit.getName(), 1.0f);
+				doc1.addField("github", remoteGithub, 1.0f);
+
+				search.append(" ").append(author);
+				search.append(" ").append(commit.getFullMessage());
+
+				doc1.addField("search", search.toString());
+				docs.add(doc1);
+
+    </code></pre>
+<aside class="notes">
+</aside>
+</section>
+<section>
+<h2>Batching Commits</h2>
+    <pre><code data-trim>
+if (cnt % batchSize == 0) {
+
+					server.add(docs);
+
+					server.commit();
+
+					docs = new ArrayList<SolrInputDocument>();
+
+					System.out.println("Committed batch");
+
+				}
+
+    </code></pre>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>Threading Updates</h2>
+    <pre><code data-trim>
+
+		public void run() 
+		{
+			try 
+			{
+				File[] files = new File("E:\\VMs\\expert-search\\repos\\").listFiles();
+				HttpSolrServer server = new HttpSolrServer(
+						"http://localhost:8080/solr/collection1");
+
+				int i = 0;
+				boolean start = false;
+				
+				for (File f : files)
+				{
+					if (i % _maxIndex == _index)
+					{
+						String filename = f.getAbsolutePath() + "\\.git";
+						
+						/*if (filename.contains("\\sunfong-nexus-s\\.git"))
+						{
+							start = true;
+						}
+						if (!start)
+						{
+							continue;
+						}
+						
+						if (filename.contains("greenhouse"))
+						{
+							continue;
+						}*/
+						System.out.println(filename);
+						convertRepo(server, filename);
+					}
+					
+					if (i > 100) {
+						break;
+					}
+				}
+				
+				System.out.println("Total repositories: " + i);
+			}
+			catch (Error e)
+			{
+			} catch (MalformedURLException e) {
+			} catch (AmbiguousObjectException e) {
+			} catch (MissingObjectException e) {
+			} catch (IncorrectObjectTypeException e) {
+			} catch (CorruptObjectException e) {
+			} catch (IOException e) {
+			} catch (SolrServerException e) {
+			}
+		}
+	}
+	
+    </code></pre>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
 <h2>Traversing Git History - Branches</h2>
 </section>
 
