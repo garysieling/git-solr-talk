@@ -157,6 +157,18 @@ is this the right library API for 3.4?
 </aside>
 </section>
 <section>
+<h2>Marking a starting point</h2>
+<pre><code data-trim>
+	for (Ref ref : repository.getAllRefs().values()) {
+			try {
+				walk.markStart(walk.parseCommit(ref.getObjectId()));
+			} catch (Exception notACommit) {
+				System.out.println(notACommit.getMessage());
+				continue;
+			}
+		}
+</section>
+<section>
 <h2>Walking the commit hierarchy</h2>
     <pre><code data-trim>
 		for (RevCommit commit : walk) {
@@ -170,16 +182,6 @@ is this the right library API for 3.4?
 							.getId());
     </code></pre>
 <aside class="notes">
-Is this necessary?
-
-	for (Ref ref : repository.getAllRefs().values()) {
-			try {
-				walk.markStart(walk.parseCommit(ref.getObjectId()));
-			} catch (Exception notACommit) {
-				System.out.println(notACommit.getMessage());
-				continue;
-			}
-		}
     </aside>
     </section>
 
@@ -315,8 +317,33 @@ Is this necessary?
 <aside class="notes">
 </aside>
 </section>
+<section>
+<h2>Commit Metadata</h2>
+Signed-off-by (agrees to Developer Certificate of Origin)
+Acked-by (thinks change looks sane in context)
+Reported-by (originally found the issue this change fixes)
+Tested-by (validated change fixes the issue for them)
+CC, Cc (copy on all email related to this change)
+Bug (link to project's bug tracking system)
+<aside class="notes">
+RevCommit.getFooterLines
 
+public final List<FooterLine> getFooterLines()
+Parse the footer lines (e.g. "Signed-off-by") for machine processing.
+This method splits all of the footer lines out of the last paragraph of the commit message, providing each line as a key-value pair, ordered by the order of the line's appearance in the commit message itself.
 
+A footer line's key must match the pattern ^[A-Za-z0-9-]+:, while the value is free-form, but must not contain an LF. Very common keys seen in the wild are:
+
+Signed-off-by (agrees to Developer Certificate of Origin)
+Acked-by (thinks change looks sane in context)
+Reported-by (originally found the issue this change fixes)
+Tested-by (validated change fixes the issue for them)
+CC, Cc (copy on all email related to this change)
+Bug (link to project's bug tracking system)
+Returns:
+ordered list of footer lines; empty list if no footers found.
+</aside>
+</section>
 <section>
 <h2>Handling Diffs</h2>
     <pre><code data-trim>
@@ -389,17 +416,12 @@ Is this necessary?
 <h2>Batching Commits</h2>
     <pre><code data-trim>
 if (cnt % batchSize == 0) {
+	server.add(docs);
+	server.commit();
+	docs = new ArrayList<SolrInputDocument>();
 
-					server.add(docs);
-
-					server.commit();
-
-					docs = new ArrayList<SolrInputDocument>();
-
-					System.out.println("Committed batch");
-
-				}
-
+	System.out.println("Committed batch");
+}
     </code></pre>
 <aside class="notes">
 </aside>
@@ -408,60 +430,59 @@ if (cnt % batchSize == 0) {
 <section>
 <h2>Threading Updates</h2>
     <pre><code data-trim>
+public void run() 
+{
+	try 
+	{
+		File[] files = new File("E:\\VMs\\expert-search\\repos\\").listFiles();
+		HttpSolrServer server = new HttpSolrServer(
+			"http://localhost:8080/solr/collection1");
 
-		public void run() 
+		int i = 0;
+		boolean start = false;
+				
+		for (File f : files)
 		{
-			try 
-			{
-				File[] files = new File("E:\\VMs\\expert-search\\repos\\").listFiles();
-				HttpSolrServer server = new HttpSolrServer(
-						"http://localhost:8080/solr/collection1");
-
-				int i = 0;
-				boolean start = false;
-				
-				for (File f : files)
+		  if (i % _maxIndex == _index)
+		  {
+				String filename = f.getAbsolutePath() + "\\.git";
+						
+				/*if (filename.contains("\\sunfong-nexus-s\\.git"))
 				{
-					if (i % _maxIndex == _index)
-					{
-						String filename = f.getAbsolutePath() + "\\.git";
-						
-						/*if (filename.contains("\\sunfong-nexus-s\\.git"))
-						{
-							start = true;
-						}
-						if (!start)
-						{
-							continue;
-						}
-						
-						if (filename.contains("greenhouse"))
-						{
-							continue;
-						}*/
-						System.out.println(filename);
-						convertRepo(server, filename);
-					}
-					
-					if (i > 100) {
-						break;
-					}
+				  start = true;
+		  	}
+				if (!start)
+				{
+				  continue;
 				}
+						
+				if (filename.contains("greenhouse"))
+				{
+				  continue;
+				}*/
+				System.out.println(filename);
+				convertRepo(server, filename);
+			}
+					
+			if (i > 100) {
+				break;
+			}
+	  }
 				
-				System.out.println("Total repositories: " + i);
-			}
-			catch (Error e)
-			{
-			} catch (MalformedURLException e) {
-			} catch (AmbiguousObjectException e) {
-			} catch (MissingObjectException e) {
-			} catch (IncorrectObjectTypeException e) {
-			} catch (CorruptObjectException e) {
-			} catch (IOException e) {
-			} catch (SolrServerException e) {
-			}
-		}
-	}
+		  System.out.println("Total repositories: " + i);
+    }
+    catch (Error e)
+    {
+    } catch (MalformedURLException e) {
+    } catch (AmbiguousObjectException e) {
+    } catch (MissingObjectException e) {
+    } catch (IncorrectObjectTypeException e) {
+    } catch (CorruptObjectException e) {
+    } catch (IOException e) {
+    } catch (SolrServerException e) {
+    }
+  }
+}
 	
     </code></pre>
 <aside class="notes">
