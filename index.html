@@ -49,7 +49,9 @@
         <section>
           <h1>What is Solr?</h1>
           <aside class="notes">
-            In a system like this, you need to consider how you get data into the index and how it’s modelled, which is very different that traditional databases. As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and probably could be used as a kv store. 
+          In a system like this, you need to consider how you get data into the index and how it’s modelled, which is very different that traditional databases. As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and probably could be used as a kv store. 
+          Solr is one of several of a class of products which are used for full-text search. These products use natural language processing techniques to massage text data into a form that lends itself to search - for instance, finding words which are similar and treating them as equivalents. Typically search results are ordered by a relevance function, which is determined by word frequencies. Frequently occurring words have a small effect, and rare words matching between a document and a query have a large effect - the actual calculation is done with vector multiplication.
+            This is distinguished from the technique Google pioneered for search, which uses citations to effect ranking. If you're interested combining this type of search with Lucene, there is an apache project called Nutch, although I haven't used it, so I can't speak to how well it works.
             Solr was built as an administration tool around Lucene, which is just a bunch of Jars for doing full-text search. Solr also adds some nice customizations, like additional caching - when the lucene team doesn’t work at the pace they want, they seem to just add stuff. Solr Repositories resemble a single, denormalized database table. Each row in the table is referred to as a “document”, as these often represent the contents of a PDF or similar, although there is no particular requirement on what a document must be, the contents of a PDF have equal weight with any metadata and in fact, the database just stores text, so if you actually started with a bunch of pDFs you’d have to extract contents yourself. Each column has options about how it is used, for instance you can control whether the original column data is stored or not; if not, it’s used for searching and ranking, but isn’t returned, which makes it a little easier to maintain. For instance, you might have the data twice, once for when it’s stored, and a large concatenated text field for searching.
           </aside>
         </section>
@@ -63,16 +65,19 @@
             In some large companies, it’s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoft’s MSDN program awards points based on certifications of developers in the organization, so it’s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.
             For both of these scenarios, you could count the number of commits a person has referencing a client or tool, which is essentially faceted search, which solr can do well. In fact, the facets are the more interesting result here, compared to result ranking. It works especially well if you are already diligent in your company about what you commit and how often; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.
             Both of these are somewhat contrived for our company, as we’re not actively using the tool I built, but that is primarily due to being small enough that it’s not necessary. This falls into the realm of problems that are well-answered by expert knowledge rather than a tool, but when we tested this as a proof of concept, we were able to get answers that were strikingly accurate to our organization.
+           You can tell a lot about what work happens on a project from the version control history, and while this talk is focused on git, it's fairly easy to combine data across various data sources, since we're going to write Java code to extract data and populate an index. There are also suitable tools to convert older repositories into git data, such as cvs2git, which is suitable for this purpose. You can also imagine importing data from other sources and combining it, such as a defect tracking systems, a Sharepoint site, or even old emails. In fact, depending how you spin this, you can end up with a variety of products- I once worked for a company that had a product that did this to find contact information, i.e. which lawyer in our firm has a contact at, say, eBay.
           </aside>
         </section>
         <section>
           <h2>Designing and Testing ETL processes</h2>
           <aside class="notes">
             - May take hours, weeks, months to finish
+            - Need to consider power failures
             - Time to generate final data is an issue
             - Need to incrementally reload parts that failed
             - Ideally don't want to fail, but note problems and move on
             - Run side-by-side processes to test one version to the next
+            - Need to be able to reference data in the source system support issues
             - Restarting?
           </aside>
         </section>
@@ -447,14 +452,25 @@ for (Object obj : diffs) {
         <section>
           <h2>Importing from CVS</h2>
           <aside class="notes">      
-            cvs2svn, cvs2git
+
           </aside>
         </section>
         <section>
           <h2>Getting search results</h2>
           search:jug
+          
+          http://localhost:8080/solr/select/?q=search:(search:jug)&amp;version=2.2&amp;start=0&amp;rows=0&amp;indent=on&amp;facet=on&amp;facet.field=author&amp;facet.method=fc&amp;facet.limit=30&amp;wt=json
           <aside class="notes">      
-            Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in uqery parsers are limited based on where they exist in the application (example?)
+          Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in uqery parsers are limited based on where they exist in the application (example?)
+          * join sample
+          * What is facet.method?
+          * What is facet.limit?
+          * What are the options for wt?
+          * Are there different ways to index facets?
+          * Do facet results get cached?
+          * What is rows?
+          * What is indent?
+          * What is version for?
           </aside>
         </section>
         <section>
