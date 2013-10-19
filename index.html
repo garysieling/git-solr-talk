@@ -1,125 +1,97 @@
 <!doctype html>
 <html lang="en">
-
-	<head>
-		<meta charset="utf-8">
-
-		<title>reveal.js - The HTML Presentation Framework</title>
-
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
-
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/default.css" id="theme">
-
-		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
-
-		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
-		<script>
-			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
-		</script>
-
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
-
-	<body>
-
-		<div class="reveal">
-
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>Git to Solr Index</h1>
-					<h3>Exploring Full-Text Search</h3>
-					<p>
-						<small><a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></small>
+  <head>
+    <meta charset="utf-8">
+    <title>reveal.js - The HTML Presentation Framework</title>
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Git to Solr Index</h1>
+          <h3>Exploring Full-Text Search</h3>
+          <p>
+            <small><a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></small>
             <small><a href="http://www.garysieling.com">[Link to Talk] - TODO</a></small>
-					</p>
-				</section>
-				<section>
-					<h1>Git to Solr Index</h1>
+          </p>
+        </section>
+        <section>
+          <h1>Git to Solr Index</h1>
           <aside class="notes">
-Hello, my name is Gary Sieling. I worked for Wingspan Technology, in Blue Bell - some of you may be familiar with us, as Martin Snyder spoke last time about functional wrappers for legacy APIs. Today I’m going to discuss full-text indexing in Solr, which is an open-source Java tool that wraps Lucene. I’ll show you how to build up an example project which indexes the contents of git source code repositories. 
-
-Some of you may be familiar with products like Atlassian’s Fisheye, or code search engines like Krugle, or have seen the search in github. The nice thing about these is they let you search code in a variety of ways, for instance to find out who made a particular change and why. Since there are mature products for this type of thing, this isn’t intended to be a replacement for them; rather it’s a well contained way to understand full-text search, and of more interest to me, to think about the challenges of how you keep an index populated. 
-</aside>
-</section>
-
-<section>
-<h1>What is Solr?</h1>
-<aside class="notes">
-In a system like this, you need to consider how you get data into the index and how it’s modelled, which is very different that traditional databases. As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and probably could be used as a kv store. 
-
-Solr was built as an administration tool around Lucene, which is just a bunch of Jars for doing full-text search. Solr also adds some nice customizations, like additional caching - when the lucene team doesn’t work at the pace they want, they seem to just add stuff. Solr Repositories resemble a single, denormalized database table. Each row in the table is referred to as a “document”, as these often represent the contents of a PDF or similar, although there is no particular requirement on what a document must be, the contents of a PDF have equal weight with any metadata and in fact, the database just stores text, so if you actually started with a bunch of pDFs you’d have to extract contents yourself. Each column has options about how it is used, for instance you can control whether the original column data is stored or not; if not, it’s used for searching and ranking, but isn’t returned, which makes it a little easier to maintain. For instance, you might have the data twice, once for when it’s stored, and a large concatenated text field for searching.
-</aside>
-</section>
-
-<section>
-<h2>Motivation</h2>
-					<p>
-             Which engineer worked on a particular client/project/technology? 
+            Hello, my name is Gary Sieling. I worked for Wingspan Technology, in Blue Bell - some of you may be familiar with us, as Martin Snyder spoke last time about functional wrappers for legacy APIs. Today I’m going to discuss full-text indexing in Solr, which is an open-source Java tool that wraps Lucene. I’ll show you how to build up an example project which indexes the contents of git source code repositories. 
+            Some of you may be familiar with products like Atlassian’s Fisheye, or code search engines like Krugle, or have seen the search in github. The nice thing about these is they let you search code in a variety of ways, for instance to find out who made a particular change and why. Since there are mature products for this type of thing, this isn’t intended to be a replacement for them; rather it’s a well contained way to understand full-text search, and of more interest to me, to think about the challenges of how you keep an index populated. 
+          </aside>
+        </section>
+        <section>
+          <h1>What is Solr?</h1>
+          <aside class="notes">
+            In a system like this, you need to consider how you get data into the index and how it’s modelled, which is very different that traditional databases. As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and probably could be used as a kv store. 
+            Solr was built as an administration tool around Lucene, which is just a bunch of Jars for doing full-text search. Solr also adds some nice customizations, like additional caching - when the lucene team doesn’t work at the pace they want, they seem to just add stuff. Solr Repositories resemble a single, denormalized database table. Each row in the table is referred to as a “document”, as these often represent the contents of a PDF or similar, although there is no particular requirement on what a document must be, the contents of a PDF have equal weight with any metadata and in fact, the database just stores text, so if you actually started with a bunch of pDFs you’d have to extract contents yourself. Each column has options about how it is used, for instance you can control whether the original column data is stored or not; if not, it’s used for searching and ranking, but isn’t returned, which makes it a little easier to maintain. For instance, you might have the data twice, once for when it’s stored, and a large concatenated text field for searching.
+          </aside>
+        </section>
+        <section>
+          <h2>Motivation</h2>
+          <p>
+            Which engineer worked on a particular client/project/technology? 
           </p>
           <aside class="notes">
-Since Wingspan has done some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. When someone calls the company, it’s also helpful to know who to route phone calls to - this is more of a real need than problems within the engineering group, since this could be a marketing or administrative person receiving the call and not someone with knowldege of the project. 
-
-In some large companies, it’s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoft’s MSDN program awards points based on certifications of developers in the organization, so it’s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.
-
-For both of these scenarios, you could count the number of commits a person has referencing a client or tool, which is essentially faceted search, which solr can do well. In fact, the facets are the more interesting result here, compared to result ranking. It works especially well if you are already diligent in your company about what you commit and how often; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.
-
-Both of these are somewhat contrived for our company, as we’re not actively using the tool I built, but that is primarily due to being small enough that it’s not necessary. This falls into the realm of problems that are well-answered by expert knowledge rather than a tool, but when we tested this as a proof of concept, we were able to get answers that were strikingly accurate to our organization.
-</aside>
-</section>
-
-<section>
-<h2>Setting up Solr</h2>
-<aside class="notes">
-- Drop in a .war
-- Set configuration parameters to point to index
-- Logging settings/jars
-- Permissions for index writing
-- Point to core(s)
-- Drop in other jars if needed (e.g. to connect to jdbc drivers)
-</aside>
-</section>
-
-
-
-<section>
-<h2>Initializing the Solr Connection</h2>
-    <pre><code data-trim>
+            Since Wingspan has done some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. When someone calls the company, it’s also helpful to know who to route phone calls to - this is more of a real need than problems within the engineering group, since this could be a marketing or administrative person receiving the call and not someone with knowldege of the project. 
+            In some large companies, it’s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoft’s MSDN program awards points based on certifications of developers in the organization, so it’s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.
+            For both of these scenarios, you could count the number of commits a person has referencing a client or tool, which is essentially faceted search, which solr can do well. In fact, the facets are the more interesting result here, compared to result ranking. It works especially well if you are already diligent in your company about what you commit and how often; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.
+            Both of these are somewhat contrived for our company, as we’re not actively using the tool I built, but that is primarily due to being small enough that it’s not necessary. This falls into the realm of problems that are well-answered by expert knowledge rather than a tool, but when we tested this as a proof of concept, we were able to get answers that were strikingly accurate to our organization.
+          </aside>
+        </section>
+        <section>
+          <h2>Setting up Solr</h2>
+          <aside class="notes">
+            - Drop in a .war
+            - Set configuration parameters to point to index
+            - Logging settings/jars
+            - Permissions for index writing
+            - Point to core(s)
+            - Drop in other jars if needed (e.g. to connect to jdbc drivers)
+          </aside>
+        </section>
+        <section>
+          <h2>Initializing the Solr Connection</h2>
+          <pre><code data-trim>
 HttpSolrServer server = new HttpSolrServer(
      "http://localhost:8080/solr/collection1");
 
 Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
     </code></pre>
-<aside class="notes">
-is this the right library API for 3.4?
-</aside>
-</section>
-
-
-<section>
-<h2>Solr Performance - Transmission options</h2>
-<aside class="notes">Solr can transfer data using JSON, XML, or a binary serialization format - the binary format is fastest, because it is smaller, and doesn’t require as much parsing logic.
-Ideally you want to batch commits. [some performance metrics here?]
-
-Solr differentiates two types of commit, "soft" and "hard." Hard commits force writes to disk (fsync). Soft commit makes the changes visible to applications, but you can lose data if the JVM crashes. Since deletes and updates are implented with soft deletes, there is also an "optimize" option, which re-writes the index. Some rewriting is performed slowly over time anyway, but this forces it to be all at once. 
-
-SolrJ can use a binary or XML format - the xml format is older, so there may be code samples out there that use it, but the binary format is faster for reading and writing, as it's smaller.
-</aside>
-</section>
-
-<section>
-<h2>Solr - Types</h2>
-    <pre><code data-trim>
+          <aside class="notes">
+            is this the right library API for 3.4?
+          </aside>
+        </section>
+        <section>
+          <h2>Solr Performance - Transmission options</h2>
+          <aside class="notes">Solr can transfer data using JSON, XML, or a binary serialization format - the binary format is fastest, because it is smaller, and doesn’t require as much parsing logic.
+            Ideally you want to batch commits. [some performance metrics here?]
+            Solr differentiates two types of commit, "soft" and "hard." Hard commits force writes to disk (fsync). Soft commit makes the changes visible to applications, but you can lose data if the JVM crashes. Since deletes and updates are implented with soft deletes, there is also an "optimize" option, which re-writes the index. Some rewriting is performed slowly over time anyway, but this forces it to be all at once. 
+            SolrJ can use a binary or XML format - the xml format is older, so there may be code samples out there that use it, but the binary format is faster for reading and writing, as it's smaller.
+          </aside>
+        </section>
+        <section>
+          <h2>Solr - Types</h2>
+          <pre><code data-trim>
 <fieldType name="git_author" class="solr.TextField" positionIncrementGap="100">
   <analyzer type="index">
     <tokenizer class="solr.KeywordTokenizerFactory"/>
@@ -133,15 +105,11 @@ SolrJ can use a binary or XML format - the xml format is older, so there may be 
     </analyzer>
   </fieldType>
 </code></pre>
-<aside class="notes">
-</aside>
-</section>
-
-
-
-<section>
-<h2>Solr - Schema</h2>
-    <pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Solr - Schema</h2>
+          <pre><code data-trim>
    <field name="id" type="string" indexed="true" stored="false" required="true" /> 
    <field name="name" type="string" indexed="true" stored="false" required="true" /> 
    <field name="author" type="git_author" indexed="true" stored="true" required="true" /> 
@@ -165,13 +133,11 @@ SolrJ can use a binary or XML format - the xml format is older, so there may be 
    <copyField source="author" dest="author_facet"/>
 
     </code></pre>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
-<h2>Preparing Data for Solr</h2>
-    <pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Preparing Data for Solr</h2>
+          <pre><code data-trim>
 doc1.addField("id", remoteGithub + "." + commit.getId(), 1.0f);
 String author = commit.getAuthorIdent().getName();
 author = author.replace(".", " ");
@@ -193,13 +159,11 @@ search.append(" ").append(commit.getFullMessage());
 doc1.addField("search", search.toString());
 docs.add(doc1);
 </code></pre>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
-<h2>Batching Commits</h2>
-    <pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Batching Commits</h2>
+          <pre><code data-trim>
 if (cnt % batchSize == 0) {
 	server.add(docs);
 	server.commit();
@@ -208,13 +172,11 @@ if (cnt % batchSize == 0) {
 	System.out.println("Committed batch");
 }
     </code></pre>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
-<h2>Threading Updates</h2>
-    <pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Threading Updates</h2>
+          <pre><code data-trim>
 public void run() 
 {
 	try 
@@ -270,13 +232,11 @@ public void run()
 }
 	
     </code></pre>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
-<h2>Querying Solr</h2>
-    <pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Querying Solr</h2>
+          <pre><code data-trim>
 params.put("collectionName", "collection1");
 params.put("q", "*:*");
 params.put("start", "0");
@@ -286,39 +246,28 @@ SolrParams solrParams = new MapSolrParams(params);
 server.queryAndStreamResponse(solrParams, callback);
 connection.close();		
 </code></pre>
-<aside class="notes">
-</aside>
-</section>
-
-
-<section>
-<h2>Query Format</h2>
-<aside class="notes">
-Solr accepts queries through a REST API, which gives you an easy, ready-built API, if needed.  You can add, insert, update, delete any amount through the API.
-
-[query sample]
-</aside>
-</section>
-
-
-<section>
-<h2>Traversing Git History</h2>
-<aside class="notes">
-I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit. EGit has some problem where it does not handle some line ending settings correctly, which concerned me, but it seems to work fine for this project. Reading repositories is by far the slowest part of this script. Egit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
-
-Solr provides a simple Java interface called solrj, which lets you push a list of rows (“documents”) to the index. Because of the single-table structure, it is quite common to have denormalized data, as well as data repeating in multiple columns. For example, you might concatenate all the fields you wish to search on, but store only indexed values so they can never be viewed. However, they can referenced through individual fields. This you might do in Java.
-
-One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). If you change the schema, everything is deleted [ is this true??? ] . I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID. Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It woudl prevent parallelism and mess with error handling, and assumes that everything ahppens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.
-
-Some transformations are best done in Java, such as entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). Interestingly I discovered that Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice, although clearly this treats all IDEs without the header as the same.
-In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrascrture.
-</aside>
-</section>
-
-
-<section>
-<h2>Marking a starting point</h2>
-<pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Query Format</h2>
+          <aside class="notes">
+            Solr accepts queries through a REST API, which gives you an easy, ready-built API, if needed.  You can add, insert, update, delete any amount through the API.
+            [query sample]
+          </aside>
+        </section>
+        <section>
+          <h2>Traversing Git History</h2>
+          <aside class="notes">
+            I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit. EGit has some problem where it does not handle some line ending settings correctly, which concerned me, but it seems to work fine for this project. Reading repositories is by far the slowest part of this script. Egit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
+            Solr provides a simple Java interface called solrj, which lets you push a list of rows (“documents”) to the index. Because of the single-table structure, it is quite common to have denormalized data, as well as data repeating in multiple columns. For example, you might concatenate all the fields you wish to search on, but store only indexed values so they can never be viewed. However, they can referenced through individual fields. This you might do in Java.
+            One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). If you change the schema, everything is deleted [ is this true??? ] . I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID. Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It woudl prevent parallelism and mess with error handling, and assumes that everything ahppens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.
+            Some transformations are best done in Java, such as entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). Interestingly I discovered that Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice, although clearly this treats all IDEs without the header as the same.
+            In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrascrture.
+          </aside>
+        </section>
+        <section>
+          <h2>Marking a starting point</h2>
+          <pre><code data-trim>
 	for (Ref ref : repository.getAllRefs().values()) {
 			try {
 				walk.markStart(walk.parseCommit(ref.getObjectId()));
@@ -328,10 +277,10 @@ In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of co
 			}
 		}
     </code></pre>
-</section>
-<section>
-<h2>Walking the commit hierarchy</h2>
-    <pre><code data-trim>
+        </section>
+        <section>
+          <h2>Walking the commit hierarchy</h2>
+          <pre><code data-trim>
 		for (RevCommit commit : walk) {
 			try {
 				cnt++;
@@ -342,13 +291,11 @@ In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of co
 					RevCommit parent = walk.parseCommit(commit.getParent(0)
 							.getId());
     </code></pre>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
-<h2>Reading Diffs</h2>
-    <pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Reading Diffs</h2>
+          <pre><code data-trim>
 DiffFormatter df = new DiffFormatter(
 	DisabledOutputStream.INSTANCE);
 df.setRepository(repository);
@@ -362,22 +309,20 @@ for (Object obj : diffs) {
 	DiffEntry diff = (DiffEntry) obj;
 }
     </code></pre>
-<aside class="notes">
-</aside>
-</section>
-<section>
-<h2>Commit Comments</h2>
-<aside class="notes">
-if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY) {
-  String filename = diff.getNewPath();
-	search.append(" ").append(commit.getFullMessage());
-  }
-  </aside>
-</section>
-
-<section>
-<h2>Initializing a git repository</h2>
-    <pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Commit Comments</h2>
+          <aside class="notes">
+            if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY) {
+            String filename = diff.getNewPath();
+            search.append(" ").append(commit.getFullMessage());
+            }
+          </aside>
+        </section>
+        <section>
+          <h2>Initializing a git repository</h2>
+          <pre><code data-trim>
 FileRepositoryBuilder builder = new FileRepositoryBuilder();
 Repository repository = 
     builder.setGitDir(new File(path))
@@ -387,44 +332,41 @@ Repository repository =
 
 RevWalk walk = new RevWalk(repository);
     </code></pre>
-<aside class="notes">
-readEnvironment - scan environment GIT_* variables
-findGitDir - scan up the file system tree
-System.out.println("Loaded " + repository.getBranch() + " of " + path);
-</aside>
-</section>
-
-<section>
-<h2>Commit Metadata</h2>
-Signed-off-by (agrees to Developer Certificate of Origin)
-Acked-by (thinks change looks sane in context)
-Reported-by (originally found the issue this change fixes)
-Tested-by (validated change fixes the issue for them)
-CC, Cc (copy on all email related to this change)
-Bug (link to project's bug tracking system)
-<aside class="notes">
-RevCommit.getFooterLines
-
-public final List<FooterLine> getFooterLines()
-Parse the footer lines (e.g. "Signed-off-by") for machine processing.
-This method splits all of the footer lines out of the last paragraph of the commit message, providing each line as a key-value pair, ordered by the order of the line's appearance in the commit message itself.
-
-A footer line's key must match the pattern ^[A-Za-z0-9-]+:, while the value is free-form, but must not contain an LF. Very common keys seen in the wild are:
-
-Signed-off-by (agrees to Developer Certificate of Origin)
-Acked-by (thinks change looks sane in context)
-Reported-by (originally found the issue this change fixes)
-Tested-by (validated change fixes the issue for them)
-CC, Cc (copy on all email related to this change)
-Bug (link to project's bug tracking system)
-Returns:
-ordered list of footer lines; empty list if no footers found.
-</aside>
-</section>
-
-<section>
-<h2>Handling Diffs</h2>
-    <pre><code data-trim>
+          <aside class="notes">
+            readEnvironment - scan environment GIT_* variables
+            findGitDir - scan up the file system tree
+            System.out.println("Loaded " + repository.getBranch() + " of " + path);
+          </aside>
+        </section>
+        <section>
+          <h2>Commit Metadata</h2>
+          Signed-off-by (agrees to Developer Certificate of Origin)
+          Acked-by (thinks change looks sane in context)
+          Reported-by (originally found the issue this change fixes)
+          Tested-by (validated change fixes the issue for them)
+          CC, Cc (copy on all email related to this change)
+          Bug (link to project's bug tracking system)
+          <aside class="notes">
+            RevCommit.getFooterLines
+            public final List
+            <FooterLine>
+            getFooterLines()
+            Parse the footer lines (e.g. "Signed-off-by") for machine processing.
+            This method splits all of the footer lines out of the last paragraph of the commit message, providing each line as a key-value pair, ordered by the order of the line's appearance in the commit message itself.
+            A footer line's key must match the pattern ^[A-Za-z0-9-]+:, while the value is free-form, but must not contain an LF. Very common keys seen in the wild are:
+            Signed-off-by (agrees to Developer Certificate of Origin)
+            Acked-by (thinks change looks sane in context)
+            Reported-by (originally found the issue this change fixes)
+            Tested-by (validated change fixes the issue for them)
+            CC, Cc (copy on all email related to this change)
+            Bug (link to project's bug tracking system)
+            Returns:
+            ordered list of footer lines; empty list if no footers found.
+          </aside>
+        </section>
+        <section>
+          <h2>Handling Diffs</h2>
+          <pre><code data-trim>
 						String file = diff.getNewPath().toLowerCase();
 
 						ChangeType mode = diff.getChangeType();
@@ -459,18 +401,14 @@ ordered list of footer lines; empty list if no footers found.
 						i++;
 					}
     </code></pre>
-<aside class="notes">
-</aside>
-</section>
-
-
-<section>
-<h2>Traversing Git History - Branches</h2>
-</section>
-
-<section>  
-<h2>Traversing Git History - File Changes</h2>
-<pre><code data-trim>
+          <aside class="notes"></aside>
+        </section>
+        <section>
+          <h2>Traversing Git History - Branches</h2>
+        </section>
+        <section>
+          <h2>Traversing Git History - File Changes</h2>
+          <pre><code data-trim>
 ByteArrayOutputStream out = new ByteArrayOutputStream();
 DiffFormatter df = new DiffFormatter(out);
 
@@ -496,128 +434,106 @@ for (Object obj : diffs) {
 }
 </code>
 </pre>
-<aside class="notes">
-SolrJ lets you generate output resembling the diff tool that git has, to generate a patch set. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context. You do also need to set the encoding.
-
-For this application, I detect modified files. Note you get diffs - so you may only want to filter this to addtions. If you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
-</aside>
-
-</section>
-
-<section>
-<h2>Using Github</h2>
-<aside class="notes">
-I built a 4 million document archive from Github commits, which lets you search for open source experts, ranked by commit count.
-
-Github has a nice API for inspecting repositories – it lets you read gists, issues, commit history, files and so on. Git repository data lends itself to demonstrating the power of combining full text and faceted search, as there is a mix of free text fields (commit messages, code) and enumerable fields (committers, dates, committer employers). Github APIs return JSON, which has the nice property of resembling a tree structure – results can be recursed over without fear of infinite loops. Note that to download the entire commit history for a repository, you need to page through it by sha hash. The API I use here lacks diffs, which must be retrieved elsewhere.
-</aside>
-</section>
-
-<section>
-	<h2>Fixing Authors</h2>
-  <aside class="notes">
-  One of the notable issues with git is there is no particular requirements around how people put in their usernames. Since this exercise builds out an ETL process, you can “fix” this problem by coercing names into common formats, which I found necessary, especially if you combine this with existing data from other systems like CVS which you can pull in by using a repositoriy that has been converted using a toool [what is the tool???].
-  </aside>
-</section>
-
-<section>
-<h2>Finding comments</h2>
-<aside class="notes">
-There are a couple interesting tidbits which can be found in code, aside from commits,  which are comments, and constants. Both of these can be found with regular expressions:
-/* */
-//
---
-“.*”
-\d*
-
-Oftentimes integer or string constants indicate interesting features of a codebase. For instance, you mght find that peopel really like writing hashcode methods or the word “endian”. A lot of the most interesting things are the rare features. Comments also provide good insight into who worked on what, although if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
-
-One thing to note here is the challenge of actually parsing code files. While this has been done, it’s made especially challenging by the host of languages available (html, js, sql, xml), and these are often combined in some way with templating languages like React, xtemplates in ExtJS or sql in a java files, so while I think this is interesting I haven’t attempted it. If I were going to attempt it, I’d look into the regexes that are used for syntax highlighting in tools like Vim, since you’d have a fighting chance of getting something somewhat useful. 
-
-Since the git provides you with diffs, you may get a single line comment, a comment that's part of a longer line, comments within a line, an addition to an existing comment. Ideally you'd want to find just the change.
-[search models]
-</aside>
-</section>
-
-<section>
-<h2>Company Lists</h2>
-<aside class="notes">
-In repositories from github, you can get a good approximation of companies that contribute to repositories by taking the “@x.com” from emails, although to do this successfully, you must remove common hosts like gmail, and exclude contributions by some bots. Some of the major ones can be hidden easily, but this takes some work to find a general solution.
-</aside>
-</section>
-
-<section>
-<h2>Importing from CVS</h2>
-<aside class="notes">			
-cvs2svn, cvs2git
-</aside>
-</section>
-
-<section>
-<h2>Getting search results</h2>
-search:jug
-<aside class="notes">			
-Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in uqery parsers are limited based on where they exist in the application (example?)
-</aside>
-</section>
-
-<section>
-			
-<h2>Building a facet UI</h2>
-<aside class="notes">			
-You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Here’s some example code, this is just typical jQuery code.
-</aside>
-</section>
-
-<section>
-<h2>Solr vs. Postgres</h2>
-<aside class="notes">
-:[Intro here]
-For this test, I set up a 1.1 million row table1 using data from github2.
-If you’re not familiar with full-text in Postgres, they use the @@ operator to apply a query to a document3, which looks like this:
-SELECT to_tsvector('fat cats ate fat rats') @@ to_tsquery('fat & rat');
-The order of the conditions doesn’t matter. Full-text indexes typically work by multiplying vectors, and Postgres provides two types of indexes to speed up this operation. Postgres has a couple of minor edge case limitations (maximum document size / maximum word size). It’s a little harder to set up - you need to formulate queries the right way, and build indexes the right way, and I found it to be a bit slower in general. Postgres does have some sort of bitmap indexing, which when it is used is very fast, i.e. when there are a bunch of ANDs in a query, but for a single field this isn’t available.
-</aside>
-</section>
-
-				<section>
-					<h1>THE END</h1>
-					<h3>BY Gary Sieling / @garysieling</h3>
-				</section>
-
-			</div>
-
-		</div>
-
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.min.js"></script>
-
-		<script>
-
-			// Full list of configuration options available here:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
-
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
-
-				// Optional libraries used to extend on reveal.js
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-				]
-			});
-
-		</script>
-
-	</body>
+          <aside class="notes">
+            SolrJ lets you generate output resembling the diff tool that git has, to generate a patch set. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context. You do also need to set the encoding.
+            For this application, I detect modified files. Note you get diffs - so you may only want to filter this to addtions. If you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
+          </aside>
+        </section>
+        <section>
+          <h2>Using Github</h2>
+          <aside class="notes">
+            I built a 4 million document archive from Github commits, which lets you search for open source experts, ranked by commit count.
+            Github has a nice API for inspecting repositories – it lets you read gists, issues, commit history, files and so on. Git repository data lends itself to demonstrating the power of combining full text and faceted search, as there is a mix of free text fields (commit messages, code) and enumerable fields (committers, dates, committer employers). Github APIs return JSON, which has the nice property of resembling a tree structure – results can be recursed over without fear of infinite loops. Note that to download the entire commit history for a repository, you need to page through it by sha hash. The API I use here lacks diffs, which must be retrieved elsewhere.
+          </aside>
+        </section>
+        <section>
+          <h2>Fixing Authors</h2>
+          <aside class="notes">
+            One of the notable issues with git is there is no particular requirements around how people put in their usernames. Since this exercise builds out an ETL process, you can “fix” this problem by coercing names into common formats, which I found necessary, especially if you combine this with existing data from other systems like CVS which you can pull in by using a repositoriy that has been converted using a toool [what is the tool???].
+          </aside>
+        </section>
+        <section>
+          <h2>Finding comments</h2>
+          <aside class="notes">
+            There are a couple interesting tidbits which can be found in code, aside from commits,  which are comments, and constants. Both of these can be found with regular expressions:
+            /* */
+            //
+            --
+            “.*”
+            \d*
+            Oftentimes integer or string constants indicate interesting features of a codebase. For instance, you mght find that peopel really like writing hashcode methods or the word “endian”. A lot of the most interesting things are the rare features. Comments also provide good insight into who worked on what, although if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
+            One thing to note here is the challenge of actually parsing code files. While this has been done, it’s made especially challenging by the host of languages available (html, js, sql, xml), and these are often combined in some way with templating languages like React, xtemplates in ExtJS or sql in a java files, so while I think this is interesting I haven’t attempted it. If I were going to attempt it, I’d look into the regexes that are used for syntax highlighting in tools like Vim, since you’d have a fighting chance of getting something somewhat useful. 
+            Since the git provides you with diffs, you may get a single line comment, a comment that's part of a longer line, comments within a line, an addition to an existing comment. Ideally you'd want to find just the change.
+            [search models]
+          </aside>
+        </section>
+        <section>
+          <h2>Company Lists</h2>
+          <aside class="notes">
+            In repositories from github, you can get a good approximation of companies that contribute to repositories by taking the “@x.com” from emails, although to do this successfully, you must remove common hosts like gmail, and exclude contributions by some bots. Some of the major ones can be hidden easily, but this takes some work to find a general solution.
+          </aside>
+        </section>
+        <section>
+          <h2>Importing from CVS</h2>
+          <aside class="notes">			
+            cvs2svn, cvs2git
+          </aside>
+        </section>
+        <section>
+          <h2>Getting search results</h2>
+          search:jug
+          <aside class="notes">			
+            Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in uqery parsers are limited based on where they exist in the application (example?)
+          </aside>
+        </section>
+        <section>
+          <h2>Building a facet UI</h2>
+          <aside class="notes">			
+            You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Here’s some example code, this is just typical jQuery code.
+          </aside>
+        </section>
+        <section>
+          <h2>Solr vs. Postgres</h2>
+          <aside class="notes">
+            :[Intro here]
+            For this test, I set up a 1.1 million row table1 using data from github2.
+            If you’re not familiar with full-text in Postgres, they use the @@ operator to apply a query to a document3, which looks like this:
+            SELECT to_tsvector('fat cats ate fat rats') @@ to_tsquery('fat & rat');
+            The order of the conditions doesn’t matter. Full-text indexes typically work by multiplying vectors, and Postgres provides two types of indexes to speed up this operation. Postgres has a couple of minor edge case limitations (maximum document size / maximum word size). It’s a little harder to set up - you need to formulate queries the right way, and build indexes the right way, and I found it to be a bit slower in general. Postgres does have some sort of bitmap indexing, which when it is used is very fast, i.e. when there are a bunch of ANDs in a query, but for a single field this isn’t available.
+          </aside>
+        </section>
+        <section>
+          <h1>THE END</h1>
+          <h3>BY Gary Sieling / @garysieling</h3>
+        </section>
+      </div>
+    </div>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      	controls: true,
+      	progress: true,
+      	history: true,
+      	center: true,
+      
+      	theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      	transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      
+      	// Optional libraries used to extend on reveal.js
+      	dependencies: [
+      		{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      		{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      		{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      		{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      		{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      		{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      	]
+      });
+      
+    </script>
+  </body>
 </html>
 
