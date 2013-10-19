@@ -188,78 +188,81 @@ is this the right library API for 3.4?
 <section>
 <h2>Reading Diffs</h2>
     <pre><code data-trim>
-				DiffFormatter df = new DiffFormatter(
-							DisabledOutputStream.INSTANCE);
-					df.setRepository(repository);
-					df.setDiffComparator(RawTextComparator.DEFAULT);
-					df.setDetectRenames(true);
+DiffFormatter df = new DiffFormatter(
+	DisabledOutputStream.INSTANCE);
+df.setRepository(repository);
+df.setDiffComparator(RawTextComparator.DEFAULT);
+df.setDetectRenames(true);
 
-					java.util.List<DiffEntry> diffs = df.scan(parent.getTree(),
-							commit.getTree());
+java.util.List<DiffEntry> diffs = df.scan(parent.getTree(),
+	commit.getTree());
 
-					String[] projects = new String[diffs.size()];
-					String[] filetypes = new String[diffs.size()];
-
-					int i = 0;
-					for (Object obj : diffs) {
-						DiffEntry diff = (DiffEntry) obj;
-
+for (Object obj : diffs) {
+	DiffEntry diff = (DiffEntry) obj;
+}
     </code></pre>
 <aside class="notes">
 </aside>
 </section>
 <section>
+<h2>Commit Comments</h2>
+<aside class="notes">
+if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY) {
+  String filename = diff.getNewPath();
+	search.append(" ").append(commit.getFullMessage());
+}
+</section>
+
+<section>
 <h2>Querying Solr</h2>
     <pre><code data-trim>
-	params.put("collectionName", "collection1");
-		params.put("q", "*:*");
-		params.put("start", "0");
-		params.put("rows", "" + Integer.MAX_VALUE);
-		SolrParams solrParams = new MapSolrParams(params);
+params.put("collectionName", "collection1");
+params.put("q", "*:*");
+params.put("start", "0");
+params.put("rows", "" + Integer.MAX_VALUE);
+SolrParams solrParams = new MapSolrParams(params);
 		
-		StreamingResponseCallback callback = new StreamingResponseCallback() {
+StreamingResponseCallback callback = new StreamingResponseCallback() {
 
-			@Override
-			public void streamDocListInfo(long arg0, long arg1, Float arg2) {
-				
-			}
+@Override
+public void streamDocListInfo(long arg0, long arg1, Float arg2) {
 
-			@Override
-			public void streamSolrDocument(SolrDocument doc) {
-				String query = "INSERT INTO " +
-							   "data   (author, id, email, company, date, message, name, github, search) " +
-			                   "VALUES (?,      ?,  ?,     ?,       ?,    ?,       ?,    ?,      ?)";
+}
+
+@Override
+public void streamSolrDocument(SolrDocument doc) {
+String query = "INSERT INTO " +
+  "data   (author, id, email, company, date, message, name, github, search) " +
+	"VALUES (?,      ?,  ?,     ?,       ?,    ?,       ?,    ?,      ?)";
 				
-				PreparedStatement  s;
-				try {
-					s = connection.prepareStatement(query);
-					s.setString(1, doc.getFieldValue("author").toString());
-					s.setString(2, doc.getFieldValue("id").toString());
-					s.setString(3, doc.getFieldValue("email").toString());
-					s.setString(4, doc.getFieldValue("company").toString());
-					s.setString(5, doc.getFieldValue("date").toString());
-					s.setString(6, doc.getFieldValue("message").toString());
-					s.setString(7, doc.getFieldValue("name").toString());
-					s.setString(8, doc.getFieldValue("github").toString());
-					s.setString(9, doc.getFieldValue("search").toString());
+PreparedStatement  s;
+try {
+	s = connection.prepareStatement(query);
+	s.setString(1, doc.getFieldValue("author").toString());
+	s.setString(2, doc.getFieldValue("id").toString());
+	s.setString(3, doc.getFieldValue("email").toString());
+	s.setString(4, doc.getFieldValue("company").toString());
+	s.setString(5, doc.getFieldValue("date").toString());
+	s.setString(6, doc.getFieldValue("message").toString());
+	s.setString(7, doc.getFieldValue("name").toString());
+	s.setString(8, doc.getFieldValue("github").toString());
+	s.setString(9, doc.getFieldValue("search").toString());
 					
-					s.execute();
+	s.execute();
 					
-					s.close();
-				}
-				catch (Exception e)
-				{
-					System.out.println(e.getMessage());
-					System.out.println(e.getStackTrace());
-				}
-			}
+	s.close();
+}
+catch (Exception e)
+{
+}
+}
 			
-		};
+};
 		
-		server.queryAndStreamResponse(solrParams, callback);
-		connection.close();		
+server.queryAndStreamResponse(solrParams, callback);
+connection.close();		
 
-    </code></pre>
+</code></pre>
 <aside class="notes">
 </aside>
 </section>
@@ -385,30 +388,40 @@ ordered list of footer lines; empty list if no footers found.
 </aside>
 </section>
 <section>
+<h2>Designing and Testing ETL processes</h2>
+<aside class="notes">
+- May take hours, weeks, months to finish
+- Time to generate final data is an issue
+- Need to incrementally reload parts that failed
+- Ideally don't want to fail, but note problems and move on
+- Run side-by-side processes to test one version to the next
+- Restarting?
+</aside>
+</section>
+<section>
 <h2>Preparing Data for Solr</h2>
     <pre><code data-trim>
-	doc1.addField("id", remoteGithub + "." + commit.getId(), 1.0f);
-				String author = commit.getAuthorIdent().getName();
-				author = author.replace(".", " ");
+doc1.addField("id", remoteGithub + "." + commit.getId(), 1.0f);
+String author = commit.getAuthorIdent().getName();
+author = author.replace(".", " ");
 
-				doc1.addField("author", author, 1.0f);
-				doc1.addField("author_facet", author, 1.0f);
-				doc1.addField("email", nvl(commit.getAuthorIdent().getEmailAddress(), " "));
+doc1.addField("author", author, 1.0f);
+doc1.addField("author_facet", author, 1.0f);
+doc1.addField("email", nvl(commit.getAuthorIdent().getEmailAddress(), " "));
 				
-				doc1.addField("company", getCompany(commit.getAuthorIdent().getEmailAddress()), 1.0f);
+doc1.addField("company", getCompany(commit.getAuthorIdent().getEmailAddress()), 1.0f);
 								
-				doc1.addField("date", commit.getAuthorIdent().getWhen(), 1.0f);
-				doc1.addField("message", commit.getFullMessage(), 1.0f);
-				doc1.addField("name", commit.getName(), 1.0f);
-				doc1.addField("github", remoteGithub, 1.0f);
+doc1.addField("date", commit.getAuthorIdent().getWhen(), 1.0f);
+doc1.addField("message", commit.getFullMessage(), 1.0f);
+doc1.addField("name", commit.getName(), 1.0f);
+doc1.addField("github", remoteGithub, 1.0f);
 
-				search.append(" ").append(author);
-				search.append(" ").append(commit.getFullMessage());
+search.append(" ").append(author);
+search.append(" ").append(commit.getFullMessage());
 
-				doc1.addField("search", search.toString());
-				docs.add(doc1);
-
-    </code></pre>
+doc1.addField("search", search.toString());
+docs.add(doc1);
+</code></pre>
 <aside class="notes">
 </aside>
 </section>
@@ -495,31 +508,64 @@ public void run()
 
 <section>  
 <h2>Traversing Git History - File Changes</h2>
+<pre><code data-trim>
+ByteArrayOutputStream out = new ByteArrayOutputStream();
+DiffFormatter df = new DiffFormatter(out);
+
+df.setRepository(repository);
+df.setDiffComparator(RawTextComparator.DEFAULT);
+df.setDetectRenames(true);
+df.setContext(3);
+
+List<DiffEntry> diffs = df.scan(parent.getTree(),
+  commit.getTree());
+ 
+for (Object obj : diffs) {
+  DiffEntry diff = (DiffEntry) obj;
+
+  if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY) {
+    FileHeader fh = df.toFileHeader(diff);
+
+    df.format(diff);
+    String diffText = out.toString("UTF-8");
+    System.out.println(diffText);
+    out.reset();
+  }
+}
+</code>
+</pre>
+<aside class="notes">
+SolrJ lets you generate output resembling the diff tool that git has, to generate a patch set. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context. You do also need to set the encoding.
+
+For this application, I detect modified files. Note you get diffs - so you may only want to filter this to addtions. If you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
+</aside>
+
 </section>
 
 <section>
 <h2>Setting up Solr</h2>
-</section>
-
-<section>
-<h2>Connecting to Solr</h2>
+<aside class="notes">
+- Drop in a .war
+- Set configuration parameters to point to index
+- Logging settings/jars
+- Permissions for index writing
+- Point to core(s)
+- Drop in other jars if needed (e.g. to connect to jdbc drivers)
+</aside>
 </section>
 
 <section>
 <h2>Solr Performance - Transmission options</h2>
 <aside class="notes">Solr can transfer data using JSON, XML, or a binary serialization format - the binary format is fastest, because it is smaller, and doesn’t require as much parsing logic.
-</aside>
-</section>
-
-<section>
-<h2>Solr Performance - Types of Commit</h2>
-<aside class="notes">
 Ideally you want to batch commits. [some performance metrics here?]
+
+Solr differentiates two types of commit, "soft" and "hard." Hard commits force writes to disk (fsync). Soft commit makes the changes visible to applications, but you can lose data if the JVM crashes. Since deletes and updates are implented with soft deletes, there is also an "optimize" option, which re-writes the index. Some rewriting is performed slowly over time anyway, but this forces it to be all at once. 
+
+SolrJ can use a binary or XML format - the xml format is older, so there may be code samples out there that use it, but the binary format is faster for reading and writing, as it's smaller.
 </aside>
 </section>
 
 <section>
-
 <h2>Using Github</h2>
 <aside class="notes">
 I built a 4 million document archive from Github commits, which lets you search for open source experts, ranked by commit count.
@@ -549,6 +595,7 @@ Oftentimes integer or string constants indicate interesting features of a codeba
 
 One thing to note here is the challenge of actually parsing code files. While this has been done, it’s made especially challenging by the host of languages available (html, js, sql, xml), and these are often combined in some way with templating languages like React, xtemplates in ExtJS or sql in a java files, so while I think this is interesting I haven’t attempted it. If I were going to attempt it, I’d look into the regexes that are used for syntax highlighting in tools like Vim, since you’d have a fighting chance of getting something somewhat useful. 
 
+Since the git provides you with diffs, you may get a single line comment, a comment that's part of a longer line, comments within a line, an addition to an existing comment. Ideally you'd want to find just the change.
 [search models]
 </aside>
 </section>
@@ -562,11 +609,18 @@ In repositories from github, you can get a good approximation of companies that 
 
 <section>
 <h2>Importing from CVS</h2>
-			</section>
+<aside class="notes">			
+cvs2svn, cvs2git
+</asied>
+</section>
 
 <section>
 
 <h2>Getting search results</h2>
+search:jug
+<aside class="notes">			
+Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in uqery parsers are limited based on where they exist in the application (example?)
+</aside>
 </section>
 
 <section>
