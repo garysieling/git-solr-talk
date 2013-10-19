@@ -156,6 +156,7 @@ Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
 is this the right library API for 3.4?
 </aside>
 </section>
+
 <section>
 <h2>Marking a starting point</h2>
 <pre><code data-trim>
@@ -168,24 +169,24 @@ for (Ref ref : repository.getAllRefs().values()) {
 	}
 }
 </code></pre>
-
 </section>
+
 <section>
 <h2>Walking the commit hierarchy</h2>
-    <pre><code data-trim>
-		for (RevCommit commit : walk) {
-			try {
-				cnt++;
-				StringBuffer search = new StringBuffer();
+<pre><code data-trim>
+for (RevCommit commit : walk) {
+	try {
+		cnt++;
+		StringBuffer search = new StringBuffer();
 
-				SolrInputDocument doc1 = new SolrInputDocument();
-				if (commit.getParentCount() > 0) {
-					RevCommit parent = walk.parseCommit(commit.getParent(0)
-							.getId());
-    </code></pre>
+		SolrInputDocument doc1 = new SolrInputDocument();
+		if (commit.getParentCount() > 0) {
+			RevCommit parent = walk.parseCommit(commit.getParent(0)
+				.getId());
+</code></pre>
 <aside class="notes">
-    </aside>
-    </section>
+</aside>
+</section>
 
 <section>
 <h2>Reading Diffs</h2>
@@ -206,13 +207,18 @@ for (Object obj : diffs) {
 <aside class="notes">
 </aside>
 </section>
+
 <section>
 <h2>Commit Comments</h2>
-<aside class="notes">
+    <pre><code data-trim>
 if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY) {
   String filename = diff.getNewPath();
 	search.append(" ").append(commit.getFullMessage());
 }
+    </code></pre>
+<aside class="notes">
+
+</aside>
 </section>
 
 <section>
@@ -272,8 +278,6 @@ connection.close();
 <section>
 <h2>Solr - Types</h2>
     <pre><code data-trim>
-
-
     <fieldType name="git_author" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.KeywordTokenizerFactory"/>
@@ -286,7 +290,6 @@ connection.close();
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
     </fieldType>
-
     </code></pre>
 <aside class="notes">
 </aside>
@@ -389,6 +392,7 @@ ordered list of footer lines; empty list if no footers found.
 <aside class="notes">
 </aside>
 </section>
+
 <section>
 <h2>Designing and Testing ETL processes</h2>
 <aside class="notes">
@@ -400,6 +404,7 @@ ordered list of footer lines; empty list if no footers found.
 - Restarting?
 </aside>
 </section>
+
 <section>
 <h2>Preparing Data for Solr</h2>
     <pre><code data-trim>
@@ -427,6 +432,7 @@ docs.add(doc1);
 <aside class="notes">
 </aside>
 </section>
+
 <section>
 <h2>Batching Commits</h2>
     <pre><code data-trim>
@@ -613,7 +619,7 @@ In repositories from github, you can get a good approximation of companies that 
 <h2>Importing from CVS</h2>
 <aside class="notes">			
 cvs2svn, cvs2git
-</asied>
+</aside>
 </section>
 
 <section>
@@ -630,7 +636,7 @@ Solr comes with several query parsers. This implements some interesting function
 <h2>Building a facet UI</h2>
 <aside class="notes">			
 You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Here�s some example code, this is just typical jQuery code.
-
+</aside>
 </section>
 
 <section>
