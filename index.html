@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>reveal.js - The HTML Presentation Framework</title>
-    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-    <meta name="author" content="Hakim El Hattab">
+    <title>Mining Source Code Repositories with Solr</title>
+    <meta name="description" content="Importing Git Repositories into a Solr Index">
+    <meta name="author" content="Gary Sieling">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -28,8 +28,10 @@
           <h1>Git to Solr Index</h1>
           <h3>Exploring Full-Text Search</h3>
           <p>
+            <a href="http://www.garysieling.com/jug">www.garysieling.com/jug</a>
+          </p>
+          <p>
             <small><a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></small>
-            <small><a href="http://www.garysieling.com">[Link to Talk] - TODO</a></small>
           </p>
         </section>
         <section>
@@ -56,6 +58,35 @@
             In some large companies, it’s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoft’s MSDN program awards points based on certifications of developers in the organization, so it’s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.
             For both of these scenarios, you could count the number of commits a person has referencing a client or tool, which is essentially faceted search, which solr can do well. In fact, the facets are the more interesting result here, compared to result ranking. It works especially well if you are already diligent in your company about what you commit and how often; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.
             Both of these are somewhat contrived for our company, as we’re not actively using the tool I built, but that is primarily due to being small enough that it’s not necessary. This falls into the realm of problems that are well-answered by expert knowledge rather than a tool, but when we tested this as a proof of concept, we were able to get answers that were strikingly accurate to our organization.
+          </aside>
+        </section>
+        <section>
+          <h2>Designing and Testing ETL processes</h2>
+          <aside class="notes">
+            - May take hours, weeks, months to finish
+            - Time to generate final data is an issue
+            - Need to incrementally reload parts that failed
+            - Ideally don't want to fail, but note problems and move on
+            - Run side-by-side processes to test one version to the next
+            - Restarting?
+          </aside>
+        </section>
+        <section>
+          <h2>Solr - Data Model</h2>
+          <aside class="notes">Each "index" is like a SQL table, a row is a "document", each column may be duplicated many times. </aside>
+        </section>
+        <section>
+          <h2>Solr as "NoSQL"</h2>
+          <aside class="notes">
+            Solr facets to me resemble the model of business intelligence systems with lots of denormalized data and a star schema although Solr is bascially a single table. I’m not sure if anyone uses it for a system of the size of a typical data warehouse, it typically returns results quickly, which much less effort to set up initially than a typical relational database so once I learned how to use it, i found myself tempted to use it rather than a relational database because I found it easy to use.
+            To set up solr, what you need to do is download the distribution, which contains a war file and various client side libraries. The distribution comes with several example schemas, and you can set one up by dropping it in in the right place in Tomcat, or using Jetty - as soon as you put the files in the right place, you’ll have a working repository. The index and schema files live near each other on the file system - the index files correspond to features, so as you turn on or off features, the index will vary in size which effects performance.
+          </aside>
+        </section>
+        <section>
+          <h2>Solr - Limitations</h2>
+          <aside class="notes">
+            Solr aims to be as fast at returning results as possible. It avoids features which slow this down; for instance, if you want to enforce ACLs on items in search results, you need to add columns and figure out how to populate them on your own. It has very limited support for inner joins, which allows for a way to implement more complex ACL structures if you do need them.
+            Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository. 
           </aside>
         </section>
         <section>
@@ -504,7 +535,7 @@ for (Object obj : diffs) {
         </section>
         <section>
           <h1>THE END</h1>
-          <h3>BY Gary Sieling / @garysieling</h3>
+          <h3>BY <a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></h3>
         </section>
       </div>
     </div>
