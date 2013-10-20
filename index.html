@@ -83,6 +83,7 @@
             - Run side-by-side processes to test one version to the next
             - Need to be able to reference data in the source system support issues
             - Restarting?
+            One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). If you change the schema, everything is deleted [ is this true??? ] . I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID. Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It would prevent parallelism and mess with error handling, and assumes that everything ahppens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.
           </aside>
         </section>
         <section>
@@ -105,7 +106,6 @@
             Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository. 
           </aside>
         </section>
-          
         <section>
           <h2>Initializing the Solr Connection</h2>
           <pre><code data-trim>
@@ -115,7 +115,9 @@ HttpSolrServer server = new HttpSolrServer(
 Collection&lt;SolrInputDocument&gt; docs = new ArrayList&lt;SolrInputDocument&gt;();
     </code></pre>
           <aside class="notes">
-            is this the right library API for 3.4?
+          * Is this the right library API for 3.4?
+          * What are the different types of HttpSolrServer objects?
+          * Note here we specify the core we want to connect to
           </aside>
         </section>
         <section>
@@ -174,15 +176,15 @@ Collection&lt;SolrInputDocument&gt; docs = new ArrayList&lt;SolrInputDocument&gt
         <section>
           <h2>Preparing Data for Solr</h2>
           <pre><code data-trim>
-doc1.addField("id", remoteUrl + "." + commit.getId(), 1.0f);
+doc.addField("id", remoteUrl + "." + commit.getId(), 1.0f);
 String author = commit.getAuthorIdent().getName();
 
-doc1.addField("author", author, 1.0f);
-doc1.addField("email", nvl(commit.getAuthorIdent().getEmailAddress(), " "));
-doc1.addField("message", commit.getFullMessage(), 1.0f);
+doc.addField("author", author, 1.0f);
+doc.addField("email", nvl(commit.getAuthorIdent().getEmailAddress(), " "));
+doc.addField("message", commit.getFullMessage(), 1.0f);
 
-doc1.addField("search", commit.getFullMessage());
-docs.add(doc1);
+doc.addField("search", commit.getFullMessage());
+docs.add(doc);
 </code></pre>
           <aside class="notes">
           * Should nvl be removed?
@@ -200,7 +202,10 @@ if (cnt % batchSize == 0) {
   System.out.println("Committed batch");
 }
     </code></pre>
-          <aside class="notes"></aside>
+          <aside class="notes">
+         * This shows that ever N git commits, we're posting a batch of updates to Solr. It seems sensible to do it this way, because every time you initiate a connection and do a commit there is going to be some overhead. 
+         * How much time difference does this make? 
+          </aside>
         </section>
         <section>
           <h2>Threading Updates</h2>
@@ -225,6 +230,8 @@ for (File f : files) {
     </code></pre>
           <aside class="notes">
           * Inside run method
+          * For this application I've chosen to have multiple threads which loop over all the available repositories. If there are ten threads, each thread knows it's number, from 1 to 10 - the first thread picks up files 1, 11, 21, the second thread picks up files 2, 12, 22, and so on. This allows the threads to be killed and restart part way without any communication, although it won't help you if you download new data out of sequence. An alternate approach that can work even better is to build up a folder hierarchy using md5 hashed names: if you use sequences of two letters for each level of the hierarchy, you can split files at random into batches of 256 - this makes it easy to try an ETL script on a small subset of the data, as well as providing a number of ways to divide the data between threads. If anyone has used Documentum, this is similar to how folders are stored, although I think they use sequential IDs, rather than hashed data.
+
           * Lots of possible exceptions, look each of these up: 
     } catch (MalformedURLException e) {
     } catch (AmbiguousObjectException e) {
@@ -239,86 +246,29 @@ for (File f : files) {
           <h2>Querying Solr</h2>
           <pre><code data-trim>
 params.put("collectionName", "collection1");
-params.put("q", "*:*");
-params.put("start", "0");
-params.put("rows", "" + Integer.MAX_VALUE);
+params.put("q", "search:ebay");
+params.put("facet.field", "author");
+params.put("facet.limit", "100");
+params.put("facet.sort", "count");
 SolrParams solrParams = new MapSolrParams(params);
   
 server.queryAndStreamResponse(solrParams, callback);
 connection.close();    
 </code></pre>
-          <aside class="notes"></aside>
-        </section>
-        <section>
-          <h2>Query Format</h2>
           <aside class="notes">
-            Solr accepts queries through a REST API, which gives you an easy, ready-built API, if needed.  You can add, insert, update, delete any amount through the API.
-            [query sample]
+          * Solr accepts queries through a REST API, which gives you an easy, ready-built API, if needed.  You can add, insert, update, delete any amount through the API.
+          * This shows which collection we want to hit
+          * The query, *:* brings back everything
+          * We can set paging parameters
+          * We can also set faceting parameters
           </aside>
         </section>
         <section>
           <h2>Traversing Git History</h2>
           <aside class="notes">
-            I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit, so you know that there is a team mantaining it. Reading repositories is by far the slowest part of this script. EGit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
-            Solr provides a simple Java interface called solrj, which lets you push a list of rows (“documents”) to the index. Because of the single-table structure, it is quite common to have denormalized data, as well as data repeating in multiple columns. For example, you might concatenate all the fields you wish to search on, but store only indexed values so they can never be viewed. However, they can referenced through individual fields. This you might do in Java.
-            One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). If you change the schema, everything is deleted [ is this true??? ] . I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID. Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It woudl prevent parallelism and mess with error handling, and assumes that everything ahppens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.
-            Some transformations are best done in Java, such as entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). Interestingly I discovered that Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice, although clearly this treats all IDEs without the header as the same.
-            In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrastructure.
-          </aside>
-        </section>
-        <section>
-          <h2>Marking a starting point</h2>
-          <pre><code data-trim>
-for (Ref ref : repository.getAllRefs().values()) {
-  try {
-    walk.markStart(walk.parseCommit(ref.getObjectId()));
-  } catch (Exception notACommit) {
-    System.out.println(notACommit.getMessage());
-    continue;
-  }
-}
-    </code></pre>
-        </section>
-        <section>
-          <h2>Walking the commit hierarchy</h2>
-          <pre><code data-trim>
-for (RevCommit commit : walk) {
-  cnt++;
-  StringBuffer search = new StringBuffer();
-
-  SolrInputDocument doc1 = new SolrInputDocument();
-  if (commit.getParentCount() > 0) {
-    RevCommit parent = walk.parseCommit(commit.getParent(0)
-       .getId());
-    </code></pre>
-          <aside class="notes"></aside>
-        </section>
-        <section>
-          <h2>Reading Diffs</h2>
-          <pre><code data-trim>
-DiffFormatter df = new DiffFormatter(
-  DisabledOutputStream.INSTANCE);
-df.setRepository(repository);
-df.setDiffComparator(RawTextComparator.DEFAULT);
-df.setDetectRenames(true);
-df.setContext(3);
-
-java.util.List&lt;DiffEntry&gt; diffs = df.scan(parent.getTree(),
-  commit.getTree());
-
-for (Object obj : diffs) {
-  DiffEntry diff = (DiffEntry) obj;
-}
-    </code></pre>
-          <aside class="notes"></aside>
-        </section>
-        <section>
-          <h2>Commit Comments</h2>
-          <aside class="notes">
-            if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY) {
-            String filename = diff.getNewPath();
-            search.append(" ").append(commit.getFullMessage());
-            }
+          I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit, so you know that there is a team mantaining it. Reading repositories is by far the slowest part of this script. JGit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
+          There are a few different ways to push this data into a Solr repository, depending on the nature of the application. For instance, Solr has a class call the Data Import Handler, which can connect directly to a database and pull information in - for some people this works well, although I was advised that if you can't get this working in an hour or two, you'll never get it working, and should move on to another approach.
+          For this application I've used solrj, which is a connector libary that lets you rung queries and push lists of documents. Some transformations are best done in code. Depending on your needs, you can write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.
           </aside>
         </section>
         <section>
@@ -337,6 +287,72 @@ RevWalk walk = new RevWalk(repository);
             readEnvironment - scan environment GIT_* variables
             findGitDir - scan up the file system tree
             System.out.println("Loaded " + repository.getBranch() + " of " + path);
+          </aside>
+        </section>
+          
+        <section>
+          <h2>Marking a starting point</h2>
+          <pre><code data-trim>
+for (Ref ref : repository.getAllRefs().values()) {
+  try {
+    walk.markStart(walk.parseCommit(ref.getObjectId()));
+  } catch (Exception notACommit) {
+    System.out.println(notACommit.getMessage());
+    continue;
+  }
+}
+    </code></pre>
+          <aside class="notes">
+            * How do you find HEAD / master?
+            * How do you walk down branches?
+            * Can you just get one commit here?
+            * Can you get rid of the loop?
+          </aside>
+        </section>
+        <section>
+          <h2>Walking the Commit Tree</h2>
+          <pre><code data-trim>
+DiffFormatter df = new DiffFormatter(
+  DisabledOutputStream.INSTANCE);
+df.setRepository(repository);
+df.setDiffComparator(RawTextComparator.DEFAULT);
+df.setDetectRenames(true);
+df.setContext(3);
+
+java.util.List&lt;DiffEntry&gt; diffs = df.scan(parent.getTree(),
+  commit.getTree());
+
+for (Object obj : diffs) {
+  DiffEntry diff = (DiffEntry) obj;
+}
+</code></pre>
+          <aside class="notes">         
+for (RevCommit commit : walk) {
+  cnt++;
+  StringBuffer search = new StringBuffer();
+
+  SolrInputDocument doc = new SolrInputDocument();
+  if (commit.getParentCount() &gt; 0) {
+    RevCommit parent = walk.parseCommit(
+       commit.getParent(0).getId());
+        * Is this different from the other loop below?  
+        * Why is this doing .getParent(0)?
+          </aside>
+        </section>
+        <section>
+          <h2>Commit Comments</h2>
+            <pre><code data-trim>
+if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
+    diff.getChangeType() == DiffEntry.ChangeType.ADD)) {
+  System.out.println(diff.getNewPath());
+  System.out.println(commit.getFullMessage());
+  System.out.println(commit.getAuthorIdent().getName());
+}
+            </code></pre>
+          <aside class="notes">
+          * For this application, I look only for new or modified files. 
+          * This API gives us enough informatino to get filenames, author information, and the commit message.
+          * DiffEntry is each change within the commit.
           </aside>
         </section>
         <section>
@@ -385,9 +401,6 @@ search.append(file);
           * This is putting metadata into the search (project name, file name) 
         </section>
         <section>
-          <h2>Traversing Git History - Branches</h2>
-        </section>
-        <section>
           <h2>Traversing Git History - File Changes</h2>
           <pre><code data-trim>
 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -410,8 +423,8 @@ for (Object obj : diffs) {
 </code>
 </pre>
           <aside class="notes">
-            SolrJ lets you generate output resembling the diff tool that git has, to generate a patch set. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context. You do also need to set the encoding.
-            For this application, I detect modified files. Note you get diffs - so you may only want to filter this to additions. If you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
+            SolrJ lets you generate output resembling the diff tool that git has, to generate a patch set. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.
+            If you were to use diffs, you'd want to filter the diffs to only the lines which are added, and possibly do moved word detection. Alternately, if you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
           </aside>
         </section>
         <section>
@@ -471,13 +484,7 @@ var MarkdownEditor = React.createClass({
           </aside>
         </section>
         <section>
-          <h2>Importing from CVS</h2>
-          <aside class="notes">      
-
-          </aside>
-        </section>
-        <section>
-          <h2>Getting search results</h2>
+          <h2>Getting search results through JSON</h2>
           search:jug
           
           http://localhost:8080/solr/select/?q=search:(search:jug)&amp;version=2.2&amp;start=0&amp;rows=0&amp;indent=on&amp;facet=on&amp;facet.field=author&amp;facet.method=fc&amp;facet.limit=30&amp;wt=json
@@ -485,13 +492,13 @@ var MarkdownEditor = React.createClass({
           Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in query parsers are limited based on where they exist in the application (example?)
           * join sample
           * What is facet.method?
-          * What is facet.limit?
           * What are the options for wt?
           * Are there different ways to index facets?
           * Do facet results get cached?
           * What is rows?
           * What is indent?
           * What is version for?
+          * Return types - csv, xml, json, php, python, ruby, javabin
           </aside>
         </section>
         <section>
@@ -499,7 +506,12 @@ var MarkdownEditor = React.createClass({
           <aside class="notes">      
             You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Here’s some example code, this is just typical jQuery code.
           </aside>
-        </section>
+          </section>
+          <section>
+          <h2>Conclusion</h2>
+          <aside class="notes">
+          In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrastructure.
+          </aside>
         <section>
           <h2>Solr vs. Postgres</h2>
           <aside class="notes">
