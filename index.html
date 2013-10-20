@@ -38,11 +38,13 @@
           <p>
             <small><a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></small>
           </p>
+          <aside class="notes">
+            Hello, my name is Gary Sieling. I worked for Wingspan Technology, in Blue Bell - some of you may be familiar with us, as Martin Snyder spoke last time about functional wrappers for legacy APIs. Today I’m going to discuss full-text indexing in Solr, which is an open-source Java tool that wraps Lucene. I’ll show you how to build up an example project which indexes the contents of git source code repositories. 
+          </aside>          
         </section>
         <section>
           <h1>Git to Solr Index</h1>
           <aside class="notes">
-            Hello, my name is Gary Sieling. I worked for Wingspan Technology, in Blue Bell - some of you may be familiar with us, as Martin Snyder spoke last time about functional wrappers for legacy APIs. Today I’m going to discuss full-text indexing in Solr, which is an open-source Java tool that wraps Lucene. I’ll show you how to build up an example project which indexes the contents of git source code repositories. 
             Some of you may be familiar with products like Atlassian’s Fisheye, or code search engines like Krugle, or have seen the search in github. The nice thing about these is they let you search code in a variety of ways, for instance to find out who made a particular change and why. Since there are mature products for this type of thing, this isn’t intended to be a replacement for them; rather it’s a well contained way to understand full-text search, and of more interest to me, to think about the challenges of how you keep an index populated. 
           </aside>
         </section>
@@ -52,7 +54,7 @@
           In a system like this, you need to consider how you get data into the index and how it’s modelled, which is very different that traditional databases. As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and probably could be used as a kv store. 
           Solr is one of several of a class of products which are used for full-text search. These products use natural language processing techniques to massage text data into a form that lends itself to search - for instance, finding words which are similar and treating them as equivalents. Typically search results are ordered by a relevance function, which is determined by word frequencies. Frequently occurring words have a small effect, and rare words matching between a document and a query have a large effect - the actual calculation is done with vector multiplication.
             This is distinguished from the technique Google pioneered for search, which uses citations to effect ranking. If you're interested combining this type of search with Lucene, there is an apache project called Nutch, although I haven't used it, so I can't speak to how well it works.
-            Solr was built as an administration tool around Lucene, which is just a bunch of Jars for doing full-text search. Solr also adds some nice customizations, like additional caching - when the lucene team doesn’t work at the pace they want, they seem to just add stuff. Solr Repositories resemble a single, denormalized database table. Each row in the table is referred to as a “document”, as these often represent the contents of a PDF or similar, although there is no particular requirement on what a document must be, the contents of a PDF have equal weight with any metadata and in fact, the database just stores text, so if you actually started with a bunch of pDFs you’d have to extract contents yourself. Each column has options about how it is used, for instance you can control whether the original column data is stored or not; if not, it’s used for searching and ranking, but isn’t returned, which makes it a little easier to maintain. For instance, you might have the data twice, once for when it’s stored, and a large concatenated text field for searching.
+            Solr was built as an administration tool around Lucene, which is just a bunch of Jars for doing full-text search. Solr also adds some nice customizations, like additional caching - when the lucene team doesn’t work at the pace they want, they seem to just add stuff. Solr Repositories resemble a single, denormalized database table. Each row in the table is referred to as a “document”, as these often represent the contents of a PDF or similar, although there is no particular requirement on what a document must be, the contents of a PDF have equal weight with any metadata and in fact, the database just stores text, so if you actually started with a bunch of PDFs you’d have to build your own processing pipeline. Each column has options about how it is used, for instance you can control whether the original column data is stored or not; if not, it’s used for searching and ranking, but isn’t returned, which makes it a little easier to maintain. For instance, you might have the data twice, once for when it’s stored, and a large concatenated text field for searching.
           </aside>
         </section>
         <section>
@@ -61,7 +63,7 @@
             Which engineer worked on a particular client/project/technology? 
           </p>
           <aside class="notes">
-            Since Wingspan has done some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. When someone calls the company, it’s also helpful to know who to route phone calls to - this is more of a real need than problems within the engineering group, since this could be a marketing or administrative person receiving the call and not someone with knowldege of the project. 
+            Since Wingspan has done some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. When someone calls the company, it’s also helpful to know who to route phone calls to - this is more of a real need than problems within the engineering group, since this could be a marketing or administrative person receiving the call and not someone with knowledge of the project. 
             In some large companies, it’s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoft’s MSDN program awards points based on certifications of developers in the organization, so it’s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.
             For both of these scenarios, you could count the number of commits a person has referencing a client or tool, which is essentially faceted search, which solr can do well. In fact, the facets are the more interesting result here, compared to result ranking. It works especially well if you are already diligent in your company about what you commit and how often; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.
             Both of these are somewhat contrived for our company, as we’re not actively using the tool I built, but that is primarily due to being small enough that it’s not necessary. This falls into the realm of problems that are well-answered by expert knowledge rather than a tool, but when we tested this as a proof of concept, we were able to get answers that were strikingly accurate to our organization.
@@ -88,7 +90,7 @@
         <section>
           <h2>Solr as "NoSQL"</h2>
           <aside class="notes">
-            Solr facets to me resemble the model of business intelligence systems with lots of denormalized data and a star schema although Solr is bascially a single table. I’m not sure if anyone uses it for a system of the size of a typical data warehouse, it typically returns results quickly, which much less effort to set up initially than a typical relational database so once I learned how to use it, i found myself tempted to use it rather than a relational database because I found it easy to use.
+            Solr facets to me resemble the model of business intelligence systems with lots of denormalized data and a star schema although Solr is basically a single table. I’m not sure if anyone uses it for a system of the size of a typical data warehouse, it typically returns results quickly, which much less effort to set up initially than a typical relational database so once I learned how to use it, i found myself tempted to use it rather than a relational database because I found it easy to use.
             To set up solr, what you need to do is download the distribution, which contains a war file and various client side libraries. The distribution comes with several example schemas, and you can set one up by dropping it in in the right place in Tomcat, or using Jetty - as soon as you put the files in the right place, you’ll have a working repository. The index and schema files live near each other on the file system - the index files correspond to features, so as you turn on or off features, the index will vary in size which effects performance.
           </aside>
         </section>
@@ -124,10 +126,9 @@ Collection&lt;SolrInputDocument&gt; docs = new ArrayList&lt;SolrInputDocument&gt
         </section>
         <section>
           <h2>Solr Performance - Transmission options</h2>
-          <aside class="notes">Solr can transfer data using JSON, XML, or a binary serialization format - the binary format is fastest, because it is smaller, and doesn’t require as much parsing logic.
+          <aside class="notes">SolrJ can transfer data using XML, or a binary serialization format - the binary format is fastest, because it is smaller, and doesn’t require as much parsing logic.
             Ideally you want to batch commits. [some performance metrics here?]
-            Solr differentiates two types of commit, "soft" and "hard." Hard commits force writes to disk (fsync). Soft commit makes the changes visible to applications, but you can lose data if the JVM crashes. Since deletes and updates are implented with soft deletes, there is also an "optimize" option, which re-writes the index. Some rewriting is performed slowly over time anyway, but this forces it to be all at once. 
-            SolrJ can use a binary or XML format - the xml format is older, so there may be code samples out there that use it, but the binary format is faster for reading and writing, as it's smaller.
+            Solr differentiates two types of commit, "soft" and "hard." Hard commits force writes to disk (fsync). Soft commit makes the changes visible to applications, but you can lose data if the JVM crashes. Since deletes and updates are implemented with soft deletes, there is also an "optimize" option, which re-writes the index. Some rewriting is performed slowly over time anyway, but this forces it to be all at once. 
           </aside>
         </section>
         <section>
@@ -260,11 +261,11 @@ connection.close();
         <section>
           <h2>Traversing Git History</h2>
           <aside class="notes">
-            I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit. EGit has some problem where it does not handle some line ending settings correctly, which concerned me, but it seems to work fine for this project. Reading repositories is by far the slowest part of this script. Egit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
+            I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit, so you know that there is a team mantaining it. Reading repositories is by far the slowest part of this script. EGit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
             Solr provides a simple Java interface called solrj, which lets you push a list of rows (“documents”) to the index. Because of the single-table structure, it is quite common to have denormalized data, as well as data repeating in multiple columns. For example, you might concatenate all the fields you wish to search on, but store only indexed values so they can never be viewed. However, they can referenced through individual fields. This you might do in Java.
             One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). If you change the schema, everything is deleted [ is this true??? ] . I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID. Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It woudl prevent parallelism and mess with error handling, and assumes that everything ahppens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.
             Some transformations are best done in Java, such as entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). Interestingly I discovered that Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice, although clearly this treats all IDEs without the header as the same.
-            In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrascrture.
+            In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrastructure.
           </aside>
         </section>
         <section>
@@ -412,7 +413,7 @@ for (Object obj : diffs) {
 </pre>
           <aside class="notes">
             SolrJ lets you generate output resembling the diff tool that git has, to generate a patch set. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context. You do also need to set the encoding.
-            For this application, I detect modified files. Note you get diffs - so you may only want to filter this to addtions. If you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
+            For this application, I detect modified files. Note you get diffs - so you may only want to filter this to additions. If you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
           </aside>
         </section>
         <section>
@@ -425,7 +426,7 @@ for (Object obj : diffs) {
         <section>
           <h2>Fixing Authors</h2>
           <aside class="notes">
-            One of the notable issues with git is there is no particular requirements around how people put in their usernames. Since this exercise builds out an ETL process, you can “fix” this problem by coercing names into common formats, which I found necessary, especially if you combine this with existing data from other systems like CVS which you can pull in by using a repositoriy that has been converted using a toool [what is the tool???].
+            One of the notable issues with git is there is no particular requirements around how people put in their usernames. Since this exercise builds out an ETL process, you can “fix” this problem by coercing names into common formats, which I found necessary, especially if you combine this with existing data from other systems like CVS which you can pull in by using a repository that has been converted using a tool [what is the tool???].
           </aside>
         </section>
         <section>
@@ -437,7 +438,7 @@ for (Object obj : diffs) {
             --
             “.*”
             \d*
-            Oftentimes integer or string constants indicate interesting features of a codebase. For instance, you mght find that peopel really like writing hashcode methods or the word “endian”. A lot of the most interesting things are the rare features. Comments also provide good insight into who worked on what, although if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
+            Oftentimes integer or string constants indicate interesting features of a codebase. For instance, you might find that people really like writing hashcode methods or the word “endian”. A lot of the most interesting things are the rare features. Comments also provide good insight into who worked on what, although if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
             One thing to note here is the challenge of actually parsing code files. While this has been done, it’s made especially challenging by the host of languages available (html, js, sql, xml), and these are often combined in some way with templating languages like React, xtemplates in ExtJS or sql in a java files, so while I think this is interesting I haven’t attempted it. If I were going to attempt it, I’d look into the regexes that are used for syntax highlighting in tools like Vim, since you’d have a fighting chance of getting something somewhat useful. 
             Since the git provides you with diffs, you may get a single line comment, a comment that's part of a longer line, comments within a line, an addition to an existing comment. Ideally you'd want to find just the change.
             [search models]
@@ -461,7 +462,7 @@ for (Object obj : diffs) {
           
           http://localhost:8080/solr/select/?q=search:(search:jug)&amp;version=2.2&amp;start=0&amp;rows=0&amp;indent=on&amp;facet=on&amp;facet.field=author&amp;facet.method=fc&amp;facet.limit=30&amp;wt=json
           <aside class="notes">      
-          Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in uqery parsers are limited based on where they exist in the application (example?)
+          Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in query parsers are limited based on where they exist in the application (example?)
           * join sample
           * What is facet.method?
           * What is facet.limit?
