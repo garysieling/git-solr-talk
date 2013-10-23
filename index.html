@@ -173,8 +173,8 @@ for (RevCommit commit : walk) {
           <aside class="notes">
           For this application I've used solrj, which is a connector libary that lets you run queries and push lists of documents. Some transformations are best done in code. Depending on your needs, you can write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.
           </aside>
-        </section>
-        </section>
+          </section>
+          <section>
           <h2>Traversing Git History - File Changes</h2>
           <pre><code data-trim>
 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -491,7 +491,6 @@ connection.close();
           * We can also set faceting parameters
           </aside>
         </section>
-        <section>
        
         <section>
           <h2>Getting search results through JSON</h2>
@@ -517,12 +516,6 @@ connection.close();
             You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Here’s some example code, this is just typical jQuery code.
           </aside>
           </section>
-          <section>
-          <h2>Conclusion</h2>
-          <aside class="notes">
-          In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrastructure.
-          </aside>
-          </section>
         <section>
           <h2>Solr vs. Postgres</h2>
           <aside class="notes">
@@ -532,10 +525,13 @@ connection.close();
             SELECT to_tsvector('fat cats ate fat rats') @@ to_tsquery('fat & rat');
             The order of the conditions doesn’t matter. Full-text indexes typically work by multiplying vectors, and Postgres provides two types of indexes to speed up this operation. Postgres has a couple of minor edge case limitations (maximum document size / maximum word size). It’s a little harder to set up - you need to formulate queries the right way, and build indexes the right way, and I found it to be a bit slower in general. Postgres does have some sort of bitmap indexing, which when it is used is very fast, i.e. when there are a bunch of ANDs in a query, but for a single field this isn’t available.
           </aside>
-        </section>
+          </section>
         <section>
           <h1>THE END</h1>
           <h3>BY <a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></h3>
+          <aside class="notes">
+          In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrastructure.
+          </aside>
         </section>
       </div>
     </div>
