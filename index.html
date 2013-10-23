@@ -267,23 +267,19 @@ search.append(file);
         <section>
           <h2>Fixing Authors</h2>
           <aside class="notes">
-            One of the notable issues with git is there is no particular requirements around how people put in their usernames. Since this exercise builds out an ETL process, you can “fix” this problem by coercing names into common formats, which I found necessary, especially if you combine this with existing data from other systems like CVS which you can pull in by using a repository that has been converted using a tool [what is the tool???].
+            One of the notable issues with git is there is no particular requirements around how people put in their usernames. Since this exercise builds out an ETL process, you can “fix” this problem by coercing names into common formats, which I found necessary, especially if you combine this with existing data from other systems like CVS which you can pull in by using a repository that has been converted using a tool.
           </aside>
         </section>
         <section>
-          <h2>Finding comments</h2>
+          <h2>0x0100</h2>
           <aside class="notes">
-            There are a couple interesting tidbits which can be found in code, aside from commits,  which are comments, and constants. Both of these can be found with regular expressions:
-            /* */
-            //
-            --
-            “.*”
-            \d*
-            Oftentimes integer or string constants indicate interesting features of a codebase. For instance, you might find that people really like writing hashcode methods or the word “endian”. A lot of the most interesting things are the rare features. Comments also provide good insight into who worked on what, although if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
+          To go beyond loading commit messages and authors, there are a couple interesting tidbits within the code- these are things I've experimented with at varying levels, and I want to talk about them, as they introduces some interesting puzzles.
+
+          So this is actually just the number 256, but it's interesting because it's presence indicates the presence of some code that handles encryption in Word documents, along with a discussion of endian-ness in comments- It might be of interest to build a facet that stores the text of integer or string constants - they often indicate interesting features of a codebase. For instance, you might expect to see a lot of prime numbers in a codebase where people really like writing hashcode methods, or to help you find codebases that try to obfuscate their use of encryption. 
           </aside>
           </section>
         <section>
-          <h2>Parsing Challenges</h2>
+          <h2>Parsing Challenges: Comments</h2>
           <pre><code data-trim>
 var MarkdownEditor = React.createClass({
   render: function() {
@@ -303,7 +299,15 @@ var MarkdownEditor = React.createClass({
 </code>
 </pre>
           <aside class="notes">
-            One thing to note here is the challenge of actually parsing code files. While this has been done, it’s made especially challenging by the host of languages available (html, js, sql, xml), and these are often combined in some way with templating languages like React, xtemplates in ExtJS or sql in a java file, so while I think this is interesting I haven’t attempted it. If I were going to attempt it, I’d look into the regexes that are used for syntax highlighting in tools like Vim, since you’d have a fighting chance of getting something somewhat useful. 
+           Comments also provide good insight into who worked on what, although if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
+
+          The first of these are are code comments, which like comments are usually not code, but typically valuable for ascertaining things like who worked on a client's project. One imagines that these could be found with regular expressions:
+            /* */
+            //
+            --
+            “.*”
+            \d*
+          One thing to note here is the challenge of actually parsing code files. While this has been done, it’s made especially challenging by the host of languages available (html, js, sql, xml), and these are often combined in some way with templating languages like React, xtemplates in ExtJS or sql in a java file, so while I think this is interesting I haven’t attempted it. If I were going to attempt it, I’d look into the regexes that are used for syntax highlighting in tools like Vim, since you’d have a fighting chance of getting something somewhat useful. 
             Since the git provides you with diffs, you may get a single line comment, a comment that's part of a longer line, comments within a line, an addition to an existing comment. Ideally you'd want to find just the change.
           </aside>
         </section>
@@ -494,11 +498,28 @@ connection.close();
        
         <section>
           <h2>Getting search results through JSON</h2>
-          search:jug
-          
-          http://localhost:8080/solr/select/?q=search:(search:jug)&amp;version=2.2&amp;start=0&amp;rows=0&amp;indent=on&amp;facet=on&amp;facet.field=author&amp;facet.method=fc&amp;facet.limit=30&amp;wt=json
+          <p>
+          /select/?q=search:(search:jug)
+          </p><p>
+          &amp;version=2.2
+          </p><p>
+          &amp;start=0&amp;rows=0
+          </p><p>
+          &amp;indent=on&amp;facet=on
+          </p><p>
+          &amp;facet.field=author
+          </p><p>
+          &amp;facet.method=fc
+          </p><p>
+          &amp;facet.limit=30
+          </p><p>
+          &amp;wt=json
+          </p><p>
+          </p><p>
+          {!join from=inner_id to=outer_id}zzz:vvv 
+          </p>
           <aside class="notes">      
-          Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, you may be forced to trigger multiple query parsers, each with slight differences. In the backend, each of these is a Java class. For instance, the join syntax uses a custom query parser- one of the points of confusion in the Solr documentation is that operations that happen in query parsers are limited based on where they exist in the application (example?)
+          Shown here are an example URL to Solr's REST API with faceting turne on, and an example of what the join syntax looks like. Solr comes with several query parsers. This implements some interesting functionality - rather than having a single query language which is detailed like SQL, there are applications which nest multiple query parsers.
           * join sample
           * What is facet.method?
           * What are the options for wt?
@@ -517,13 +538,14 @@ connection.close();
           </aside>
           </section>
         <section>
-          <h2>Solr vs. Postgres</h2>
+        <h2>Solr vs. Postgres</h2>
+          <p>
+          SELECT to_tsvector('fat cats ate fat rats') @@ to_tsquery('fat & rat');
+          </p>
           <aside class="notes">
-            :[Intro here]
-            For this test, I set up a 1.1 million row table1 using data from github2.
-            If you’re not familiar with full-text in Postgres, they use the @@ operator to apply a query to a document, which looks like this:
-            SELECT to_tsvector('fat cats ate fat rats') @@ to_tsquery('fat & rat');
-            The order of the conditions doesn’t matter. Full-text indexes typically work by multiplying vectors, and Postgres provides two types of indexes to speed up this operation. Postgres has a couple of minor edge case limitations (maximum document size / maximum word size). It’s a little harder to set up - you need to formulate queries the right way, and build indexes the right way, and I found it to be a bit slower in general. Postgres does have some sort of bitmap indexing, which when it is used is very fast, i.e. when there are a bunch of ANDs in a query, but for a single field this isn’t available.
+          It's worth mentioning that numerous other tools support full-text, including most relational databases, as well as elastic search and a product Microsoft now owns called FAST.
+          I'm not going to go into great detail here, but the syntax for Postgres is interesting by comparison - for some simple cases it can be useful, since you can build it into an existing application, but I find the Postgres implementation far more confusing. 
+            They use the @@ operator to apply a query to a document, which is performing the vector multiplication aspect of full-text, so if you did this, you'd index the to_tsquery function. Postgres has a some minor edge case limitations (maximum document size / maximum word size), which make it unsuitable for data you scrape, but it works well for simple applications. In my limited testing I've found it to be a bit slower in general, however, Postgres does have some sort of bitmap indexing, which is very fast when it there are lots of ANDs and ORs in a query, suggesting that it might be a suitable alternative for simple use cases where full-text is a minor sideline feature.
           </aside>
           </section>
         <section>
