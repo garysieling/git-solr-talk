@@ -110,6 +110,9 @@ Repository repository =
 RevWalk walk = new RevWalk(repository);
     </code></pre>
           <aside class="notes">
+          There are a few different ways to push this data into a Solr repository, depending on the nature of the application. For instance, Solr has a class call the Data Import Handler, which can connect directly to a database and pull information in - for some people this works well, although I was advised that if you can't get this working in an hour or two, you'll never get it working, and should move on to another approach.
+          I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit, so you know that there is a team mantaining it. Reading repositories is by far the slowest part of this script. JGit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
+          
             readEnvironment - scan environment GIT_* variables
             findGitDir - scan up the file system tree
             System.out.println("Loaded " + repository.getBranch() + " of " + path);
@@ -165,7 +168,13 @@ for (RevCommit commit : walk) {
         * Why is this doing .getParent(0)?
           </aside>
           </section>
-        <section>
+          <section>
+                    <h2>Traversing Git History</h2>
+          <aside class="notes">
+          For this application I've used solrj, which is a connector libary that lets you run queries and push lists of documents. Some transformations are best done in code. Depending on your needs, you can write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.
+          </aside>
+        </section>
+        </section>
           <h2>Traversing Git History - File Changes</h2>
           <pre><code data-trim>
 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -483,13 +492,6 @@ connection.close();
           </aside>
         </section>
         <section>
-          <h2>Traversing Git History</h2>
-          <aside class="notes">
-          There are a few different ways to push this data into a Solr repository, depending on the nature of the application. For instance, Solr has a class call the Data Import Handler, which can connect directly to a database and pull information in - for some people this works well, although I was advised that if you can't get this working in an hour or two, you'll never get it working, and should move on to another approach.
-          I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit, so you know that there is a team mantaining it. Reading repositories is by far the slowest part of this script. JGit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
-          For this application I've used solrj, which is a connector libary that lets you run queries and push lists of documents. Some transformations are best done in code. Depending on your needs, you can write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.
-          </aside>
-        </section>
        
         <section>
           <h2>Getting search results through JSON</h2>
