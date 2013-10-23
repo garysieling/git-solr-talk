@@ -39,38 +39,23 @@
             <small><a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></small>
           </p>
           <aside class="notes">
-<<<<<<< HEAD
             Hello, my name is Gary Sieling. I work for Wingspan Technology, in Blue Bell - some of you may be familiar with us, as Martin Snyder spoke last time about functional wrappers for legacy APIs. Today I’m going to discuss full-text indexing in Solr, which is an open-source Java tool that wraps Lucene. I’ll show you how to build up an example project which indexes the contents of git source code repositories. 
-=======
-            Hello, my name is Gary Sieling. I worked for Wingspan Technology, in Blue Bell - some of you may be familiar with us, as Martin Snyder spoke last time about functional wrappers for legacy APIs. Today Iï¿½m going to discuss full-text indexing in Solr, which is an open-source Java tool that wraps Lucene. Iï¿½ll show you how to build up an example project which indexes the contents of git source code repositories. 
->>>>>>> 13ab1c94d371b0c4804dcd0f49157573a33c1522
           </aside>          
         </section>
         <section>
           <h1>Git to Solr Index</h1>
           <aside class="notes">
-<<<<<<< HEAD
             Some of you may be familiar with products like Atlassian’s Fisheye, or code search engines like Krugle, or used the Github search. The nice thing about these is they let you do more than the out-of-the box 'blame' tool in your version control software, like finding out who ported a feature between branches, or searching both git and cvs repositories. Since there are mature products for this type of thing, this talk isn’t intended to be a replacement for them; rather it’s a well contained way to understand full-text search, and to explore the design challenges in building ETL processes.
-=======
-            Some of you may be familiar with products like Atlassianï¿½s Fisheye, or code search engines like Krugle, or have seen the search in github. The nice thing about these is they let you search code in a variety of ways, for instance to find out who made a particular change and why. Since there are mature products for this type of thing, this isnï¿½t intended to be a replacement for them; rather itï¿½s a well contained way to understand full-text search, and of more interest to me, to think about the challenges of how you keep an index populated. 
->>>>>>> 13ab1c94d371b0c4804dcd0f49157573a33c1522
           </aside>
         </section>
         <section>
           <h1>What is Solr?</h1>
           <aside class="notes">
-<<<<<<< HEAD
           In a system like this, you need to consider how you get data into the index and how it’s modelled- with Solr this is different from traditional databases, but can be understood in those terms. 
           Solr is one of several of a class of products which are used for full-text search. The idea of full-text search is to use natural language processing techniques to massage text data into a form that lends itself to search. For instance, finding words which are similar and treating them as equivalents. Typically search results are ordered by a relevance function, which is determined by word frequencies. Frequently occurring words have a small effect, and rare words matching between a document and a query have a large effect - the actual calculation is done with vector multiplication. 
          This is a different understanding of search from the techniques that Google pioneered, which use citations to effect ranking. If you're interested combining that type of search with Lucene, there is an apache project called Nutch, although I haven't used it, so I can't speak to how well it works.
             Solr was built as an administration webapp around Lucene, which is just a bunch of Jars for doing full-text search. Solr also adds some nice customizations, like replication, faceted search, caching, and highlighting. From talking to people at a Solr conference, I got the impression as well that when the lucene team doesn’t work at the pace they want, they will add features to Solr, so sometimes there is some overlap in functionality. Solr Repositories resemble a single, denormalized database table, which they call a core. Each row in the table is referred to as a “document”, which comes from the idea that you may have indexed the contents of a PDF, HTML file, or Word document, although there is no particular requirement on what a document must be. If you include the contents of a PDF and other metadata, by default these have equal weight, unless you tell Solr otherwise. In fact, the Solr index just stores text, so if you started with a bunch of PDFs you’d have to build your own processing pipeline to extract and process text from them.
              As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and fits in the category loosely, as it can be fairly flexible about schemas, avoids joins, and has some horizontal scaling features.
-=======
-          In a system like this, you need to consider how you get data into the index and how itï¿½s modelled, which is very different that traditional databases. As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and probably could be used as a kv store. 
-          Solr is one of several of a class of products which are used for full-text search. These products use natural language processing techniques to massage text data into a form that lends itself to search - for instance, finding words which are similar and treating them as equivalents. Typically search results are ordered by a relevance function, which is determined by word frequencies. Frequently occurring words have a small effect, and rare words matching between a document and a query have a large effect - the actual calculation is done with vector multiplication.
-            This is distinguished from the technique Google pioneered for search, which uses citations to effect ranking. If you're interested combining this type of search with Lucene, there is an apache project called Nutch, although I haven't used it, so I can't speak to how well it works.
-            Solr was built as an administration tool around Lucene, which is just a bunch of Jars for doing full-text search. Solr also adds some nice customizations, like additional caching - when the lucene team doesnï¿½t work at the pace they want, they seem to just add stuff. Solr Repositories resemble a single, denormalized database table, which they call a core. Each row in the table is referred to as a ï¿½documentï¿½, as these often represent the contents of a PDF or similar, although there is no particular requirement on what a document must be, the contents of a PDF have equal weight with any metadata and in fact, the database just stores text, so if you actually started with a bunch of PDFs youï¿½d have to build your own processing pipeline. Each column has options about how it is used, for instance you can control whether the original column data is stored or not; if not, itï¿½s used for searching and ranking, but isnï¿½t returned, which makes it a little easier to maintain. For instance, you might have the data twice, once for when itï¿½s stored, and a large concatenated text field for searching.
->>>>>>> 13ab1c94d371b0c4804dcd0f49157573a33c1522
           </aside>
         </section>
         <section>
@@ -79,7 +64,6 @@
             Which engineer worked on a particular client/project/technology? 
           </p>
           <aside class="notes">
-<<<<<<< HEAD
           Since Wingspan does some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. That said, the person who may have done the change may not be the most knowledgeable about it, and you'd prefer to know who the lead for a project was.
           When someone calls the company, it’s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project. 
           In some large companies, it’s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoft’s MSDN program awards points based on certifications of developers in the organization, so it’s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.
@@ -87,7 +71,7 @@
          This is different from a typical search, where you're looking for the commits individually, which serves different use cases than I'm after here. This technique works especially well if you company is diligent about what you put in commits; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.
             These two use cases are problems we've see at Wingspan, but they are still somewhat contrived for our company, as we're small enough that these problems are well-answered by expert knowledge rather than a tool. When we tested this tool as a proof of concept, we were able to get answers that were strikingly accurate to our organization.
             I'm going to show how to build up an ETL process in Java to build this tool using two libraries, SolrJ and JGit. While this talk is focused on extracting data from git, it's fairly easy to combine data across various data sources, since we're going to write Java code to extract data and populate an index. There are also suitable tools to convert older repositories into git data, such as cvs2git, which is suitable for this purpose. You can also imagine importing data from other sources and combining it, such as a defect tracking systems, a Sharepoint site, or even old emails. In fact, depending how you spin this, you can end up with a variety of products- I once worked for a company that had a product that did this to find contact information, i.e. which lawyer in our firm has a contact at, say, eBay.
-            Using Solr facets this way resembles a business intelligence systems used for reporting projects, in that it gives you counts across lots of denormalized data. Since Solr acts as a single table, Iï¿½m not sure if anyone uses it that way, but since it typically returns results quickly, I find myself tempted to use it rather than a relational database at times.
+            Using Solr facets this way resembles a business intelligence systems used for reporting projects, in that it gives you counts across lots of denormalized data. Since Solr acts as a single table, I’m not sure if anyone uses it that way, but since it typically returns results quickly, I find myself tempted to use it rather than a relational database at times.
           </aside>
           </section>
         <section>
@@ -97,15 +81,6 @@
           If you do something like this, you will discover that a folder with, say, 18,000 subfolders is a troublesome structure. Windows can open this, but it's very slow to even list the files. On a different project, I got up to a half million files in a folder, and was forced to come up with a different structure.
           An alternate approach is to do something like an MD5 hash of each filename, and use the first four characters to divide them up. I like to build a two level folder structure with this, because it resembles a B+ tree and shares it's properties, and for a half million files, each folder ends up with 5-10 items in it. If you use something like md5 you're basically randomly distributing files into folders, in a repeatable way, which gives you a nice way to sample arbitrary percentages of the dataset.
           It's worth noting as well that Github also has a nice API for inspecting repositories and pull back JSON, but we're going to do it a harder way here so we can see how it works.
-=======
-          Since Wingspan has done some consulting projects, itï¿½s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. That said, the person who may have done the change may not be the most knowledgeable about it, and you'd prefer to know who the lead for a project was.
-          When someone calls the company, itï¿½s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project. 
-          In some large companies, itï¿½s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoftï¿½s MSDN program awards points based on certifications of developers in the organization, so itï¿½s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.
-            You can answer these types of questions by counting the number of commits a person has which reference a client or tool, which is essentially faceted search. This is different from a typical search, in that you only want to see authors and their commit count, but necessarily the commits themselves. It works especially well if you company is diligent about what you put in commits; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.
-            These two use cases are problems we've see at Wingspan, but they are still somewhat contrived for our company, as we're small enough that these problems are well-answered by expert knowledge rather than a tool. When we tested this tool as a proof of concept, we were able to get answers that were strikingly accurate to our organization.
-            I'm going to show how to build up an ETL process in Java to build this tool using two libraries, SolrJ and JGit. While this talk is focused on extracting data from git, it's fairly easy to combine data across various data sources, since we're going to write Java code to extract data and populate an index. There are also suitable tools to convert older repositories into git data, such as cvs2git, which is suitable for this purpose. You can also imagine importing data from other sources and combining it, such as a defect tracking systems, a Sharepoint site, or even old emails. In fact, depending how you spin this, you can end up with a variety of products- I once worked for a company that had a product that did this to find contact information, i.e. which lawyer in our firm has a contact at, say, eBay.
-            Using Solr facets this way resembles a business intelligence systems used for reporting projects, in that it gives you counts across lots of denormalized data. Since Solr acts as a single table, Iï¿½m not sure if anyone uses it that way, but since it typically returns results quickly, I find myself tempted to use it rather than a relational database at times.
->>>>>>> 13ab1c94d371b0c4804dcd0f49157573a33c1522
           </aside>
         </section>
           
@@ -346,7 +321,7 @@ var MarkdownEditor = React.createClass({
           <h2>Solr - Limitations</h2>
           <aside class="notes">
             Solr aims to be as fast at returning results as possible. It avoids features which slow this down; for instance, if you want to enforce ACLs on items in search results, you need to add columns and figure out how to populate them on your own. It has very limited support for inner joins, which allows for a way to implement more complex ACL structures if you do need them.
-            Solr also assumes that you secure the machine it lives on - itï¿½s not intended to directly face the internet, although for simple examples Iï¿½ve done that, but there is a risk that someone could modify your repository. 
+            Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository. 
           </aside>
         </section>
         <section>
@@ -366,7 +341,7 @@ Collection&lt;SolrInputDocument&gt; docs = new ArrayList&lt;SolrInputDocument&gt
         </section>
         <section>
           <h2>Solr Performance - Transmission options</h2>
-          <aside class="notes">SolrJ can transfer data using XML, or a binary serialization format - the binary format is fastest, because it is smaller, and doesnï¿½t require as much parsing logic.
+          <aside class="notes">SolrJ can transfer data using XML, or a binary serialization format - the binary format is fastest, because it is smaller, and doesn’t require as much parsing logic.
             Ideally you want to batch commits. [some performance metrics here?]
             Solr differentiates two types of commit, "soft" and "hard." Hard commits force writes to disk (fsync). Soft commit makes the changes visible to applications, but you can lose data if the JVM crashes, up until the last hard commit. Since deletes and updates are implemented with soft deletes, there is also an "optimize" option, which re-writes the index. Some rewriting is performed slowly over time anyway, but this forces it to be all at once. 
           </aside>
@@ -510,229 +485,9 @@ connection.close();
         <section>
           <h2>Traversing Git History</h2>
           <aside class="notes">
-<<<<<<< HEAD
-<<<<<<< HEAD
           There are a few different ways to push this data into a Solr repository, depending on the nature of the application. For instance, Solr has a class call the Data Import Handler, which can connect directly to a database and pull information in - for some people this works well, although I was advised that if you can't get this working in an hour or two, you'll never get it working, and should move on to another approach.
           I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit, so you know that there is a team mantaining it. Reading repositories is by far the slowest part of this script. JGit only reads what you ask for— it is much faster to read just the commit history, without file diffs.
           For this application I've used solrj, which is a connector libary that lets you run queries and push lists of documents. Some transformations are best done in code. Depending on your needs, you can write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.
-=======
-=======
->>>>>>> 13ab1c94d371b0c4804dcd0f49157573a33c1522
-          I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and is very flaky when I tested it, and OS specific. It is also the basis for the Eclipse plugin EGit, so you know that there is a team mantaining it. Reading repositories is by far the slowest part of this script. JGit only reads what you ask forï¿½ it is much faster to read just the commit history, without file diffs.
-          There are a few different ways to push this data into a Solr repository, depending on the nature of the application. For instance, Solr has a class call the Data Import Handler, which can connect directly to a database and pull information in - for some people this works well, although I was advised that if you can't get this working in an hour or two, you'll never get it working, and should move on to another approach.
-          For this application I've used solrj, which is a connector libary that lets you rung queries and push lists of documents. Some transformations are best done in code. Depending on your needs, you can write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (ï¿½gsielingï¿½ and ï¿½Gary Sielingï¿½). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit authorï¿½s IDE of choice.
-          </aside>
-        </section>
-        <section>
-          <h2>Initializing a git repository</h2>
-          <pre><code data-trim>
-FileRepositoryBuilder builder = new FileRepositoryBuilder();
-Repository repository = 
-  builder.setGitDir(new File(path))
-    .readEnvironment() 
-    .findGitDir() 
-    .build();
-
-RevWalk walk = new RevWalk(repository);
-    </code></pre>
-          <aside class="notes">
-            readEnvironment - scan environment GIT_* variables
-            findGitDir - scan up the file system tree
-            System.out.println("Loaded " + repository.getBranch() + " of " + path);
-          </aside>
-        </section>
-          
-        <section>
-          <h2>Marking a starting point</h2>
-          <pre><code data-trim>
-for (Ref ref : repository.getAllRefs().values()) {
-  try {
-    walk.markStart(walk.parseCommit(ref.getObjectId()));
-  } catch (Exception notACommit) {
-    System.out.println(notACommit.getMessage());
-    continue;
-  }
-}
-    </code></pre>
-          <aside class="notes">
-            * How do you find HEAD / master?
-            * How do you walk down branches?
-            * Can you just get one commit here?
-            * Can you get rid of the loop?
-          </aside>
-        </section>
-        <section>
-          <h2>Walking the Commit Tree</h2>
-          <pre><code data-trim>
-DiffFormatter df = new DiffFormatter(
-  DisabledOutputStream.INSTANCE);
-df.setRepository(repository);
-df.setDiffComparator(RawTextComparator.DEFAULT);
-df.setDetectRenames(true);
-df.setContext(3);
-
-java.util.List&lt;DiffEntry&gt; diffs = df.scan(parent.getTree(),
-  commit.getTree());
-
-for (Object obj : diffs) {
-  DiffEntry diff = (DiffEntry) obj;
-}
-</code></pre>
-          <aside class="notes">         
-for (RevCommit commit : walk) {
-  cnt++;
-  StringBuffer search = new StringBuffer();
-
-  SolrInputDocument doc = new SolrInputDocument();
-  if (commit.getParentCount() &gt; 0) {
-    RevCommit parent = walk.parseCommit(
-       commit.getParent(0).getId());
-        * Is this different from the other loop below?  
-        * Why is this doing .getParent(0)?
-          </aside>
-        </section>
-        <section>
-          <h2>Commit Comments</h2>
-            <pre><code data-trim>
-if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
-    diff.getChangeType() == DiffEntry.ChangeType.ADD)) {
-  System.out.println(diff.getNewPath());
-  System.out.println(commit.getFullMessage());
-  System.out.println(commit.getAuthorIdent().getName());
-}
-            </code></pre>
-          <aside class="notes">
-          * For this application, I look only for new or modified files. 
-          * This API gives us enough informatino to get filenames, author information, and the commit message.
-          * DiffEntry is each change within the commit.
-          </aside>
-        </section>
-        <section>
-          <h2>Commit Metadata</h2>
-          <p>Signed-off-by</p>
-          <p>Acked-by</p>
-          <p>Reported-by</p>
-          <p>Tested-by</p>
-          <p>CC, Cc</p>
-          <p>Bug</p>
-          <aside class="notes">
-            RevCommit.getFooterLines
-            public final List
-            <FooterLine>
-            getFooterLines()
-            Parse the footer lines (e.g. "Signed-off-by") for machine processing.
-            This method splits all of the footer lines out of the last paragraph of the commit message, providing each line as a key-value pair, ordered by the order of the line's appearance in the commit message itself.
-            A footer line's key must match the pattern ^[A-Za-z0-9-]+:, while the value is free-form, but must not contain an LF. Very common keys seen in the wild are:
-            Signed-off-by (agrees to Developer Certificate of Origin)
-            Acked-by (thinks change looks sane in context)
-            Reported-by (originally found the issue this change fixes)
-            Tested-by (validated change fixes the issue for them)
-            CC, Cc (copy on all email related to this change)
-            Bug (link to project's bug tracking system)
-            Returns:
-            ordered list of footer lines; empty list if no footers found.
-          </aside>
-        </section>
-        <section>
-          <h2>Handling Diffs</h2>
-          <pre><code data-trim>
-String file = diff.getNewPath().toLowerCase();
-
-projects[i] = "";
-if (file.indexOf("/") &gt;= 0) {
-  projects[i] = file.substring(0, file.indexOf("/"));
-
-  search.append(" "); // e.g. git_solr_presentation
-  search.append(projects[i].replace("_", " "));
-}
-
-search.append(" ");
-search.append(file);
-    </code></pre>
-          <aside class="notes"></aside>
-          * This is putting metadata into the search (project name, file name) 
-        </section>
-        <section>
-          <h2>Traversing Git History - File Changes</h2>
-          <pre><code data-trim>
-ByteArrayOutputStream out = new ByteArrayOutputStream();
-DiffFormatter df = new DiffFormatter(out);
-
-df.setRepository(repository); // remember to set options - see previous slides
-
-List&lt;DiffEntry&gt; diffs = df.scan(parent.getTree(), commit.getTree());
- 
-for (Object obj : diffs) {
-  DiffEntry diff = (DiffEntry) obj;
-
-  if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY) {
-    FileHeader fh = df.toFileHeader(diff);
-    df.format(diff);
-    String diffText = out.toString("UTF-8");
-    out.reset();
-  }
-}
-</code>
-</pre>
-          <aside class="notes">
-            SolrJ lets you generate output resembling the diff tool that git has, to generate a patch set. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.
-            If you were to use diffs, you'd want to filter the diffs to only the lines which are added, and possibly do moved word detection. Alternately, if you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
-          </aside>
-        </section>
-        <section>
-          <h2>Using Github</h2>
-          <aside class="notes">
-            I built a 4 million document archive from Github commits, which lets you search for open source experts, ranked by commit count.
-            Github has a nice API for inspecting repositories ï¿½ it lets you read gists, issues, commit history, files and so on. Git repository data lends itself to demonstrating the power of combining full text and faceted search, as there is a mix of free text fields (commit messages, code) and enumerable fields (committers, dates, committer employers). Github APIs return JSON, which has the nice property of resembling a tree structure ï¿½ results can be recursed over without fear of infinite loops. Note that to download the entire commit history for a repository, you need to page through it by sha hash. The API I use here lacks diffs, which must be retrieved elsewhere.
-          </aside>
-        </section>
-        <section>
-          <h2>Fixing Authors</h2>
-          <aside class="notes">
-            One of the notable issues with git is there is no particular requirements around how people put in their usernames. Since this exercise builds out an ETL process, you can ï¿½fixï¿½ this problem by coercing names into common formats, which I found necessary, especially if you combine this with existing data from other systems like CVS which you can pull in by using a repository that has been converted using a tool [what is the tool???].
-          </aside>
-        </section>
-        <section>
-          <h2>Finding comments</h2>
-          <aside class="notes">
-            There are a couple interesting tidbits which can be found in code, aside from commits,  which are comments, and constants. Both of these can be found with regular expressions:
-            /* */
-            //
-            --
-            ï¿½.*ï¿½
-            \d*
-            Oftentimes integer or string constants indicate interesting features of a codebase. For instance, you might find that people really like writing hashcode methods or the word ï¿½endianï¿½. A lot of the most interesting things are the rare features. Comments also provide good insight into who worked on what, although if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
-          </aside>
-          </section>
-        <section>
-          <h2>Parsing Challenges</h2>
-          <pre><code data-trim>
-var MarkdownEditor = React.createClass({
-  render: function() {
-    return (
-      &lt;div className="MarkdownEditor"&gt;
-        &lt;h3&gt;Input&lt;/h3&gt;
-        &lt;div
-          className="content"
-          dangerouslySetInnerHTML={{
-            __html: converter.makeHtml(this.state.value)
-          }}
-        /&gt;
-      &lt;/div&gt;
-    );
-  }
-});
-</code>
-</pre>
-          <aside class="notes">
-            One thing to note here is the challenge of actually parsing code files. While this has been done, itï¿½s made especially challenging by the host of languages available (html, js, sql, xml), and these are often combined in some way with templating languages like React, xtemplates in ExtJS or sql in a java file, so while I think this is interesting I havenï¿½t attempted it. If I were going to attempt it, Iï¿½d look into the regexes that are used for syntax highlighting in tools like Vim, since youï¿½d have a fighting chance of getting something somewhat useful. 
-            Since the git provides you with diffs, you may get a single line comment, a comment that's part of a longer line, comments within a line, an addition to an existing comment. Ideally you'd want to find just the change.
-          </aside>
-        </section>
-        <section>
-          <h2>Company Lists</h2>
-          <aside class="notes">
-            In repositories from github, you can get a good approximation of companies that contribute to repositories by taking the ï¿½@x.comï¿½ from emails, although to do this successfully, you must remove common hosts like gmail, and exclude contributions by some bots. Some of the major ones can be hidden easily, but this takes some work to find a general solution.
           </aside>
         </section>
        
@@ -757,7 +512,7 @@ var MarkdownEditor = React.createClass({
         <section>
           <h2>Building a facet UI</h2>
           <aside class="notes">      
-            You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Hereï¿½s some example code, this is just typical jQuery code.
+            You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Here’s some example code, this is just typical jQuery code.
           </aside>
           </section>
           <section>
@@ -765,19 +520,15 @@ var MarkdownEditor = React.createClass({
           <aside class="notes">
           In a very crude and unfair comparison, the unoptimized Solr index is 90 MB of commits versus 2,000 MB of git history for some Wingspan repositories. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrastructure.
           </aside>
-<<<<<<< HEAD
           </section>
-=======
-        </section>
->>>>>>> 13ab1c94d371b0c4804dcd0f49157573a33c1522
         <section>
           <h2>Solr vs. Postgres</h2>
           <aside class="notes">
             :[Intro here]
             For this test, I set up a 1.1 million row table1 using data from github2.
-            If youï¿½re not familiar with full-text in Postgres, they use the @@ operator to apply a query to a document, which looks like this:
+            If you’re not familiar with full-text in Postgres, they use the @@ operator to apply a query to a document, which looks like this:
             SELECT to_tsvector('fat cats ate fat rats') @@ to_tsquery('fat & rat');
-            The order of the conditions doesnï¿½t matter. Full-text indexes typically work by multiplying vectors, and Postgres provides two types of indexes to speed up this operation. Postgres has a couple of minor edge case limitations (maximum document size / maximum word size). Itï¿½s a little harder to set up - you need to formulate queries the right way, and build indexes the right way, and I found it to be a bit slower in general. Postgres does have some sort of bitmap indexing, which when it is used is very fast, i.e. when there are a bunch of ANDs in a query, but for a single field this isnï¿½t available.
+            The order of the conditions doesn’t matter. Full-text indexes typically work by multiplying vectors, and Postgres provides two types of indexes to speed up this operation. Postgres has a couple of minor edge case limitations (maximum document size / maximum word size). It’s a little harder to set up - you need to formulate queries the right way, and build indexes the right way, and I found it to be a bit slower in general. Postgres does have some sort of bitmap indexing, which when it is used is very fast, i.e. when there are a bunch of ANDs in a query, but for a single field this isn’t available.
           </aside>
         </section>
         <section>
