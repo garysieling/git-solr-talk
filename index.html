@@ -120,7 +120,7 @@ RevWalk walk = new RevWalk(repository);
         </section>
           
         <section>
-          <h2>Traversing Branches</h2>
+          <h2>Branches</h2>
           <pre><code data-trim>
 for (Ref ref : repository.getAllRefs().values()) {
  try {
@@ -147,7 +147,7 @@ for (RevCommit commit : walk) {
           </aside>
         </section>
         <section>
-          <h2>Walking the Commit Tree</h2>
+          <h2>Patches</h2>
           <pre><code data-trim>
 ByteArrayOutputStream out = new ByteArrayOutputStream();
 DiffFormatter df = new DiffFormatter(out);
@@ -173,27 +173,11 @@ for (Object obj : diffs) {
 }
 </code></pre>
           <aside class="notes">         
-for (RevCommit commit : walk) {
-  StringBuffer search = new StringBuffer();
+          JGit lets you generate patch sets, or patch sets with several lines of context. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.
 
-  SolrInputDocument doc = new SolrInputDocument();
-  if (commit.getParentCount() &gt; 0) {
-    RevCommit parent = walk.parseCommit(
-       commit.getParent(0).getId());
-        * Is this different from the other loop below?  
-        * Why is this doing .getParent(0)?
+          Once we get to this point, we can apply any transformations we'd want to do before sending data to solr. Some transformations are best done in code. Depending on your needs, you can alternattely write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.
           </aside>
           </section>
-          <section>
-<h2>Traversing Git History</h2>
-          <aside class="notes">
-          For this application I've used solrj, which is a connector libary that lets you run queries and push lists of documents. Some transformations are best done in code. Depending on your needs, you can write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.
-     JGit lets you generate patch sets, or patch sets with several lines of context. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.
-      If you were to use diffs, you'd want to filter the diffs to only the lines which are added, and possibly do moved word detection. Alternately, if you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
-          </aside>
-          </section>
-        <section>
-
           <h2>Commit Comments</h2>
             <pre><code data-trim>
 if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
@@ -551,7 +535,7 @@ $.ajax({
           <aside class="notes">      
             You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Here’s some example code, this is just typical jQuery code.
           </aside>
-          </section>
+        </section>
         <section>
         <h2>Solr vs. Postgres</h2>
           <p>
