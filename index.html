@@ -152,12 +152,9 @@ for (RevCommit commit : walk) {
 ByteArrayOutputStream out = new ByteArrayOutputStream();
 DiffFormatter df = new DiffFormatter(out);
 df.setRepository(repository);
-df.setDiffComparator(RawTextComparator.DEFAULT);
-df.setDetectRenames(true);
 df.setContext(3);
 
-java.util.List&lt;DiffEntry&gt; diffs = df.scan(parent.getTree(),
-  commit.getTree());
+List&lt;DiffEntry&gt; diffs = df.scan(parent.getTree(), commit.getTree());
 
 for (Object obj : diffs) {
   DiffEntry diff = (DiffEntry) obj;
@@ -169,8 +166,6 @@ for (Object obj : diffs) {
     out.reset();
   }
 }
-
-}
 </code></pre>
           <aside class="notes">         
           JGit lets you generate patch sets, or patch sets with several lines of context. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.
@@ -178,6 +173,7 @@ for (Object obj : diffs) {
           Once we get to this point, we can apply any transformations we'd want to do before sending data to solr. Some transformations are best done in code. Depending on your needs, you can alternattely write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.      Example transformations include entity name normalization or extracting data from external systems like LDAP. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.
           </aside>
           </section>
+          <section>
           <h2>Commit Comments</h2>
             <pre><code data-trim>
 if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
@@ -524,7 +520,7 @@ connection.close();
         <section>
         <h2>Building a facet UI</h2>
 <pre><code data-trim>
-var url = 'http://solr/core1/select/?q=search:(search:jug)'
+var url = 'http://solr/core1/select/?q=search:(search:jug)';
 $.ajax({
 	type: "GET",
 	url: url,
