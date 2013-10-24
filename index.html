@@ -197,7 +197,7 @@ for (Object obj : diffs) {
 </code>
 </pre>
           <aside class="notes">
-            SolrJ lets you generate output resembling the diff tool that git has, to generate a patch set. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.
+            JGit lets you generate patch sets, or patch sets with several lines of context. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.
             If you were to use diffs, you'd want to filter the diffs to only the lines which are added, and possibly do moved word detection. Alternately, if you see that you're in the middle of a comment, it might be beneficial to regenerate the text with a larger context. 
           </aside>
         </section>
@@ -265,12 +265,6 @@ search.append(file);
           * This is putting metadata into the search (project name, file name) </aside>
         </section>
         <section>
-          <h2>Fixing Authors</h2>
-          <aside class="notes">
-            One of the notable issues with git is there is no particular requirements around how people put in their usernames. Since this exercise builds out an ETL process, you can “fix” this problem by coercing names into common formats, which I found necessary, especially if you combine this with existing data from other systems like CVS which you can pull in by using a repository that has been converted using a tool.
-          </aside>
-        </section>
-        <section>
           <h2>0x0100</h2>
           <aside class="notes">
           To go beyond loading commit messages and authors, there are a couple interesting tidbits within the code- these are things I've experimented with at varying levels, and I want to talk about them, as they introduces some interesting puzzles.
@@ -299,7 +293,7 @@ var MarkdownEditor = React.createClass({
 </code>
 </pre>
           <aside class="notes">
-           Comments also provide good insight into who worked on what, although if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
+          Comments also provide good insight into who worked on what.
 
           The first of these are are code comments, which like comments are usually not code, but typically valuable for ascertaining things like who worked on a client's project. One imagines that these could be found with regular expressions:
             /* */
@@ -308,7 +302,8 @@ var MarkdownEditor = React.createClass({
             “.*”
             \d*
           One thing to note here is the challenge of actually parsing code files. While this has been done, it’s made especially challenging by the host of languages available (html, js, sql, xml), and these are often combined in some way with templating languages like React, xtemplates in ExtJS or sql in a java file, so while I think this is interesting I haven’t attempted it. If I were going to attempt it, I’d look into the regexes that are used for syntax highlighting in tools like Vim, since you’d have a fighting chance of getting something somewhat useful. 
-            Since the git provides you with diffs, you may get a single line comment, a comment that's part of a longer line, comments within a line, an addition to an existing comment. Ideally you'd want to find just the change.
+          Since the git provides you with diffs, you may get a single line comment, a comment that's part of a longer line, comments within a line, an addition to an existing comment. Ideally you'd want to find just the change.
+          It's worth noting that if you have a copyright header at the top of your source files, someone will have a lot of spurious results for certain searches- this issue is common in searching authors of office files, as the person who authors the template often has their name show up in every file.
           </aside>
         </section>
         <section>
@@ -396,7 +391,7 @@ Collection&lt;SolrInputDocument&gt; docs = new ArrayList&lt;SolrInputDocument&gt
 
     </code></pre>
           <aside class="notes">
-          * A common use for copyField is to combine multiple fields into one, although you can also use it to trunacte data.
+          * A common use for copyField is to combine multiple fields into one, although you can also use it to truncate data.
           * multiValued - can be array valued for a document
           * compressed - gzip / compressThreshold
           * omitNorms / termVectors - can remove data needed for full text indexing
@@ -421,22 +416,6 @@ docs.add(doc);
           <aside class="notes">
           * Should nvl be removed?
           * Why 1.0f?
-          </aside>
-        </section>
-        <section>
-          <h2>Batching Commits</h2>
-          <pre><code data-trim>
-if (cnt % batchSize == 0) {
-  server.add(docs);
-  server.commit();
-  docs = new ArrayList&lt;SolrInputDocument&gt;();
-
-  System.out.println("Committed batch");
-}
-    </code></pre>
-          <aside class="notes">
-         * This shows that ever N git commits, we're posting a batch of updates to Solr. It seems sensible to do it this way, because every time you initiate a connection and do a commit there is going to be some overhead. 
-         * How much time difference does this make? 
           </aside>
         </section>
         <section>
@@ -473,16 +452,33 @@ for (File f : files) {
     } catch (IOException e) {
     } catch (SolrServerException e) {          
           </aside>
+          </section>
+        <section>
+          <h2>Batching Commits</h2>
+          <pre><code data-trim>
+if (cnt % batchSize == 0) {
+  server.add(docs);
+  server.commit();
+  docs = new ArrayList&lt;SolrInputDocument&gt;();
+
+  System.out.println("Committed batch");
+}
+    </code></pre>
+          <aside class="notes">
+         * This shows that ever N git commits, we're posting a batch of updates to Solr. It seems sensible to do it this way, because every time you initiate a connection and do a commit there is going to be some overhead. 
+         * How much time difference does this make? 
+          </aside>
         </section>
+          
         <section>
           <h2>Querying Solr</h2>
           <pre><code data-trim>
+SolrParams solrParams = new MapSolrParams(params);
 params.put("collectionName", "collection1");
 params.put("q", "search:ebay");
 params.put("facet.field", "author");
 params.put("facet.limit", "100");
 params.put("facet.sort", "count");
-SolrParams solrParams = new MapSolrParams(params);
   
 server.queryAndStreamResponse(solrParams, callback);
 connection.close();    
@@ -514,6 +510,7 @@ connection.close();
           &amp;facet.limit=30
           </p><p>
           &amp;wt=json
+          </p><p>
           </p><p>
           </p><p>
           {!join from=inner_id to=outer_id}zzz:vvv 
