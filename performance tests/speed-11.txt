@@ -1,0 +1,1000 @@
+Starting 8 threads
+26 Oct 2013 15:36:04 GMT
+26 Oct 2013 15:36:04 GMT
+log4j:WARN No appenders could be found for logger (org.apache.solr.client.solrj.impl.HttpClientUtil).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+log4j:WARN No appenders could be found for logger (org.apache.solr.client.solrj.impl.HttpClientUtil).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+log4j:WARN No appenders could be found for logger (org.apache.solr.client.solrj.impl.HttpClientUtil).
+log4j:WARN No appenders could be found for logger (org.apache.solr.client.solrj.impl.HttpClientUtil).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+log4j:WARN No appenders could be found for logger (org.apache.solr.client.solrj.impl.HttpClientUtil).
+log4j:WARN No appenders could be found for logger (org.apache.solr.client.solrj.impl.HttpClientUtil).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+log4j:WARN No appenders could be found for logger (org.apache.solr.client.solrj.impl.HttpClientUtil).
+log4j:WARN No appenders could be found for logger (org.apache.solr.client.solrj.impl.HttpClientUtil).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+E:\VMs\expert-search\repos\--propos\.git
+Total repositories: 0
+Total repositories: 0
+Total repositories: 0
+Total repositories: 0
+Total repositories: 0
+Total repositories: 0
+Total repositories: 0
+Loaded master of E:\VMs\expert-search\repos\--propos\.git
+Commits per second:3.0, elapsed time = 1.0, commits processed: 3
+E:\VMs\expert-search\repos\-a34523\.git
+Loaded master of E:\VMs\expert-search\repos\-a34523\.git
+Commits per second:4.0, elapsed time = 1.0, commits processed: 4
+E:\VMs\expert-search\repos\-ABillS\.git
+Loaded master of E:\VMs\expert-search\repos\-ABillS\.git
+Commits per second:697.3333333333334, elapsed time = 6.0, commits processed: 4184
+E:\VMs\expert-search\repos\-PHP--DirectoryTreeIterator\.git
+Loaded master of E:\VMs\expert-search\repos\-PHP--DirectoryTreeIterator\.git
+Commits per second:697.6666666666666, elapsed time = 6.0, commits processed: 4186
+E:\VMs\expert-search\repos\.dot\.git
+Loaded master of E:\VMs\expert-search\repos\.dot\.git
+Commits per second:704.0, elapsed time = 6.0, commits processed: 4224
+E:\VMs\expert-search\repos\.dotfiles\.git
+Loaded master of E:\VMs\expert-search\repos\.dotfiles\.git
+Commits per second:718.8333333333334, elapsed time = 6.0, commits processed: 4313
+E:\VMs\expert-search\repos\.emacs\.git
+Loaded master of E:\VMs\expert-search\repos\.emacs\.git
+Commits per second:621.0, elapsed time = 7.0, commits processed: 4347
+E:\VMs\expert-search\repos\.emacs.d\.git
+Loaded master of E:\VMs\expert-search\repos\.emacs.d\.git
+Commits per second:624.4285714285714, elapsed time = 7.0, commits processed: 4371
+E:\VMs\expert-search\repos\.emacs24.d\.git
+Loaded master of E:\VMs\expert-search\repos\.emacs24.d\.git
+Commits per second:548.25, elapsed time = 8.0, commits processed: 4386
+E:\VMs\expert-search\repos\.Net-Learning-Registry-Submit\.git
+Loaded master of E:\VMs\expert-search\repos\.Net-Learning-Registry-Submit\.git
+Commits per second:548.75, elapsed time = 8.0, commits processed: 4390
+E:\VMs\expert-search\repos\.NET-Snippets\.git
+Loaded master of E:\VMs\expert-search\repos\.NET-Snippets\.git
+Commits per second:549.0, elapsed time = 8.0, commits processed: 4392
+E:\VMs\expert-search\repos\.NET-Wrapper\.git
+Loaded master of E:\VMs\expert-search\repos\.NET-Wrapper\.git
+Commits per second:550.0, elapsed time = 8.0, commits processed: 4400
+E:\VMs\expert-search\repos\.vim\.git
+Loaded master of E:\VMs\expert-search\repos\.vim\.git
+Commits per second:558.375, elapsed time = 8.0, commits processed: 4467
+E:\VMs\expert-search\repos\0106-TC01-0711-Terry-Carvey\.git
+Loaded master of E:\VMs\expert-search\repos\0106-TC01-0711-Terry-Carvey\.git
+Commits per second:561.25, elapsed time = 8.0, commits processed: 4490
+E:\VMs\expert-search\repos\023mai\.git
+Loaded master of E:\VMs\expert-search\repos\023mai\.git
+Commits per second:561.375, elapsed time = 8.0, commits processed: 4491
+E:\VMs\expert-search\repos\0fpsBlog\.git
+Loaded master of E:\VMs\expert-search\repos\0fpsBlog\.git
+Commits per second:561.75, elapsed time = 8.0, commits processed: 4494
+E:\VMs\expert-search\repos\0xbench\.git
+Loaded master of E:\VMs\expert-search\repos\0xbench\.git
+Commits per second:570.625, elapsed time = 8.0, commits processed: 4565
+E:\VMs\expert-search\repos\1-bit-adder\.git
+Loaded master of E:\VMs\expert-search\repos\1-bit-adder\.git
+Commits per second:570.75, elapsed time = 8.0, commits processed: 4566
+E:\VMs\expert-search\repos\10101\.git
+Loaded master of E:\VMs\expert-search\repos\10101\.git
+Commits per second:571.5, elapsed time = 8.0, commits processed: 4572
+E:\VMs\expert-search\repos\10K-Contest\.git
+Loaded master of E:\VMs\expert-search\repos\10K-Contest\.git
+Commits per second:509.1111111111111, elapsed time = 9.0, commits processed: 4582
+E:\VMs\expert-search\repos\10pines-bk\.git
+Loaded master of E:\VMs\expert-search\repos\10pines-bk\.git
+Commits per second:527.5555555555555, elapsed time = 9.0, commits processed: 4748
+E:\VMs\expert-search\repos\15-440--Project-2\.git
+Loaded master of E:\VMs\expert-search\repos\15-440--Project-2\.git
+Commits per second:530.4444444444445, elapsed time = 9.0, commits processed: 4774
+E:\VMs\expert-search\repos\1890Synthesis\.git
+Loaded master of E:\VMs\expert-search\repos\1890Synthesis\.git
+Commits per second:530.7777777777778, elapsed time = 9.0, commits processed: 4777
+E:\VMs\expert-search\repos\1C-Bitrix-module---STATGA\.git
+Loaded master of E:\VMs\expert-search\repos\1C-Bitrix-module---STATGA\.git
+Commits per second:531.1111111111111, elapsed time = 9.0, commits processed: 4780
+E:\VMs\expert-search\repos\1fan1.com\.git
+Loaded master of E:\VMs\expert-search\repos\1fan1.com\.git
+Commits per second:531.2222222222222, elapsed time = 9.0, commits processed: 4781
+E:\VMs\expert-search\repos\1st-Year-Homepage\.git
+Loaded master of E:\VMs\expert-search\repos\1st-Year-Homepage\.git
+Commits per second:531.3333333333334, elapsed time = 9.0, commits processed: 4782
+E:\VMs\expert-search\repos\2-bit-full-adder\.git
+Loaded master of E:\VMs\expert-search\repos\2-bit-full-adder\.git
+Commits per second:531.7777777777778, elapsed time = 9.0, commits processed: 4786
+E:\VMs\expert-search\repos\2-Kinects-1-Machine\.git
+Loaded master of E:\VMs\expert-search\repos\2-Kinects-1-Machine\.git
+Commits per second:535.2222222222222, elapsed time = 9.0, commits processed: 4817
+E:\VMs\expert-search\repos\2.1.5\.git
+Loaded master of E:\VMs\expert-search\repos\2.1.5\.git
+Commits per second:535.3333333333334, elapsed time = 9.0, commits processed: 4818
+E:\VMs\expert-search\repos\2.6.32_froyo_photon\.git
+Loaded master of E:\VMs\expert-search\repos\2.6.32_froyo_photon\.git
+Commits per second:486.2, elapsed time = 10.0, commits processed: 4862
+E:\VMs\expert-search\repos\2010-Weather-station\.git
+Loaded master of E:\VMs\expert-search\repos\2010-Weather-station\.git
+Commits per second:486.7, elapsed time = 10.0, commits processed: 4867
+E:\VMs\expert-search\repos\2010.drupalcampaustin.com\.git
+Loaded master of E:\VMs\expert-search\repos\2010.drupalcampaustin.com\.git
+Commits per second:463.90909090909093, elapsed time = 11.0, commits processed: 5103
+E:\VMs\expert-search\repos\2011-robot-code\.git
+Loaded master of E:\VMs\expert-search\repos\2011-robot-code\.git
+Commits per second:468.09090909090907, elapsed time = 11.0, commits processed: 5149
+E:\VMs\expert-search\repos\20110923-demo-anatomy-git\.git
+Loaded master of E:\VMs\expert-search\repos\20110923-demo-anatomy-git\.git
+Commits per second:468.90909090909093, elapsed time = 11.0, commits processed: 5158
+E:\VMs\expert-search\repos\2012.02.15.BackboneJSMeetup\.git
+Loaded master of E:\VMs\expert-search\repos\2012.02.15.BackboneJSMeetup\.git
+Commits per second:469.0, elapsed time = 11.0, commits processed: 5159
+E:\VMs\expert-search\repos\2012_nt_library\.git
+Loaded master of E:\VMs\expert-search\repos\2012_nt_library\.git
+Commits per second:477.6363636363636, elapsed time = 11.0, commits processed: 5254
+E:\VMs\expert-search\repos\21CYP\.git
+Loaded master of E:\VMs\expert-search\repos\21CYP\.git
+Commits per second:479.27272727272725, elapsed time = 11.0, commits processed: 5272
+E:\VMs\expert-search\repos\24-hour-game\.git
+Loaded master of E:\VMs\expert-search\repos\24-hour-game\.git
+Commits per second:449.1666666666667, elapsed time = 12.0, commits processed: 5390
+E:\VMs\expert-search\repos\256-xterm-colors\.git
+Loaded master of E:\VMs\expert-search\repos\256-xterm-colors\.git
+Commits per second:449.3333333333333, elapsed time = 12.0, commits processed: 5392
+E:\VMs\expert-search\repos\256CrappyApp\.git
+Loaded master of E:\VMs\expert-search\repos\256CrappyApp\.git
+Commits per second:449.8333333333333, elapsed time = 12.0, commits processed: 5398
+E:\VMs\expert-search\repos\2cfix\.git
+Loaded master of E:\VMs\expert-search\repos\2cfix\.git
+Commits per second:450.5, elapsed time = 12.0, commits processed: 5406
+E:\VMs\expert-search\repos\2D-Bin-Packer\.git
+Loaded master of E:\VMs\expert-search\repos\2D-Bin-Packer\.git
+Commits per second:450.5833333333333, elapsed time = 12.0, commits processed: 5407
+E:\VMs\expert-search\repos\2nd-Year-Homepage\.git
+Loaded master of E:\VMs\expert-search\repos\2nd-Year-Homepage\.git
+Commits per second:450.6666666666667, elapsed time = 12.0, commits processed: 5408
+E:\VMs\expert-search\repos\2ndExtJSExamples\.git
+Loaded master of E:\VMs\expert-search\repos\2ndExtJSExamples\.git
+Commits per second:450.75, elapsed time = 12.0, commits processed: 5409
+E:\VMs\expert-search\repos\2ndIgniteExtJS\.git
+Loaded master of E:\VMs\expert-search\repos\2ndIgniteExtJS\.git
+Commits per second:451.0, elapsed time = 12.0, commits processed: 5412
+E:\VMs\expert-search\repos\2ndIgniteModules\.git
+Loaded master of E:\VMs\expert-search\repos\2ndIgniteModules\.git
+Commits per second:452.0, elapsed time = 12.0, commits processed: 5424
+E:\VMs\expert-search\repos\308L-Files\.git
+Loaded master of E:\VMs\expert-search\repos\308L-Files\.git
+Commits per second:452.0833333333333, elapsed time = 12.0, commits processed: 5425
+E:\VMs\expert-search\repos\30minutes\.git
+Loaded master of E:\VMs\expert-search\repos\30minutes\.git
+Commits per second:453.3333333333333, elapsed time = 12.0, commits processed: 5440
+E:\VMs\expert-search\repos\3d-print-models\.git
+Loaded master of E:\VMs\expert-search\repos\3d-print-models\.git
+Commits per second:458.6666666666667, elapsed time = 12.0, commits processed: 5504
+E:\VMs\expert-search\repos\3DBeads\.git
+Loaded master of E:\VMs\expert-search\repos\3DBeads\.git
+Commits per second:459.0, elapsed time = 12.0, commits processed: 5508
+E:\VMs\expert-search\repos\3DGraph\.git
+Loaded master of E:\VMs\expert-search\repos\3DGraph\.git
+Commits per second:460.0, elapsed time = 12.0, commits processed: 5520
+E:\VMs\expert-search\repos\3dmedia\.git
+Loaded master of E:\VMs\expert-search\repos\3dmedia\.git
+Commits per second:461.6666666666667, elapsed time = 12.0, commits processed: 5540
+E:\VMs\expert-search\repos\3dp\.git
+Loaded master of E:\VMs\expert-search\repos\3dp\.git
+Commits per second:462.25, elapsed time = 12.0, commits processed: 5547
+E:\VMs\expert-search\repos\3dsViewer\.git
+Loaded master of E:\VMs\expert-search\repos\3dsViewer\.git
+Commits per second:427.6923076923077, elapsed time = 13.0, commits processed: 5560
+E:\VMs\expert-search\repos\3D_Medical_Image_Visualisation\.git
+Loaded master of E:\VMs\expert-search\repos\3D_Medical_Image_Visualisation\.git
+Commits per second:428.2307692307692, elapsed time = 13.0, commits processed: 5567
+E:\VMs\expert-search\repos\3D_palm\.git
+Loaded master of E:\VMs\expert-search\repos\3D_palm\.git
+Commits per second:429.2307692307692, elapsed time = 13.0, commits processed: 5580
+E:\VMs\expert-search\repos\3iOs\.git
+Loaded master of E:\VMs\expert-search\repos\3iOs\.git
+Commits per second:429.7692307692308, elapsed time = 13.0, commits processed: 5587
+E:\VMs\expert-search\repos\3rd-Year-Homepage\.git
+Loaded master of E:\VMs\expert-search\repos\3rd-Year-Homepage\.git
+Commits per second:429.84615384615387, elapsed time = 13.0, commits processed: 5588
+E:\VMs\expert-search\repos\3rose\.git
+Loaded 3rose_v1 of E:\VMs\expert-search\repos\3rose\.git
+Commits per second:430.2307692307692, elapsed time = 13.0, commits processed: 5593
+E:\VMs\expert-search\repos\3rose-core\.git
+Loaded dev of E:\VMs\expert-search\repos\3rose-core\.git
+Commits per second:430.38461538461536, elapsed time = 13.0, commits processed: 5595
+E:\VMs\expert-search\repos\3scale_ws_api_for_dotnet\.git
+Loaded master of E:\VMs\expert-search\repos\3scale_ws_api_for_dotnet\.git
+Commits per second:431.15384615384613, elapsed time = 13.0, commits processed: 5605
+E:\VMs\expert-search\repos\4.0.7\.git
+Loaded master of E:\VMs\expert-search\repos\4.0.7\.git
+Commits per second:514.8666666666667, elapsed time = 15.0, commits processed: 7723
+E:\VMs\expert-search\repos\454-filter\.git
+Loaded master of E:\VMs\expert-search\repos\454-filter\.git
+Commits per second:515.2666666666667, elapsed time = 15.0, commits processed: 7729
+E:\VMs\expert-search\repos\477appsAtS\.git
+Loaded master of E:\VMs\expert-search\repos\477appsAtS\.git
+Commits per second:515.5333333333333, elapsed time = 15.0, commits processed: 7733
+E:\VMs\expert-search\repos\4Archive\.git
+Loaded master of E:\VMs\expert-search\repos\4Archive\.git
+Commits per second:515.9333333333333, elapsed time = 15.0, commits processed: 7739
+E:\VMs\expert-search\repos\4c-Github-Tutorial\.git
+Loaded ezbranch of E:\VMs\expert-search\repos\4c-Github-Tutorial\.git
+Commits per second:516.1333333333333, elapsed time = 15.0, commits processed: 7742
+E:\VMs\expert-search\repos\4chan-archiver\.git
+Loaded master of E:\VMs\expert-search\repos\4chan-archiver\.git
+Commits per second:516.6666666666666, elapsed time = 15.0, commits processed: 7750
+E:\VMs\expert-search\repos\4DGo\.git
+Loaded master of E:\VMs\expert-search\repos\4DGo\.git
+Commits per second:485.625, elapsed time = 16.0, commits processed: 7770
+E:\VMs\expert-search\repos\4Dnest\.git
+Loaded master of E:\VMs\expert-search\repos\4Dnest\.git
+Commits per second:498.52941176470586, elapsed time = 17.0, commits processed: 8475
+E:\VMs\expert-search\repos\4guru\.git
+Loaded master of E:\VMs\expert-search\repos\4guru\.git
+Commits per second:499.11764705882354, elapsed time = 17.0, commits processed: 8485
+E:\VMs\expert-search\repos\4ME105\.git
+Loaded master of E:\VMs\expert-search\repos\4ME105\.git
+Commits per second:499.3529411764706, elapsed time = 17.0, commits processed: 8489
+E:\VMs\expert-search\repos\4oc\.git
+Loaded master of E:\VMs\expert-search\repos\4oc\.git
+Commits per second:499.7647058823529, elapsed time = 17.0, commits processed: 8496
+E:\VMs\expert-search\repos\4pr2\.git
+Loaded master of E:\VMs\expert-search\repos\4pr2\.git
+Commits per second:499.88235294117646, elapsed time = 17.0, commits processed: 8498
+E:\VMs\expert-search\repos\4SUN-SupRails-2012\.git
+Loaded master of E:\VMs\expert-search\repos\4SUN-SupRails-2012\.git
+Commits per second:500.52941176470586, elapsed time = 17.0, commits processed: 8509
+E:\VMs\expert-search\repos\4th-Year-Homepage\.git
+Loaded master of E:\VMs\expert-search\repos\4th-Year-Homepage\.git
+Eror: could not find HEAD for E:\VMs\expert-search\repos\4th-Year-Homepage\.git
+missing content stream
+E:\VMs\expert-search\repos\4th-Year-Project\.git
+Loaded master of E:\VMs\expert-search\repos\4th-Year-Project\.git
+Commits per second:500.88235294117646, elapsed time = 17.0, commits processed: 8515
+E:\VMs\expert-search\repos\50apps\.git
+Loaded master of E:\VMs\expert-search\repos\50apps\.git
+Commits per second:504.2352941176471, elapsed time = 17.0, commits processed: 8572
+E:\VMs\expert-search\repos\50apps-Projects\.git
+Loaded master of E:\VMs\expert-search\repos\50apps-Projects\.git
+Commits per second:477.5, elapsed time = 18.0, commits processed: 8595
+E:\VMs\expert-search\repos\5199-WEB\.git
+Loaded master of E:\VMs\expert-search\repos\5199-WEB\.git
+Commits per second:477.77777777777777, elapsed time = 18.0, commits processed: 8600
+E:\VMs\expert-search\repos\539_project_3\.git
+Loaded master of E:\VMs\expert-search\repos\539_project_3\.git
+Commits per second:487.05555555555554, elapsed time = 18.0, commits processed: 8767
+E:\VMs\expert-search\repos\5player\.git
+Loaded master of E:\VMs\expert-search\repos\5player\.git
+Commits per second:487.3888888888889, elapsed time = 18.0, commits processed: 8773
+E:\VMs\expert-search\repos\5starmovie\.git
+Loaded master of E:\VMs\expert-search\repos\5starmovie\.git
+Commits per second:488.0, elapsed time = 18.0, commits processed: 8784
+E:\VMs\expert-search\repos\65BitsProductionFlow\.git
+Loaded master of E:\VMs\expert-search\repos\65BitsProductionFlow\.git
+Commits per second:488.05555555555554, elapsed time = 18.0, commits processed: 8785
+E:\VMs\expert-search\repos\6601-Project1\.git
+Loaded master of E:\VMs\expert-search\repos\6601-Project1\.git
+Commits per second:488.22222222222223, elapsed time = 18.0, commits processed: 8788
+E:\VMs\expert-search\repos\6c_in.memory.management\.git
+Loaded master of E:\VMs\expert-search\repos\6c_in.memory.management\.git
+Commits per second:488.27777777777777, elapsed time = 18.0, commits processed: 8789
+E:\VMs\expert-search\repos\6WD-Robot\.git
+Loaded master of E:\VMs\expert-search\repos\6WD-Robot\.git
+Commits per second:491.1666666666667, elapsed time = 18.0, commits processed: 8841
+E:\VMs\expert-search\repos\7-Digital-API-Wrapper\.git
+Loaded master of E:\VMs\expert-search\repos\7-Digital-API-Wrapper\.git
+Commits per second:491.22222222222223, elapsed time = 18.0, commits processed: 8842
+E:\VMs\expert-search\repos\7-languages\.git
+Loaded master of E:\VMs\expert-search\repos\7-languages\.git
+Commits per second:469.10526315789474, elapsed time = 19.0, commits processed: 8913
+E:\VMs\expert-search\repos\701kernel\.git
+Loaded master of E:\VMs\expert-search\repos\701kernel\.git
+Commits per second:469.4736842105263, elapsed time = 19.0, commits processed: 8920
+E:\VMs\expert-search\repos\7am\.git
+Loaded master of E:\VMs\expert-search\repos\7am\.git
+Commits per second:471.8421052631579, elapsed time = 19.0, commits processed: 8965
+E:\VMs\expert-search\repos\7languages\.git
+Loaded master of E:\VMs\expert-search\repos\7languages\.git
+Commits per second:474.5263157894737, elapsed time = 19.0, commits processed: 9016
+E:\VMs\expert-search\repos\7W17732\.git
+Loaded master of E:\VMs\expert-search\repos\7W17732\.git
+Commits per second:479.1578947368421, elapsed time = 19.0, commits processed: 9104
+E:\VMs\expert-search\repos\8086-Emulator\.git
+Loaded master of E:\VMs\expert-search\repos\8086-Emulator\.git
+Commits per second:479.2105263157895, elapsed time = 19.0, commits processed: 9105
+E:\VMs\expert-search\repos\8ball-android-app\.git
+Loaded master of E:\VMs\expert-search\repos\8ball-android-app\.git
+Commits per second:479.3157894736842, elapsed time = 19.0, commits processed: 9107
+E:\VMs\expert-search\repos\8bitafy\.git
+Loaded master of E:\VMs\expert-search\repos\8bitafy\.git
+Commits per second:479.42105263157896, elapsed time = 19.0, commits processed: 9109
+E:\VMs\expert-search\repos\8trax\.git
+Loaded master of E:\VMs\expert-search\repos\8trax\.git
+Commits per second:479.7894736842105, elapsed time = 19.0, commits processed: 9116
+E:\VMs\expert-search\repos\960-css-grid\.git
+Loaded master of E:\VMs\expert-search\repos\960-css-grid\.git
+Commits per second:455.9, elapsed time = 20.0, commits processed: 9118
+E:\VMs\expert-search\repos\99-erlang-problems\.git
+Loaded master of E:\VMs\expert-search\repos\99-erlang-problems\.git
+Commits per second:456.35, elapsed time = 20.0, commits processed: 9127
+E:\VMs\expert-search\repos\99-lisp-problems\.git
+Loaded master of E:\VMs\expert-search\repos\99-lisp-problems\.git
+Commits per second:456.5, elapsed time = 20.0, commits processed: 9130
+E:\VMs\expert-search\repos\99bottles-jmeter\.git
+Loaded master of E:\VMs\expert-search\repos\99bottles-jmeter\.git
+Commits per second:456.8, elapsed time = 20.0, commits processed: 9136
+E:\VMs\expert-search\repos\99percent\.git
+Loaded master of E:\VMs\expert-search\repos\99percent\.git
+Commits per second:456.9, elapsed time = 20.0, commits processed: 9138
+E:\VMs\expert-search\repos\A-Solid-Base\.git
+Loaded master of E:\VMs\expert-search\repos\A-Solid-Base\.git
+Commits per second:458.3, elapsed time = 20.0, commits processed: 9166
+E:\VMs\expert-search\repos\A-Star-Heuristic-Search\.git
+Loaded master of E:\VMs\expert-search\repos\A-Star-Heuristic-Search\.git
+Commits per second:458.65, elapsed time = 20.0, commits processed: 9173
+E:\VMs\expert-search\repos\A-star-search-algorithm\.git
+Loaded master of E:\VMs\expert-search\repos\A-star-search-algorithm\.git
+Commits per second:458.8, elapsed time = 20.0, commits processed: 9176
+E:\VMs\expert-search\repos\a-team\.git
+Loaded master of E:\VMs\expert-search\repos\a-team\.git
+Commits per second:446.85714285714283, elapsed time = 21.0, commits processed: 9384
+E:\VMs\expert-search\repos\A-Z-Campaign\.git
+Loaded master of E:\VMs\expert-search\repos\A-Z-Campaign\.git
+Commits per second:465.57142857142856, elapsed time = 21.0, commits processed: 9777
+E:\VMs\expert-search\repos\a2createvirtualhost\.git
+Loaded master of E:\VMs\expert-search\repos\a2createvirtualhost\.git
+Commits per second:465.8095238095238, elapsed time = 21.0, commits processed: 9782
+E:\VMs\expert-search\repos\a4Edits\.git
+Loaded master of E:\VMs\expert-search\repos\a4Edits\.git
+Commits per second:445.22727272727275, elapsed time = 22.0, commits processed: 9795
+E:\VMs\expert-search\repos\a500\.git
+Loaded master of E:\VMs\expert-search\repos\a500\.git
+Commits per second:445.27272727272725, elapsed time = 22.0, commits processed: 9796
+E:\VMs\expert-search\repos\A953BasebandSwitcher\.git
+Loaded master of E:\VMs\expert-search\repos\A953BasebandSwitcher\.git
+Commits per second:445.8636363636364, elapsed time = 22.0, commits processed: 9809
+E:\VMs\expert-search\repos\AA-Controller\.git
+Loaded master of E:\VMs\expert-search\repos\AA-Controller\.git
+Commits per second:445.90909090909093, elapsed time = 22.0, commits processed: 9810
+E:\VMs\expert-search\repos\aaa\.git
+Loaded master of E:\VMs\expert-search\repos\aaa\.git
+Eror: could not find HEAD for E:\VMs\expert-search\repos\aaa\.git
+missing content stream
+E:\VMs\expert-search\repos\aaap\.git
+Loaded master of E:\VMs\expert-search\repos\aaap\.git
+Commits per second:445.95454545454544, elapsed time = 22.0, commits processed: 9811
+E:\VMs\expert-search\repos\aac-speech-android\.git
+Loaded master of E:\VMs\expert-search\repos\aac-speech-android\.git
+Commits per second:450.22727272727275, elapsed time = 22.0, commits processed: 9905
+E:\VMs\expert-search\repos\AACalc\.git
+Loaded master of E:\VMs\expert-search\repos\AACalc\.git
+Commits per second:450.3181818181818, elapsed time = 22.0, commits processed: 9907
+E:\VMs\expert-search\repos\AAED\.git
+Loaded master of E:\VMs\expert-search\repos\AAED\.git
+Commits per second:446.2608695652174, elapsed time = 23.0, commits processed: 10264
+E:\VMs\expert-search\repos\AAMFlipAnimation\.git
+Loaded master of E:\VMs\expert-search\repos\AAMFlipAnimation\.git
+Commits per second:446.3478260869565, elapsed time = 23.0, commits processed: 10266
+E:\VMs\expert-search\repos\aao\.git
+Loaded master of E:\VMs\expert-search\repos\aao\.git
+Commits per second:446.8695652173913, elapsed time = 23.0, commits processed: 10278
+E:\VMs\expert-search\repos\aaphoto\.git
+Loaded master of E:\VMs\expert-search\repos\aaphoto\.git
+Commits per second:447.0869565217391, elapsed time = 23.0, commits processed: 10283
+E:\VMs\expert-search\repos\aapng\.git
+Loaded master of E:\VMs\expert-search\repos\aapng\.git
+Commits per second:447.30434782608694, elapsed time = 23.0, commits processed: 10288
+E:\VMs\expert-search\repos\aaronlademann.com\.git
+Loaded master of E:\VMs\expert-search\repos\aaronlademann.com\.git
+Commits per second:447.39130434782606, elapsed time = 23.0, commits processed: 10290
+E:\VMs\expert-search\repos\abc\.git
+Loaded master of E:\VMs\expert-search\repos\abc\.git
+Commits per second:447.4347826086956, elapsed time = 23.0, commits processed: 10291
+E:\VMs\expert-search\repos\abc-abstraction\.git
+Loaded master of E:\VMs\expert-search\repos\abc-abstraction\.git
+Commits per second:447.95652173913044, elapsed time = 23.0, commits processed: 10303
+E:\VMs\expert-search\repos\ABCManager\.git
+Loaded master of E:\VMs\expert-search\repos\ABCManager\.git
+Commits per second:448.39130434782606, elapsed time = 23.0, commits processed: 10313
+E:\VMs\expert-search\repos\abeilleformbuilder\.git
+Loaded master of E:\VMs\expert-search\repos\abeilleformbuilder\.git
+Commits per second:448.5217391304348, elapsed time = 23.0, commits processed: 10316
+E:\VMs\expert-search\repos\AberByCyberscape\.git
+Loaded master of E:\VMs\expert-search\repos\AberByCyberscape\.git
+Commits per second:449.9130434782609, elapsed time = 23.0, commits processed: 10348
+E:\VMs\expert-search\repos\Aberis-Analytics\.git
+Loaded gh-pages of E:\VMs\expert-search\repos\Aberis-Analytics\.git
+Commits per second:449.95652173913044, elapsed time = 23.0, commits processed: 10349
+E:\VMs\expert-search\repos\abframework\.git
+Loaded master of E:\VMs\expert-search\repos\abframework\.git
+Commits per second:433.4583333333333, elapsed time = 24.0, commits processed: 10403
+E:\VMs\expert-search\repos\Abhi-Test\.git
+Loaded master of E:\VMs\expert-search\repos\Abhi-Test\.git
+Commits per second:433.5416666666667, elapsed time = 24.0, commits processed: 10405
+E:\VMs\expert-search\repos\abilities\.git
+Loaded master of E:\VMs\expert-search\repos\abilities\.git
+Commits per second:433.7083333333333, elapsed time = 24.0, commits processed: 10409
+E:\VMs\expert-search\repos\abiquo-cookbook\.git
+Loaded master of E:\VMs\expert-search\repos\abiquo-cookbook\.git
+Commits per second:434.5416666666667, elapsed time = 24.0, commits processed: 10429
+E:\VMs\expert-search\repos\abiquo-offline-updates\.git
+Loaded master of E:\VMs\expert-search\repos\abiquo-offline-updates\.git
+Commits per second:434.625, elapsed time = 24.0, commits processed: 10431
+E:\VMs\expert-search\repos\abiquo-release-ee\.git
+Loaded master of E:\VMs\expert-search\repos\abiquo-release-ee\.git
+Commits per second:434.875, elapsed time = 24.0, commits processed: 10437
+E:\VMs\expert-search\repos\abiword_osx_builder\.git
+Loaded master of E:\VMs\expert-search\repos\abiword_osx_builder\.git
+Commits per second:435.0, elapsed time = 24.0, commits processed: 10440
+E:\VMs\expert-search\repos\abn_search\.git
+Loaded master of E:\VMs\expert-search\repos\abn_search\.git
+Commits per second:417.88, elapsed time = 25.0, commits processed: 10447
+E:\VMs\expert-search\repos\ABO\.git
+Loaded master of E:\VMs\expert-search\repos\ABO\.git
+Commits per second:418.04, elapsed time = 25.0, commits processed: 10451
+E:\VMs\expert-search\repos\aboot_me\.git
+Loaded master of E:\VMs\expert-search\repos\aboot_me\.git
+Commits per second:418.12, elapsed time = 25.0, commits processed: 10453
+E:\VMs\expert-search\repos\About-Me\.git
+Loaded unstable of E:\VMs\expert-search\repos\About-Me\.git
+Commits per second:418.76, elapsed time = 25.0, commits processed: 10469
+E:\VMs\expert-search\repos\AboutMe\.git
+Loaded master of E:\VMs\expert-search\repos\AboutMe\.git
+Commits per second:418.8, elapsed time = 25.0, commits processed: 10470
+E:\VMs\expert-search\repos\about_me\.git
+Loaded master of E:\VMs\expert-search\repos\about_me\.git
+Commits per second:418.84, elapsed time = 25.0, commits processed: 10471
+E:\VMs\expert-search\repos\ABR-client\.git
+Loaded master of E:\VMs\expert-search\repos\ABR-client\.git
+Commits per second:419.28, elapsed time = 25.0, commits processed: 10482
+E:\VMs\expert-search\repos\absshadow-sample\.git
+Loaded master of E:\VMs\expert-search\repos\absshadow-sample\.git
+Commits per second:419.84, elapsed time = 25.0, commits processed: 10496
+E:\VMs\expert-search\repos\abstract-methods\.git
+Loaded master of E:\VMs\expert-search\repos\abstract-methods\.git
+Commits per second:423.8541666666667, elapsed time = 48.0, commits processed: 20345
+Commits per second:438.0869565217391, elapsed time = 69.0, commits processed: 30228
+Commits per second:450.14473684210526, elapsed time = 76.0, commits processed: 34211
+E:\VMs\expert-search\repos\abstracts\.git
+Loaded master of E:\VMs\expert-search\repos\abstracts\.git
+Commits per second:453.38157894736844, elapsed time = 76.0, commits processed: 34457
+E:\VMs\expert-search\repos\ABTableView\.git
+Loaded master of E:\VMs\expert-search\repos\ABTableView\.git
+Commits per second:453.42105263157896, elapsed time = 76.0, commits processed: 34460
+E:\VMs\expert-search\repos\abuilds\.git
+Loaded master of E:\VMs\expert-search\repos\abuilds\.git
+Commits per second:454.5394736842105, elapsed time = 76.0, commits processed: 34545
+E:\VMs\expert-search\repos\abuja-sinatra\.git
+Loaded master of E:\VMs\expert-search\repos\abuja-sinatra\.git
+Commits per second:454.75, elapsed time = 76.0, commits processed: 34561
+E:\VMs\expert-search\repos\ABW\.git
+Loaded master of E:\VMs\expert-search\repos\ABW\.git
+Commits per second:448.85714285714283, elapsed time = 77.0, commits processed: 34562
+E:\VMs\expert-search\repos\ac-octave\.git
+Loaded master of E:\VMs\expert-search\repos\ac-octave\.git
+Commits per second:448.97402597402595, elapsed time = 77.0, commits processed: 34571
+E:\VMs\expert-search\repos\ac-R\.git
+Loaded master of E:\VMs\expert-search\repos\ac-R\.git
+Commits per second:449.0, elapsed time = 77.0, commits processed: 34573
+E:\VMs\expert-search\repos\acadia\.git
+Loaded master of E:\VMs\expert-search\repos\acadia\.git
+Commits per second:449.09090909090907, elapsed time = 77.0, commits processed: 34580
+E:\VMs\expert-search\repos\AcaniUsers\.git
+Loaded master of E:\VMs\expert-search\repos\AcaniUsers\.git
+Commits per second:449.4155844155844, elapsed time = 77.0, commits processed: 34605
+E:\VMs\expert-search\repos\acc-radar\.git
+Loaded master of E:\VMs\expert-search\repos\acc-radar\.git
+Commits per second:449.61038961038963, elapsed time = 77.0, commits processed: 34620
+E:\VMs\expert-search\repos\acc-tp\.git
+Loaded master of E:\VMs\expert-search\repos\acc-tp\.git
+Commits per second:445.7307692307692, elapsed time = 78.0, commits processed: 34767
+E:\VMs\expert-search\repos\Access\.git
+Loaded master of E:\VMs\expert-search\repos\Access\.git
+Commits per second:440.2911392405063, elapsed time = 79.0, commits processed: 34783
+E:\VMs\expert-search\repos\Access-Control-Test\.git
+Loaded master of E:\VMs\expert-search\repos\Access-Control-Test\.git
+Commits per second:440.36708860759495, elapsed time = 79.0, commits processed: 34789
+E:\VMs\expert-search\repos\AccessControl\.git
+Loaded master of E:\VMs\expert-search\repos\AccessControl\.git
+Commits per second:440.69620253164555, elapsed time = 79.0, commits processed: 34815
+E:\VMs\expert-search\repos\accessible-hangouts-extension\.git
+Loaded master of E:\VMs\expert-search\repos\accessible-hangouts-extension\.git
+Commits per second:440.7848101265823, elapsed time = 79.0, commits processed: 34822
+E:\VMs\expert-search\repos\Accessible-Patterns\.git
+Loaded master of E:\VMs\expert-search\repos\Accessible-Patterns\.git
+Commits per second:440.9367088607595, elapsed time = 79.0, commits processed: 34834
+E:\VMs\expert-search\repos\AccessibleChess\.git
+Loaded master of E:\VMs\expert-search\repos\AccessibleChess\.git
+Commits per second:435.6125, elapsed time = 80.0, commits processed: 34849
+E:\VMs\expert-search\repos\accessorizejs\.git
+Loaded master of E:\VMs\expert-search\repos\accessorizejs\.git
+Commits per second:435.825, elapsed time = 80.0, commits processed: 34866
+E:\VMs\expert-search\repos\ACCOUNT--MANAGEMENT-PANEL\.git
+Loaded master of E:\VMs\expert-search\repos\ACCOUNT--MANAGEMENT-PANEL\.git
+Commits per second:435.85, elapsed time = 80.0, commits processed: 34868
+E:\VMs\expert-search\repos\Accounting-With-Law\.git
+Loaded master of E:\VMs\expert-search\repos\Accounting-With-Law\.git
+Commits per second:435.875, elapsed time = 80.0, commits processed: 34870
+E:\VMs\expert-search\repos\ACCTMIS532-Group-Project\.git
+Loaded master of E:\VMs\expert-search\repos\ACCTMIS532-Group-Project\.git
+Commits per second:435.9375, elapsed time = 80.0, commits processed: 34875
+E:\VMs\expert-search\repos\acc_mgr\.git
+Loaded master of E:\VMs\expert-search\repos\acc_mgr\.git
+Commits per second:436.4375, elapsed time = 80.0, commits processed: 34915
+E:\VMs\expert-search\repos\AcdOpti\.git
+Loaded master of E:\VMs\expert-search\repos\AcdOpti\.git
+Commits per second:438.1375, elapsed time = 80.0, commits processed: 35051
+E:\VMs\expert-search\repos\ace-addon-manager\.git
+Loaded master of E:\VMs\expert-search\repos\ace-addon-manager\.git
+Commits per second:438.3, elapsed time = 80.0, commits processed: 35064
+E:\VMs\expert-search\repos\AceEditor\.git
+Loaded master of E:\VMs\expert-search\repos\AceEditor\.git
+Commits per second:438.3875, elapsed time = 80.0, commits processed: 35071
+E:\VMs\expert-search\repos\acer-kernel-msm7x30\.git
+Loaded master of E:\VMs\expert-search\repos\acer-kernel-msm7x30\.git
+Commits per second:438.4875, elapsed time = 80.0, commits processed: 35079
+E:\VMs\expert-search\repos\acer-stream-minimal-kernel\.git
+Loaded master of E:\VMs\expert-search\repos\acer-stream-minimal-kernel\.git
+Commits per second:438.5125, elapsed time = 80.0, commits processed: 35081
+E:\VMs\expert-search\repos\AchievBot\.git
+Loaded master of E:\VMs\expert-search\repos\AchievBot\.git
+Commits per second:433.18518518518516, elapsed time = 81.0, commits processed: 35088
+E:\VMs\expert-search\repos\AcidCupcakeColourScheme\.git
+Loaded master of E:\VMs\expert-search\repos\AcidCupcakeColourScheme\.git
+Commits per second:433.30864197530866, elapsed time = 81.0, commits processed: 35098
+E:\VMs\expert-search\repos\acikid.org\.git
+Loaded master of E:\VMs\expert-search\repos\acikid.org\.git
+Commits per second:433.320987654321, elapsed time = 81.0, commits processed: 35099
+E:\VMs\expert-search\repos\AclManager\.git
+Loaded stable of E:\VMs\expert-search\repos\AclManager\.git
+Commits per second:433.74074074074076, elapsed time = 81.0, commits processed: 35133
+E:\VMs\expert-search\repos\acl_plus_rbac\.git
+Loaded master of E:\VMs\expert-search\repos\acl_plus_rbac\.git
+Commits per second:433.77777777777777, elapsed time = 81.0, commits processed: 35136
+E:\VMs\expert-search\repos\ACM-Code\.git
+Loaded master of E:\VMs\expert-search\repos\ACM-Code\.git
+Commits per second:433.8395061728395, elapsed time = 81.0, commits processed: 35141
+E:\VMs\expert-search\repos\Acme-Lingua-ZH-Remix\.git
+Loaded master of E:\VMs\expert-search\repos\Acme-Lingua-ZH-Remix\.git
+Commits per second:429.1585365853659, elapsed time = 82.0, commits processed: 35191
+E:\VMs\expert-search\repos\acme-pie-tracker\.git
+Loaded master of E:\VMs\expert-search\repos\acme-pie-tracker\.git
+Commits per second:429.2439024390244, elapsed time = 82.0, commits processed: 35198
+E:\VMs\expert-search\repos\acms-pretty-system\.git
+Loaded master of E:\VMs\expert-search\repos\acms-pretty-system\.git
+Commits per second:429.3780487804878, elapsed time = 82.0, commits processed: 35209
+E:\VMs\expert-search\repos\ACM_Nodejs_Phantom_Examples\.git
+Loaded master of E:\VMs\expert-search\repos\ACM_Nodejs_Phantom_Examples\.git
+Commits per second:429.9024390243902, elapsed time = 82.0, commits processed: 35252
+E:\VMs\expert-search\repos\acoracpp\.git
+Loaded master of E:\VMs\expert-search\repos\acoracpp\.git
+Commits per second:430.280487804878, elapsed time = 82.0, commits processed: 35283
+E:\VMs\expert-search\repos\acoral\.git
+Loaded master of E:\VMs\expert-search\repos\acoral\.git
+Commits per second:430.3292682926829, elapsed time = 82.0, commits processed: 35287
+E:\VMs\expert-search\repos\Acquia-NN-793\.git
+Loaded master of E:\VMs\expert-search\repos\Acquia-NN-793\.git
+Commits per second:430.3658536585366, elapsed time = 82.0, commits processed: 35290
+E:\VMs\expert-search\repos\acquire-abs-mobile-web-service\.git
+Loaded master of E:\VMs\expert-search\repos\acquire-abs-mobile-web-service\.git
+Commits per second:430.5731707317073, elapsed time = 82.0, commits processed: 35307
+E:\VMs\expert-search\repos\Acro\.git
+Loaded master of E:\VMs\expert-search\repos\Acro\.git
+Commits per second:430.7926829268293, elapsed time = 82.0, commits processed: 35325
+E:\VMs\expert-search\repos\acroread\.git
+Loaded master of E:\VMs\expert-search\repos\acroread\.git
+Commits per second:430.8536585365854, elapsed time = 82.0, commits processed: 35330
+E:\VMs\expert-search\repos\ACS-Web-Project\.git
+Loaded master of E:\VMs\expert-search\repos\ACS-Web-Project\.git
+Commits per second:425.7951807228916, elapsed time = 83.0, commits processed: 35341
+E:\VMs\expert-search\repos\ACSProduct\.git
+Loaded master of E:\VMs\expert-search\repos\ACSProduct\.git
+Commits per second:426.0843373493976, elapsed time = 83.0, commits processed: 35365
+E:\VMs\expert-search\repos\ACSProductDemo\.git
+Loaded master of E:\VMs\expert-search\repos\ACSProductDemo\.git
+Commits per second:426.12048192771084, elapsed time = 83.0, commits processed: 35368
+E:\VMs\expert-search\repos\ACSVParser\.git
+Loaded master of E:\VMs\expert-search\repos\ACSVParser\.git
+Commits per second:426.28915662650604, elapsed time = 83.0, commits processed: 35382
+E:\VMs\expert-search\repos\ACS_Tools\.git
+Loaded master of E:\VMs\expert-search\repos\ACS_Tools\.git
+Commits per second:426.3855421686747, elapsed time = 83.0, commits processed: 35390
+E:\VMs\expert-search\repos\act\.git
+Loaded master of E:\VMs\expert-search\repos\act\.git
+Commits per second:426.48192771084337, elapsed time = 83.0, commits processed: 35398
+E:\VMs\expert-search\repos\actest\.git
+Loaded master of E:\VMs\expert-search\repos\actest\.git
+Eror: could not find HEAD for E:\VMs\expert-search\repos\actest\.git
+missing content stream
+E:\VMs\expert-search\repos\Action-wrapper\.git
+Loaded gh-pages of E:\VMs\expert-search\repos\Action-wrapper\.git
+Commits per second:426.56626506024094, elapsed time = 83.0, commits processed: 35405
+E:\VMs\expert-search\repos\ActionBarActivity\.git
+Loaded master of E:\VMs\expert-search\repos\ActionBarActivity\.git
+Commits per second:426.6265060240964, elapsed time = 83.0, commits processed: 35410
+E:\VMs\expert-search\repos\actionmailer-instyle\.git
+Loaded master of E:\VMs\expert-search\repos\actionmailer-instyle\.git
+Commits per second:427.1566265060241, elapsed time = 83.0, commits processed: 35454
+E:\VMs\expert-search\repos\ActionMenuTest\.git
+Loaded master of E:\VMs\expert-search\repos\ActionMenuTest\.git
+Commits per second:427.1927710843373, elapsed time = 83.0, commits processed: 35457
+E:\VMs\expert-search\repos\actionscript\.git
+Loaded master of E:\VMs\expert-search\repos\actionscript\.git
+Commits per second:427.26506024096386, elapsed time = 83.0, commits processed: 35463
+E:\VMs\expert-search\repos\ActionScript-3.0\.git
+Loaded master of E:\VMs\expert-search\repos\ActionScript-3.0\.git
+Commits per second:427.34939759036143, elapsed time = 83.0, commits processed: 35470
+E:\VMs\expert-search\repos\action_mailer_tls\.git
+Loaded master of E:\VMs\expert-search\repos\action_mailer_tls\.git
+Commits per second:427.3614457831325, elapsed time = 83.0, commits processed: 35471
+E:\VMs\expert-search\repos\Activate_Bukkit_Plugin\.git
+Loaded master of E:\VMs\expert-search\repos\Activate_Bukkit_Plugin\.git
+Commits per second:422.5595238095238, elapsed time = 84.0, commits processed: 35495
+E:\VMs\expert-search\repos\activator-el\.git
+Loaded master of E:\VMs\expert-search\repos\activator-el\.git
+Commits per second:422.5952380952381, elapsed time = 84.0, commits processed: 35498
+E:\VMs\expert-search\repos\ActivatorDemo\.git
+Loaded master of E:\VMs\expert-search\repos\ActivatorDemo\.git
+Commits per second:417.6823529411765, elapsed time = 85.0, commits processed: 35503
+E:\VMs\expert-search\repos\activeadmin-cancan-roles\.git
+Loaded master of E:\VMs\expert-search\repos\activeadmin-cancan-roles\.git
+Commits per second:417.7294117647059, elapsed time = 85.0, commits processed: 35507
+E:\VMs\expert-search\repos\ActiveHs-misc\.git
+Loaded master of E:\VMs\expert-search\repos\ActiveHs-misc\.git
+Commits per second:417.78823529411767, elapsed time = 85.0, commits processed: 35512
+E:\VMs\expert-search\repos\activejs\.git
+Loaded master of E:\VMs\expert-search\repos\activejs\.git
+Commits per second:418.22093023255815, elapsed time = 86.0, commits processed: 35967
+E:\VMs\expert-search\repos\activemerchant-bpoint\.git
+Loaded master of E:\VMs\expert-search\repos\activemerchant-bpoint\.git
+Commits per second:418.75581395348837, elapsed time = 86.0, commits processed: 36013
+E:\VMs\expert-search\repos\activemessaging-kestrel-adapter\.git
+Loaded master of E:\VMs\expert-search\repos\activemessaging-kestrel-adapter\.git
+Commits per second:419.06976744186045, elapsed time = 86.0, commits processed: 36040
+E:\VMs\expert-search\repos\activerecord-diff\.git
+Loaded master of E:\VMs\expert-search\repos\activerecord-diff\.git
+Commits per second:419.13953488372096, elapsed time = 86.0, commits processed: 36046
+E:\VMs\expert-search\repos\activerecord-draft_records\.git
+Loaded master of E:\VMs\expert-search\repos\activerecord-draft_records\.git
+Commits per second:419.36046511627904, elapsed time = 86.0, commits processed: 36065
+E:\VMs\expert-search\repos\activerecord-jdbcdbf-adapter\.git
+Loaded master of E:\VMs\expert-search\repos\activerecord-jdbcdbf-adapter\.git
+Commits per second:419.45348837209303, elapsed time = 86.0, commits processed: 36073
+E:\VMs\expert-search\repos\activerecord_cache\.git
+Loaded master of E:\VMs\expert-search\repos\activerecord_cache\.git
+Commits per second:414.7471264367816, elapsed time = 87.0, commits processed: 36083
+E:\VMs\expert-search\repos\activerecord_constraints\.git
+Loaded master of E:\VMs\expert-search\repos\activerecord_constraints\.git
+Commits per second:414.91954022988506, elapsed time = 87.0, commits processed: 36098
+E:\VMs\expert-search\repos\activerecord_null_object\.git
+Loaded master of E:\VMs\expert-search\repos\activerecord_null_object\.git
+Commits per second:415.2528735632184, elapsed time = 87.0, commits processed: 36127
+E:\VMs\expert-search\repos\activesms\.git
+Loaded master of E:\VMs\expert-search\repos\activesms\.git
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+UTF8]
+java.nio.charset.IllegalCharsetNameException: UTF8]
+Commits per second:415.6551724137931, elapsed time = 87.0, commits processed: 36162
+E:\VMs\expert-search\repos\ActiveSU\.git
+Loaded master of E:\VMs\expert-search\repos\ActiveSU\.git
+Commits per second:417.0574712643678, elapsed time = 87.0, commits processed: 36284
+E:\VMs\expert-search\repos\activeuuid\.git
+Loaded master of E:\VMs\expert-search\repos\activeuuid\.git
+Commits per second:417.35632183908046, elapsed time = 87.0, commits processed: 36310
+E:\VMs\expert-search\repos\activewarehouse.info\.git
+Loaded master of E:\VMs\expert-search\repos\activewarehouse.info\.git
+Commits per second:417.44827586206895, elapsed time = 87.0, commits processed: 36318
+E:\VMs\expert-search\repos\active_blur\.git
+Loaded develop of E:\VMs\expert-search\repos\active_blur\.git
+Commits per second:417.7816091954023, elapsed time = 87.0, commits processed: 36347
+E:\VMs\expert-search\repos\active_directory_auth\.git
+Loaded master of E:\VMs\expert-search\repos\active_directory_auth\.git
+Commits per second:417.82758620689657, elapsed time = 87.0, commits processed: 36351
+E:\VMs\expert-search\repos\active_queue\.git
+Loaded master of E:\VMs\expert-search\repos\active_queue\.git
+Commits per second:417.86206896551727, elapsed time = 87.0, commits processed: 36354
+E:\VMs\expert-search\repos\active_racksource\.git
+Loaded master of E:\VMs\expert-search\repos\active_racksource\.git
+Commits per second:418.1034482758621, elapsed time = 87.0, commits processed: 36375
+E:\VMs\expert-search\repos\active_record_hstore_serializer\.git
+Loaded master of E:\VMs\expert-search\repos\active_record_hstore_serializer\.git
+Commits per second:418.17241379310343, elapsed time = 87.0, commits processed: 36381
+E:\VMs\expert-search\repos\active_record_openid_store\.git
+Loaded master of E:\VMs\expert-search\repos\active_record_openid_store\.git
+Commits per second:418.367816091954, elapsed time = 87.0, commits processed: 36398
+E:\VMs\expert-search\repos\active_record_sql_exporter\.git
+Loaded master of E:\VMs\expert-search\repos\active_record_sql_exporter\.git
+Commits per second:413.82954545454544, elapsed time = 88.0, commits processed: 36417
+E:\VMs\expert-search\repos\active_scaffold_acts_as_list\.git
+Loaded master of E:\VMs\expert-search\repos\active_scaffold_acts_as_list\.git
+Commits per second:413.85227272727275, elapsed time = 88.0, commits processed: 36419
+E:\VMs\expert-search\repos\active_scaffold_localize\.git
+Loaded master of E:\VMs\expert-search\repos\active_scaffold_localize\.git
+Commits per second:413.9886363636364, elapsed time = 88.0, commits processed: 36431
+E:\VMs\expert-search\repos\activiti-modeler\.git
+Loaded develop of E:\VMs\expert-search\repos\activiti-modeler\.git
+Commits per second:414.52272727272725, elapsed time = 88.0, commits processed: 36478
+E:\VMs\expert-search\repos\acts_as_calendar\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_calendar\.git
+Commits per second:415.1818181818182, elapsed time = 88.0, commits processed: 36536
+E:\VMs\expert-search\repos\acts_as_category\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_category\.git
+Commits per second:415.25, elapsed time = 88.0, commits processed: 36542
+E:\VMs\expert-search\repos\acts_as_enumable\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_enumable\.git
+Commits per second:415.47727272727275, elapsed time = 88.0, commits processed: 36562
+E:\VMs\expert-search\repos\acts_as_mt_object\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_mt_object\.git
+Commits per second:415.52272727272725, elapsed time = 88.0, commits processed: 36566
+E:\VMs\expert-search\repos\acts_as_nested_moebius\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_nested_moebius\.git
+Commits per second:411.0, elapsed time = 89.0, commits processed: 36579
+E:\VMs\expert-search\repos\acts_as_paranoid_versioned\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_paranoid_versioned\.git
+Commits per second:411.12359550561797, elapsed time = 89.0, commits processed: 36590
+E:\VMs\expert-search\repos\acts_as_partitioned\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_partitioned\.git
+Commits per second:411.3820224719101, elapsed time = 89.0, commits processed: 36613
+E:\VMs\expert-search\repos\acts_as_queryable\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_queryable\.git
+Commits per second:411.438202247191, elapsed time = 89.0, commits processed: 36618
+E:\VMs\expert-search\repos\acts_as_random_id\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_random_id\.git
+Commits per second:411.7191011235955, elapsed time = 89.0, commits processed: 36643
+E:\VMs\expert-search\repos\acts_as_rateable_by\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_rateable_by\.git
+Commits per second:411.7752808988764, elapsed time = 89.0, commits processed: 36648
+E:\VMs\expert-search\repos\acts_as_routing\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_routing\.git
+Commits per second:411.82022471910113, elapsed time = 89.0, commits processed: 36652
+E:\VMs\expert-search\repos\acts_as_sluggable\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_sluggable\.git
+Commits per second:411.8988764044944, elapsed time = 89.0, commits processed: 36659
+E:\VMs\expert-search\repos\acts_as_span\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_span\.git
+Commits per second:412.0112359550562, elapsed time = 89.0, commits processed: 36669
+E:\VMs\expert-search\repos\acts_as_test_repository\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_test_repository\.git
+Commits per second:412.03370786516854, elapsed time = 89.0, commits processed: 36671
+E:\VMs\expert-search\repos\acts_as_voteable\.git
+Loaded master of E:\VMs\expert-search\repos\acts_as_voteable\.git
+Commits per second:412.07865168539325, elapsed time = 89.0, commits processed: 36675
+E:\VMs\expert-search\repos\act_as_list\.git
+Loaded master of E:\VMs\expert-search\repos\act_as_list\.git
+Commits per second:412.29213483146066, elapsed time = 89.0, commits processed: 36694
+E:\VMs\expert-search\repos\acumen-netsuite-client\.git
+Loaded master of E:\VMs\expert-search\repos\acumen-netsuite-client\.git
+Commits per second:412.30337078651684, elapsed time = 89.0, commits processed: 36695
+E:\VMs\expert-search\repos\Ada\.git
+Loaded master of E:\VMs\expert-search\repos\Ada\.git
+Commits per second:412.3370786516854, elapsed time = 89.0, commits processed: 36698
+E:\VMs\expert-search\repos\Ada-2012-Tutorial\.git
+Loaded master of E:\VMs\expert-search\repos\Ada-2012-Tutorial\.git
+Commits per second:408.35555555555555, elapsed time = 90.0, commits processed: 36752
+E:\VMs\expert-search\repos\Adafruit-128x64-Monochrome-OLED-PCB\.git
+Loaded master of E:\VMs\expert-search\repos\Adafruit-128x64-Monochrome-OLED-PCB\.git
+Commits per second:408.3888888888889, elapsed time = 90.0, commits processed: 36755
+E:\VMs\expert-search\repos\adamtindale.com\.git
+Loaded master of E:\VMs\expert-search\repos\adamtindale.com\.git
+Commits per second:408.7, elapsed time = 90.0, commits processed: 36783
+E:\VMs\expert-search\repos\adapter-leveldb\.git
+Loaded master of E:\VMs\expert-search\repos\adapter-leveldb\.git
+Commits per second:408.7111111111111, elapsed time = 90.0, commits processed: 36784
+E:\VMs\expert-search\repos\AdBuzzer\.git
+Loaded master of E:\VMs\expert-search\repos\AdBuzzer\.git
+Commits per second:408.74444444444447, elapsed time = 90.0, commits processed: 36787
+E:\VMs\expert-search\repos\AddDirectlyToUnsortedBookmarks\.git
+Loaded master of E:\VMs\expert-search\repos\AddDirectlyToUnsortedBookmarks\.git
+Commits per second:409.2, elapsed time = 90.0, commits processed: 36828
+E:\VMs\expert-search\repos\addethon\.git
+Loaded master of E:\VMs\expert-search\repos\addethon\.git
+Commits per second:409.72222222222223, elapsed time = 90.0, commits processed: 36875
+E:\VMs\expert-search\repos\addinghaml\.git
+Loaded master of E:\VMs\expert-search\repos\addinghaml\.git
+Commits per second:409.85555555555555, elapsed time = 90.0, commits processed: 36887
+E:\VMs\expert-search\repos\AddLib\.git
+Loaded master of E:\VMs\expert-search\repos\AddLib\.git
+Commits per second:409.9222222222222, elapsed time = 90.0, commits processed: 36893
+E:\VMs\expert-search\repos\AddonBakery-libraries\.git
+Loaded master of E:\VMs\expert-search\repos\AddonBakery-libraries\.git
+Commits per second:409.94444444444446, elapsed time = 90.0, commits processed: 36895
+E:\VMs\expert-search\repos\addons_pyrocms\.git
+Loaded master of E:\VMs\expert-search\repos\addons_pyrocms\.git
+Commits per second:410.0888888888889, elapsed time = 90.0, commits processed: 36908
+E:\VMs\expert-search\repos\Address-Book\.git
+Loaded master of E:\VMs\expert-search\repos\Address-Book\.git
+Commits per second:405.6923076923077, elapsed time = 91.0, commits processed: 36918
+E:\VMs\expert-search\repos\Addressbook\.git
+Loaded master of E:\VMs\expert-search\repos\Addressbook\.git
+Commits per second:405.7142857142857, elapsed time = 91.0, commits processed: 36920
+E:\VMs\expert-search\repos\adel-cutter\.git
+Loaded master of E:\VMs\expert-search\repos\adel-cutter\.git
+Commits per second:405.74725274725273, elapsed time = 91.0, commits processed: 36923
+E:\VMs\expert-search\repos\adempiere\.git
+Loaded master of E:\VMs\expert-search\repos\adempiere\.git
+Commits per second:405.75824175824175, elapsed time = 91.0, commits processed: 36924
+E:\VMs\expert-search\repos\ADF\.git
+Loaded master of E:\VMs\expert-search\repos\ADF\.git
+Eror: could not find HEAD for E:\VMs\expert-search\repos\ADF\.git
+missing content stream
+E:\VMs\expert-search\repos\Adiba-s-Homework\.git
+Loaded master of E:\VMs\expert-search\repos\Adiba-s-Homework\.git
+Commits per second:405.7912087912088, elapsed time = 91.0, commits processed: 36927
+E:\VMs\expert-search\repos\adid-sender\.git
+Loaded master of E:\VMs\expert-search\repos\adid-sender\.git
+Commits per second:405.8021978021978, elapsed time = 91.0, commits processed: 36928
+E:\VMs\expert-search\repos\Adinline\.git
+Loaded master of E:\VMs\expert-search\repos\Adinline\.git
+Commits per second:405.84615384615387, elapsed time = 91.0, commits processed: 36932
+E:\VMs\expert-search\repos\Adium-Rdio-Current-Track-Status\.git
+Loaded master of E:\VMs\expert-search\repos\Adium-Rdio-Current-Track-Status\.git
+Commits per second:405.9340659340659, elapsed time = 91.0, commits processed: 36940
+E:\VMs\expert-search\repos\adium2pidgin\.git
+Loaded master of E:\VMs\expert-search\repos\adium2pidgin\.git
+Commits per second:406.5054945054945, elapsed time = 91.0, commits processed: 36992
+E:\VMs\expert-search\repos\adjutant\.git
+Loaded master of E:\VMs\expert-search\repos\adjutant\.git
+Commits per second:406.7692307692308, elapsed time = 91.0, commits processed: 37016
+E:\VMs\expert-search\repos\adkry-birds\.git
+Loaded master of E:\VMs\expert-search\repos\adkry-birds\.git
+Commits per second:406.9340659340659, elapsed time = 91.0, commits processed: 37031
+E:\VMs\expert-search\repos\ADK_acchimuite_hoi\.git
+Loaded master of E:\VMs\expert-search\repos\ADK_acchimuite_hoi\.git
+Commits per second:407.0659340659341, elapsed time = 91.0, commits processed: 37043
+E:\VMs\expert-search\repos\ADLOCK\.git
+Loaded master of E:\VMs\expert-search\repos\ADLOCK\.git
+Commits per second:407.0879120879121, elapsed time = 91.0, commits processed: 37045
+E:\VMs\expert-search\repos\admin-scripts\.git
+Loaded master of E:\VMs\expert-search\repos\admin-scripts\.git
+Commits per second:407.14285714285717, elapsed time = 91.0, commits processed: 37050
+E:\VMs\expert-search\repos\adminCraft_temp\.git
+Loaded master of E:\VMs\expert-search\repos\adminCraft_temp\.git
+Commits per second:407.1978021978022, elapsed time = 91.0, commits processed: 37055
+E:\VMs\expert-search\repos\administrate_me\.git
+Loaded master of E:\VMs\expert-search\repos\administrate_me\.git
+Commits per second:406.25, elapsed time = 92.0, commits processed: 37375
+E:\VMs\expert-search\repos\admirepowersolutions\.git
+Loaded master of E:\VMs\expert-search\repos\admirepowersolutions\.git
+Commits per second:402.01075268817203, elapsed time = 93.0, commits processed: 37387
+E:\VMs\expert-search\repos\adnugcontinuations\.git
+Loaded master of E:\VMs\expert-search\repos\adnugcontinuations\.git
+Commits per second:402.1290322580645, elapsed time = 93.0, commits processed: 37398
+E:\VMs\expert-search\repos\Adobe-Photoshop-scripts\.git
+Loaded master of E:\VMs\expert-search\repos\Adobe-Photoshop-scripts\.git
+Commits per second:402.1505376344086, elapsed time = 93.0, commits processed: 37400
+E:\VMs\expert-search\repos\Adobe-TV.bundle\.git
+Loaded master of E:\VMs\expert-search\repos\Adobe-TV.bundle\.git
+Commits per second:394.0, elapsed time = 95.0, commits processed: 37430
+E:\VMs\expert-search\repos\adoc-mode\.git
+Loaded master of E:\VMs\expert-search\repos\adoc-mode\.git
+Commits per second:394.4842105263158, elapsed time = 95.0, commits processed: 37476
+E:\VMs\expert-search\repos\Adopt-A-Cause\.git
+Loaded develop of E:\VMs\expert-search\repos\Adopt-A-Cause\.git
+Commits per second:394.5578947368421, elapsed time = 95.0, commits processed: 37483
+E:\VMs\expert-search\repos\Adopt_A_Word\.git
+Loaded master of E:\VMs\expert-search\repos\Adopt_A_Word\.git
+Commits per second:394.6842105263158, elapsed time = 95.0, commits processed: 37495
+E:\VMs\expert-search\repos\adot4j4a\.git
+Loaded master of E:\VMs\expert-search\repos\adot4j4a\.git
+Commits per second:394.7578947368421, elapsed time = 95.0, commits processed: 37502
+E:\VMs\expert-search\repos\adozeneggs\.git
+Loaded master of E:\VMs\expert-search\repos\adozeneggs\.git
+Commits per second:395.69473684210527, elapsed time = 95.0, commits processed: 37591
+E:\VMs\expert-search\repos\adp2\.git
+Loaded master of E:\VMs\expert-search\repos\adp2\.git
+Commits per second:395.70526315789476, elapsed time = 95.0, commits processed: 37592
+E:\VMs\expert-search\repos\ads\.git
+Loaded master of E:\VMs\expert-search\repos\ads\.git
+Commits per second:395.7263157894737, elapsed time = 95.0, commits processed: 37594
+E:\VMs\expert-search\repos\adtech\.git
+Loaded master of E:\VMs\expert-search\repos\adtech\.git
+Commits per second:395.82105263157894, elapsed time = 95.0, commits processed: 37603
+E:\VMs\expert-search\repos\aduni\.git
+Loaded master of E:\VMs\expert-search\repos\aduni\.git
+Commits per second:395.85263157894735, elapsed time = 95.0, commits processed: 37606
+E:\VMs\expert-search\repos\advanced-authenticator\.git
+Loaded master of E:\VMs\expert-search\repos\advanced-authenticator\.git
+Commits per second:391.7916666666667, elapsed time = 96.0, commits processed: 37612
+E:\VMs\expert-search\repos\advanced-csrf\.git
+Loaded master of E:\VMs\expert-search\repos\advanced-csrf\.git
+Commits per second:391.9583333333333, elapsed time = 96.0, commits processed: 37628
+E:\VMs\expert-search\repos\Advanced-Quiz-Bowl-Stats\.git
+Loaded master of E:\VMs\expert-search\repos\Advanced-Quiz-Bowl-Stats\.git
+Commits per second:392.2395833333333, elapsed time = 96.0, commits processed: 37655
+E:\VMs\expert-search\repos\Advanced-Vision\.git
+Loaded master of E:\VMs\expert-search\repos\Advanced-Vision\.git
+Commits per second:392.3333333333333, elapsed time = 96.0, commits processed: 37664
+E:\VMs\expert-search\repos\Advanced-Warpplates\.git
+Loaded master of E:\VMs\expert-search\repos\Advanced-Warpplates\.git
+Commits per second:388.3814432989691, elapsed time = 97.0, commits processed: 37673
+E:\VMs\expert-search\repos\advanced_scaffold\.git
+Loaded master of E:\VMs\expert-search\repos\advanced_scaffold\.git
+Commits per second:388.4226804123711, elapsed time = 97.0, commits processed: 37677
+E:\VMs\expert-search\repos\AdvanceIDE\.git
+Loaded master of E:\VMs\expert-search\repos\AdvanceIDE\.git
+Commits per second:388.45360824742266, elapsed time = 97.0, commits processed: 37680
+E:\VMs\expert-search\repos\Adventure-App\.git
+Loaded master of E:\VMs\expert-search\repos\Adventure-App\.git
+Commits per second:384.5816326530612, elapsed time = 98.0, commits processed: 37689
+E:\VMs\expert-search\repos\Adventure2.5\.git
+Loaded master of E:\VMs\expert-search\repos\Adventure2.5\.git
+Commits per second:384.6938775510204, elapsed time = 98.0, commits processed: 37700
+E:\VMs\expert-search\repos\AdventureGame\.git
+Loaded master of E:\VMs\expert-search\repos\AdventureGame\.git
+Commits per second:381.1313131313131, elapsed time = 99.0, commits processed: 37732
+E:\VMs\expert-search\repos\Adventures-Of-Awesomeness\.git
+Loaded master of E:\VMs\expert-search\repos\Adventures-Of-Awesomeness\.git
+Commits per second:381.1818181818182, elapsed time = 99.0, commits processed: 37737
+E:\VMs\expert-search\repos\ADVUserDefaults\.git
+Loaded master of E:\VMs\expert-search\repos\ADVUserDefaults\.git
+Commits per second:381.22222222222223, elapsed time = 99.0, commits processed: 37741
+E:\VMs\expert-search\repos\adv_c\.git
+Loaded master of E:\VMs\expert-search\repos\adv_c\.git
+Commits per second:381.4040404040404, elapsed time = 99.0, commits processed: 37759
+E:\VMs\expert-search\repos\AdWords-to-PostgreSQL\.git
+Loaded master of E:\VMs\expert-search\repos\AdWords-to-PostgreSQL\.git
+Commits per second:381.4141414141414, elapsed time = 99.0, commits processed: 37760
+E:\VMs\expert-search\repos\ADXL345---SPI\.git
+Loaded master of E:\VMs\expert-search\repos\ADXL345---SPI\.git
+Commits per second:381.4646464646465, elapsed time = 99.0, commits processed: 37765
+E:\VMs\expert-search\repos\ad_analyze\.git
+Loaded master of E:\VMs\expert-search\repos\ad_analyze\.git
+Commits per second:381.54545454545456, elapsed time = 99.0, commits processed: 37773
+E:\VMs\expert-search\repos\AE-Support-Dashboard-Widget\.git
+Loaded master of E:\VMs\expert-search\repos\AE-Support-Dashboard-Widget\.git
+Commits per second:381.6161616161616, elapsed time = 99.0, commits processed: 37780
+E:\VMs\expert-search\repos\aeblog\.git
+Loaded master of E:\VMs\expert-search\repos\aeblog\.git
+Commits per second:381.62626262626264, elapsed time = 99.0, commits processed: 37781
+E:\VMs\expert-search\repos\aegir_make_working_copy\.git
+Loaded master of E:\VMs\expert-search\repos\aegir_make_working_copy\.git
+Commits per second:381.6363636363636, elapsed time = 99.0, commits processed: 37782
+E:\VMs\expert-search\repos\aegisub_2.1.9\.git
+Loaded aegisub_2.1.9_sapikachu of E:\VMs\expert-search\repos\aegisub_2.1.9\.git
+Commits per second:380.32, elapsed time = 100.0, commits processed: 38032
+E:\VMs\expert-search\repos\aegypius.github.com\.git
+Loaded master of E:\VMs\expert-search\repos\aegypius.github.com\.git
+Commits per second:380.38, elapsed time = 100.0, commits processed: 38038
+E:\VMs\expert-search\repos\AES128Encryption-ObjC\.git
+Loaded master of E:\VMs\expert-search\repos\AES128Encryption-ObjC\.git
+Commits per second:380.41, elapsed time = 100.0, commits processed: 38041
+E:\VMs\expert-search\repos\ae_users\.git
+Loaded master of E:\VMs\expert-search\repos\ae_users\.git
+Commits per second:381.39, elapsed time = 100.0, commits processed: 38139
+E:\VMs\expert-search\repos\affiliates-banners\.git
+Loaded master of E:\VMs\expert-search\repos\affiliates-banners\.git
+Commits per second:381.4, elapsed time = 100.0, commits processed: 38140
+E:\VMs\expert-search\repos\affiliates-triage\.git
+Loaded master of E:\VMs\expert-search\repos\affiliates-triage\.git
+Commits per second:381.47, elapsed time = 100.0, commits processed: 38147
+E:\VMs\expert-search\repos\afisha\.git
+Loaded master of E:\VMs\expert-search\repos\afisha\.git
+Commits per second:381.48, elapsed time = 100.0, commits processed: 38148
+E:\VMs\expert-search\repos\AFITandroid-msm-2.6.35\.git
+Loaded master of E:\VMs\expert-search\repos\AFITandroid-msm-2.6.35\.git
+Commits per second:381.5, elapsed time = 100.0, commits processed: 38150

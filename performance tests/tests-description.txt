@@ -1,0 +1,15 @@
+1. Initial
+2. Look for "HEAD"
+3. Switch to Java binary serialization (~10% improvement)
+4. Get author identity less often
+5. Counting accuracy
+6. Threads
+7. Batch size
+8. ??
+9. Improve repo load time
+10. Fix threads so they run
+11. Fix thread problem?
+12. Fix problem where threads error out and die
+13. More error handling
+15. Fix some error scenarios
+16. StringBuffer size, remove .length
