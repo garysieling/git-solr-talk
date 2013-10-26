@@ -44,7 +44,19 @@
 <li>Since there are mature products for this type of thing, this talk isn’t intended to be a replacement for them; rather it’s a well contained way to understand full-text search, and to explore the design challenges in building ETL processes.</li>
           </aside>          
           </section>
-        <section>
+          <section>
+          <h2>Parts</h2>
+          <p>
+            <li>Tool Demo</li>
+            <li>How-to</li>
+            <li>Inspiration</li>
+          </p>
+          <aside class="notes">
+          <li>Since Wingspan does some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. That said, the person who may have done the change may not be the most knowledgeable about it, and you'd prefer to know who the lead for a project was.</li>
+          <li>Similarly, when someone calls the company, it’s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project.</li>
+          </aside>
+       </section>
+          <section>
           <h2>Motivation</h2>
           <p>
             Which engineer worked on a particular client/project/technology? 
@@ -54,6 +66,27 @@
           <li>Similarly, when someone calls the company, it’s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project.</li>
           </aside>
        </section>
+       <section>
+          <h1>Demo (Authors)</h1>
+          <aside class="notes">
+          </aside>
+          </section>
+       <section>
+          <h2>Motivation</h2>
+          <p>
+            Corporate open source contributions
+          </p>
+          <aside class="notes">
+          <li>With the advent of Microsoft's cloud hosting, they've been claiming a new era of contributing to open-source, to make things like PHP work on Windows.</li>
+          </aside>
+        </section>         
+ 
+        <section>
+          <h1>Demo (Companies)</h1>
+          <aside class="notes">
+          </aside>
+          </section>
+
        <section>
           <h2>Motivation</h2>
           <p>
@@ -65,11 +98,7 @@
           <li>This is different from a typical search, where you're looking for the commits individually, which serves different use cases than I'm after here. This technique works especially well if you company is diligent about what you put in commits; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.</li>
           </aside>
         </section>         
-        <section>
-          <h1>Demo</h1>
-          <aside class="notes">
-          </aside>
-          </section>
+
         <section>
           <h2>Versions of this tool</h2>
           <p>
@@ -100,7 +129,14 @@
           <li>As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and fits in the category loosely, as it can be fairly flexible about schemas, avoids joins, and has some horizontal scaling features.</li>
           </aside>  
           </section>
-                  <section>
+        <section>
+        <h2>How this is built</h2>
+        <li>Front-end</li>
+        <li>Back-end</li>
+          <aside class="notes">      
+          </aside>
+        </section>
+        <section>
           <h2>Getting search results through JSON</h2>
           <p>
           /select/?q=search:(search:jug)
@@ -141,17 +177,8 @@ $.ajax({
             <li>You can set up a simple UI with a tool like Twitter bootstrap, and retrieve search results using the Solr APIs. The APIs have to be configured so that certain endpoints are available. Here’s some example code, this is just typical jQuery code.</li>
           </aside>
         </section>
-
         <section>
-          <h1>Why do you need Java code?</h1>
-          <aside class="notes">
-	<li>Solr Repositories resemble a single, denormalized database table, which they call a core. Each row in the table is referred to as a “document”, which comes from the idea that you may have indexed the contents of a PDF, HTML file, or Word document, although there is no particular requirement on what a document must be.</li>
-	<li>If you include the contents of a PDF and other metadata, by default these have equal weight, unless you tell Solr otherwise. In fact, the Solr index just stores text, so if you started with a bunch of PDFs you’d have to build your own processing pipeline to extract and process text from them.</li>
-          </aside>
-        </section>
-          
-        <section>
-        <h2>What Needs Building</h2>
+        <h2>Backend ETL</h2>
         <ul>
                 <li>Extracting Git Commits</li>
                 <li>Transforming Commits</li>
@@ -160,6 +187,13 @@ $.ajax({
         <aside class="notes">
         <li>We need to do three things</li>
             <li>I'm going to show how to build up an ETL process in Java to build this tool using two libraries, SolrJ and JGit. While this talk is focused on extracting data from git, it's fairly easy to combine data across various data sources, since we're going to write Java code to extract data and populate an index. There are also suitable tools to convert older repositories into git data, such as cvs2git, which is suitable for this purpose.</li>
+          </aside>
+          </section>         
+        <section>
+          <h1>Why do you need Java code?</h1>
+          <aside class="notes">
+	<li>Solr Repositories resemble a single, denormalized database table, which they call a core. Each row in the table is referred to as a “document”, which comes from the idea that you may have indexed the contents of a PDF, HTML file, or Word document, although there is no particular requirement on what a document must be.</li>
+	<li>If you include the contents of a PDF and other metadata, by default these have equal weight, unless you tell Solr otherwise. In fact, the Solr index just stores text, so if you started with a bunch of PDFs you’d have to build your own processing pipeline to extract and process text from them.</li>
           </aside>
         </section>
           <section>
@@ -213,25 +247,25 @@ for (RevCommit commit : walk) {
         <section>
           <h2>Patches</h2>
           <pre><code data-trim>
+// To fetch file diffs, we must provide a stream, where they will be written:
 ByteArrayOutputStream out = new ByteArrayOutputStream();
 DiffFormatter df = new DiffFormatter(out);
 df.setRepository(repository);
-df.setContext(3);
 
 List&lt;DiffEntry&gt; diffs = df.scan(parent.getTree(), commit.getTree());
 
+// Each of these objects is one file in the commit
 for (Object obj : diffs) {
   DiffEntry diff = (DiffEntry) obj;
+  FileHeader fh = df.toFileHeader(diff);
+  df.format(diff);
+  String diffText = out.toString("UTF-8");
 
-  if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY) {
-    FileHeader fh = df.toFileHeader(diff);
-    df.format(diff);
-    String diffText = out.toString("UTF-8");
-    out.reset();
-  }
+  // Reset the stream, so we can get each patch separately
+  out.reset();
 }
 </code></pre>
-          <aside class="notes">         
+                    <aside class="notes">         
           <li>JGit lets you generate patch sets, or patch sets with several lines of context. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.</li>
           <li>Once we get to this point, we can apply any transformations we'd want to do before sending data to solr. Some transformations are best done in code. Depending on your needs, you can alternattely write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.</li>
           <li>Example transformations include entity name normalization or extracting data from external systems like LDAP - for instance, you might validate that things you think are ticket numbers are valid. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.</li>
@@ -240,8 +274,12 @@ for (Object obj : diffs) {
           <section>
           <h2>Commit Comments</h2>
             <pre><code data-trim>
+// For this application, only find new or modified files
 if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
     diff.getChangeType() == DiffEntry.ChangeType.ADD)) {
+
+  // We have enough information now to get commit messages, 
+  // file names, and author information
   System.out.println(diff.getNewPath());
   System.out.println(commit.getFullMessage());
   System.out.println(commit.getAuthorIdent().getName());
@@ -317,7 +355,109 @@ return company;
 	    <li>Since there is built-in support in the tools, I thought it worth mentioning this, since this information can be useful if it's added consistently.</li>
           </aside>
         </section>
-          
+
+       <section>
+          <h2>Setting up Solr</h2>
+          <aside class="notes">
+            <li>Drop in a .war</li>
+            <li>Use Jetty/Tomcat</li>
+            <li>Set configuration parameters to point to index</li>
+            <li>Logging settings/jars</li>
+            <li>Permissions for index writing</li>
+            <li>Index is adjacent to config files</li>
+            <li>Point to core(s)</li>
+            <li>Drop in other jars if needed (e.g. to connect to jdbc drivers)</li>
+          </aside>
+        </section>
+        <section>
+          <h2>Solr - Limitations</h2>
+          <aside class="notes">
+            <li>Solr aims to be as fast at returning results as possible. It avoids features which slow this down; for instance, if you want to enforce ACLs on items in search results, you need to add columns and figure out how to populate them on your own. It has very limited support for inner joins, which allows for a way to implement more complex ACL structures if you do need them.</li>
+            <li>Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository.</li>
+          </aside>
+        </section>
+        <section>
+          <h2>Solr - Schema</h2>
+          <pre><code data-trim>
+&lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="author" type="git_author" indexed="true" stored="true" required="true" /&gt; 
+&lt;field name="email" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="message" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="search" type="text_general" indexed="true" stored="false" required="false" /&gt; 
+    </code></pre>
+          <aside class="notes">
+          <li>A common use for copyField is to combine multiple fields into one, although you can also use it to truncate data.
+          <li>multiValued - can be array valued for a document</li>
+          <li>compressed - gzip / compressThreshold</li>
+          <li>omitNorms / termVectors - can remove data needed for full text indexing</li>
+          <li>omitTermFreqAndPositions / omitPositions - can remove data used for highlighting</li>
+          <li>What is the purpose of the 'facet' type in solr?</li>
+          <li>What is 'string' vs. text_general?</li>
+          </aside>
+        </section>
+        <section>
+          <h2>Sending Data to Solr</h2>
+          <pre><code data-trim>
+// Connections happen over HTTP:
+HttpSolrServer server = new HttpSolrServer(
+     "http://localhost:8080/solr");
+
+Collection&lt;SolrInputDocument&gt; docs = new ArrayList&lt;SolrInputDocument&gt;();
+
+SolrInputDocument doc = new SolrInputDocument();
+
+// ID for the document contains enough information to find it in the source data:
+doc.addField("id", remoteUrl + "." + commit.getId());
+
+doc.addField("author", commit.getAuthorIdent().getName());
+doc.addField("email", commit.getAuthorIdent().getEmailAddress());
+doc.addField("message", commit.getFullMessage());
+
+// Any data we let the user search against is included in this value:
+doc.addField("search", search);
+</code></pre>
+          <aside class="notes">
+          <li>Need to remove nulls</li>
+          <li>Specify boost</li>
+          <li>Note multiple columns - can facet on one, and search on the other</li>
+          </aside>
+        </section>
+        <section>
+          <h2>Threading Updates</h2>
+          <pre><code data-trim>
+File[] files = new File("repositories\\").listFiles();
+String lastRepository = getLastRepository(); // resume after failure
+
+int i = 0;
+boolean start = false;
+
+// Split files up evenly between threads:
+for (File f : files) {
+  if (i++ % _numThreads == _myIndex) { // load every nth repository
+    String filename = f.getAbsolutePath() + "\\.git";
+            
+    start = start || filename.contains(lastRepository);
+    if (!start) 
+      continue;
+            
+    convertRepo(server, filename);
+  }
+}
+    </code></pre>
+          <aside class="notes">
+          <li>Inside run method</li>
+          <li>For this application I've chosen to have multiple threads which loop over all the available repositories. If there are ten threads, each thread knows it's number, from 1 to 10 - the first thread picks up files 1, 11, 21, the second thread picks up files 2, 12, 22, and so on. This allows the threads to be killed and restart part way without any communication, although it won't help you if you download new data out of sequence.</li>
+          </aside>
+          </section>
+
+        <section>
+          <h2>Inspiration</h2>
+          <ul>
+                  <li>High Volume Indexing</li>
+                  <li>Parsing Code Comments</li>
+                  <li>Testing</li>
+          </ul>
+          </section>
         <section>
         <h2>Indexing Large Numbers of Repositories</h2>
         <aside class="notes">
@@ -339,7 +479,8 @@ return company;
           <h2>Testing ETL processes</h2>
           <aside class="notes">
           <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
-            <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
+          <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
+          <li>Use a key that lets you get back to the original data, rather than a sequence number</li>
           </aside>
         </section>
           
@@ -349,19 +490,8 @@ return company;
           <li>For some types of tools, you probably don't want to fail, but note problems and move on, then incrementally reload parts that failed. This is especially true of data that is scraped or scanned.</li>
           </aside>
         </section>
-
-        <section>
-          <h2>IDs in ETL processes</h2>
-          <aside class="notes">
-
-            <li>If you want to keep your sanity, and be able to incrementally self-heal, you absolutely need to be able to reference data in the source system, or it will be impossible to resolve support issues.</li>
-            <li>One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID.</li>
-	    <li>Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It would prevent parallelism and mess with error handling, and assumes that everything happens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.</li>
-          </aside>
-          </section>
-       
-        <section>
-        <h2>Parsing Challenges: Comments</h2>
+         <section>
+        <h2>Parsing Comments</h2>
 <pre><code data-trim>        
 @@ -1,9 +1,9 @@
 /* 
@@ -406,157 +536,6 @@ var MarkdownEditor = React.createClass({
           <li>Say you still wanted to parse the code though - what could you do? You'd want to reconstruct the file as it was at the commit time, build a syntax tree, and diff the tree between commits, ideally maintaining line numbers for verification purposes.</li>
           </aside>
           </section>
-       <section>
-          <h2>Setting up Solr</h2>
-          <aside class="notes">
-            <li>Drop in a .war</li>
-            <li>Use Jetty/Tomcat</li>
-            <li>Set configuration parameters to point to index</li>
-            <li>Logging settings/jars</li>
-            <li>Permissions for index writing</li>
-            <li>Index is adjacent to config files</li>
-            <li>Point to core(s)</li>
-            <li>Drop in other jars if needed (e.g. to connect to jdbc drivers)</li>
-          </aside>
-        </section>
-        <section>
-          <h2>Solr - Limitations</h2>
-          <aside class="notes">
-            <li>Solr aims to be as fast at returning results as possible. It avoids features which slow this down; for instance, if you want to enforce ACLs on items in search results, you need to add columns and figure out how to populate them on your own. It has very limited support for inner joins, which allows for a way to implement more complex ACL structures if you do need them.</li>
-            <li>Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository.</li>
-          </aside>
-        </section>
-        <section>
-          <h2>Initializing the Solr Connection</h2>
-          <pre><code data-trim>
-HttpSolrServer server = new HttpSolrServer(
-     "http://localhost:8080/solr/collection1");
-
-Collection&lt;SolrInputDocument&gt; docs = new ArrayList&lt;SolrInputDocument&gt;();
-    </code></pre>
-          <aside class="notes">
-          <li>Is this the right library API for 3.4?</li>
-          <li>What are the different types of HttpSolrServer objects?</li>
-          <li>Note here we specify the core we want to connect to</li>
-          <li>I also want to mention here that there may be a little naming confusion, as, Solr has a concept of commits like a database, which is the same terminology as pushing code into a repository. As we go, I'll try to make it clear which I mean, but I apologize in advance for any confusion.</li>
-          </aside>
-        </section>
-        <section>
-          <h2>Solr - Types</h2>
-          <pre><code data-trim>
-&lt;fieldType name="git_author" class="solr.TextField" positionIncrementGap="100"&gt;
-  &lt;analyzer type="index"&gt;
-    &lt;tokenizer class="solr.KeywordTokenizerFactory"/&gt;
-    &lt;filter class="solr.StopFilterFactory" 
-       ignoreCase="true" words="stopwords.txt" enablePositionIncrements="true" /&gt;
-    &lt;filter class="solr.SynonymFilterFactory" 
-       synonyms="authors.txt" ignoreCase="true" expand="false"/&gt;
-  &lt;/analyzer&gt;
-  &lt;analyzer type="query"&gt;
-    &lt;tokenizer class="solr.KeywordTokenizerFactory"/&gt;
-    &lt;filter class="solr.SynonymFilterFactory" 
-       synonyms="authors.txt" ignoreCase="true" expand="false"/&gt;
-    &lt;filter class="solr.LowerCaseFilterFactory"&gt;
-  &lt;/analyzer&gt;
-&lt;fieldType&gt;
-</code></pre>
-          <aside class="notes">
-          <li>Tokenizer controls how strings are split into words</li>
-          <li>Filter allows modifying the incoming string</li>
-          <li>These can be prebuilt or custom - there are companies that sell custom ones for Asian languages, for instance</li>
-          </aside>
-        </section>
-        <section>
-          <h2>Solr - Schema</h2>
-          <pre><code data-trim>
-&lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="author" type="git_author" indexed="true" stored="true" required="true" /&gt; 
-&lt;field name="email" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="message" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="search" type="text_general" indexed="true" stored="false" required="false" /&gt; 
-    </code></pre>
-          <aside class="notes">
-          <li>A common use for copyField is to combine multiple fields into one, although you can also use it to truncate data.
-          <li>multiValued - can be array valued for a document</li>
-          <li>compressed - gzip / compressThreshold</li>
-          <li>omitNorms / termVectors - can remove data needed for full text indexing</li>
-          <li>omitTermFreqAndPositions / omitPositions - can remove data used for highlighting</li>
-          <li>What is the purpose of the 'facet' type in solr?</li>
-          <li>What is 'string' vs. text_general?</li>
-          </aside>
-        </section>
-        <section>
-          <h2>Preparing Data for Solr</h2>
-          <pre><code data-trim>
-SolrInputDocument doc = new SolrInputDocument();
-
-doc.addField("id", remoteUrl + "." + commit.getId(), 1.0f);
-doc.addField("author", commit.getAuthorIdent().getName(), 1.0f);
-doc.addField("email", commit.getAuthorIdent().getEmailAddress(), 1.0f);
-doc.addField("message", commit.getFullMessage(), 1.0f);
-doc.addField("search", search);
-</code></pre>
-          <aside class="notes">
-          <li>Need to remove nulls</li>
-          <li>Specify boost</li>
-          <li>Note multiple columns - can facet on one, and search on the other</li>
-          </aside>
-        </section>
-        <section>
-          <h2>Threading Updates</h2>
-          <pre><code data-trim>
-File[] files = new File("repositories\\").listFiles();
-String lastRepository = getLastRepository(); // resume after failure
-
-int i = 0;
-boolean start = false;
-        
-for (File f : files) {
-  if (i++ % _numThreads == _myIndex) { // load every nth repository
-    String filename = f.getAbsolutePath() + "\\.git";
-            
-    start = start || filename.contains(lastRepository);
-    if (!start) 
-      continue;
-            
-    convertRepo(server, filename);
-  }
-}
-    </code></pre>
-          <aside class="notes">
-          <li>Inside run method</li>
-          <li>For this application I've chosen to have multiple threads which loop over all the available repositories. If there are ten threads, each thread knows it's number, from 1 to 10 - the first thread picks up files 1, 11, 21, the second thread picks up files 2, 12, 22, and so on. This allows the threads to be killed and restart part way without any communication, although it won't help you if you download new data out of sequence.</li>
-          </aside>
-          </section>
-        <section>
-          <h2>Batching Commits</h2>
-          <pre><code data-trim>
-if (cnt % batchSize == 0) {
-  server.add(docs);
-  server.commit();
-  docs = new ArrayList&lt;SolrInputDocument&gt;();
-
-  System.out.println("Committed batch");
-}
-    </code></pre>
-          <aside class="notes">
-         <li>This shows that ever N git commits, we're posting a batch of updates to Solr. It seems sensible to do it this way, because every time you initiate a connection and do a commit there is going to be some overhead. </li>
-          </aside>
-        </section>
-          
-        <section>
-          <h2>Querying Solr</h2>
-          <pre><code data-trim>
-SolrParams solrParams = new MapSolrParams(params);
-params.put("collectionName", "collection1");
-params.put("q", "search:ebay");
-params.put("facet.field", "author");
-params.put("facet.limit", "100");
-params.put("facet.sort", "count");
-  
-server.queryAndStreamResponse(solrParams, callback);
-connection.close();    
-</code></pre>
           <aside class="notes">
           <li>Solr accepts queries through a REST API, which gives you an easy, ready-built API, if needed.  You can add, insert, update, delete any amount through the API.</li>
           <li>This shows which collection we want to hit</li>
