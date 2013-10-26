@@ -62,14 +62,38 @@
             Which engineer worked on a particular client/project/technology? 
           </p>
           <aside class="notes">
-          <li>Many interesting problems can be addressed with search.</li>
           <li>Since Wingspan does some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. That said, the person who may have done the change may not be the most knowledgeable about it, and you'd prefer to know who the lead for a project was.</li>
           <li>Similarly, when someone calls the company, it’s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project.</li>
+          </aside>
+       </section>
+       <section>
+          <h2>Motivation</h2>
+          <p>
+            Who is an expert in technology X?
+          </p>
+          <aside class="notes">
           <li>In some large companies, it’s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoft’s MSDN program awards points based on certifications of developers in the organization, so it’s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.</li>
           <li>You can answer these types of questions by counting the number of commits a person has that reference a client or tool, which is essentially faceted search. If you imagine the UI for Amazon, on the left hand side it shows you categories and category counts for fields that apply to items in your search results, such as the genre or studio for a movie. What we are going to do here is to build a facet for an author or other commit attributes. </li>
-         <li>This is different from a typical search, where you're looking for the commits individually, which serves different use cases than I'm after here. This technique works especially well if you company is diligent about what you put in commits; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.</li>
-            <li>These two use cases are problems we've see at Wingspan, but they are still somewhat contrived for our company, as we're small enough that these problems are well-answered by expert knowledge rather than a tool. When we tested this tool as a proof of concept, we were able to get answers that were strikingly accurate to our organization.</li>
+          <li>This is different from a typical search, where you're looking for the commits individually, which serves different use cases than I'm after here. This technique works especially well if you company is diligent about what you put in commits; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.</li>
+          </aside>
+        </section>
+        <section>
+          <h2>Versions of this tool</h2>
+          <p>
+          </p>
+          <aside class="notes">
+          <li>These two use cases are problems we've see at Wingspan, but they are still somewhat contrived for our company, as we're small enough that these problems are well-answered by expert knowledge rather than a tool. When we tested this tool as a proof of concept, we were able to get answers that were strikingly accurate to our organization.</li>
+          </aside>
+        </section>
+        <section>
+          <h2>What Needs Building</h2>
+          <aside class="notes">
             <li>I'm going to show how to build up an ETL process in Java to build this tool using two libraries, SolrJ and JGit. While this talk is focused on extracting data from git, it's fairly easy to combine data across various data sources, since we're going to write Java code to extract data and populate an index. There are also suitable tools to convert older repositories into git data, such as cvs2git, which is suitable for this purpose.</li>
+          </aside>
+        </section>
+        <section>           
+        <h2>Variations</h2>
+        <aside class="notes">
 	<li>You can also imagine importing data from other sources and combining it, such as a defect tracking systems, a Sharepoint site, or even old emails. In fact, depending how you spin this, you can end up with a variety of products- I once worked for a company that had a product that did this to find contact information, i.e. which lawyer in our firm has a contact at, say, eBay.</li>
             <li>Using Solr facets this way resembles a business intelligence systems used for reporting projects, in that it gives you counts across lots of denormalized data. Since Solr acts as a single table, I’m not sure if anyone uses it that way, but since it typically returns results quickly, I find myself tempted to use it rather than a relational database at times.</li>
           </aside>
@@ -78,6 +102,11 @@
           <h2>Using Github</h2>
           <aside class="notes">
           <li>After I set this up with Wingspan source code, I also downloaded around eighteen thousand repositories from github. Once loaded, this was about four million commits, although this is quite small in comparison to Github itself.</li>
+          </aside>
+          </section>
+        <section>
+        <h2>Indexing Large Numbers of Repositories</h2>
+        <aside class="notes">
           <li>If you do something like this, you will discover that a folder with, say, 18,000 subfolders is a troublesome structure. Windows can open this, but it's very slow to even list the files. On a different project, I got up to a half million files in a folder, and was forced to come up with a different structure.</li>
           <li>An alternate approach is to do something like an MD5 hash of each filename, and use the first four characters to divide them up. I like to build a two level folder structure with this, because it resembles a B+ tree and shares it's properties, and for a half million files, each folder ends up with 5-10 items in it. If you use something like md5 you're basically randomly distributing files into folders, in a repeatable way, which gives you a nice way to sample arbitrary percentages of the dataset.</li>
           <li>It's worth noting as well that Github also has a nice API for inspecting repositories and pull back JSON, but we're going to do it a harder way here so we can see how it works.</li>
@@ -85,14 +114,33 @@
         </section>
           
         <section>
-          <h2>Designing and Testing ETL processes</h2>
+          <h2>Constraints on ETL processes</h2>
           <aside class="notes">
             <li>An ETL process that does a lot of work may take hours, weeks, or months to finish.</li>
             <li>A natural consequence of this is that you may need to consider inevitable power failures. This is true of webapps too, but typically that means you lose a user's session, which is different from interrupting something like a long SQL statement.</li>
             <li>Even if you don't have something that takes weeks, the time to generate final data is an issue, as it limits the developer's ability to cycle through fixes.</li>
-            <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
-            <li>For some types of tools, you probably don't want to fail, but note problems and move on, then incrementally reload parts that failed. This is especially true of data that is scraped or scanned.</li>
+          </aside>
+        </section>
+          
+        <section>
+          <h2>Testing ETL processes</h2>
+          <aside class="notes">
+          <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
             <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
+          </aside>
+        </section>
+          
+        <section>
+          <h2>Error Handing in ETL processes</h2>
+          <aside class="notes">
+          <li>For some types of tools, you probably don't want to fail, but note problems and move on, then incrementally reload parts that failed. This is especially true of data that is scraped or scanned.</li>
+          </aside>
+        </section>
+
+        <section>
+          <h2>IDs in ETL processes</h2>
+          <aside class="notes">
+
             <li>If you want to keep your sanity, and be able to incrementally self-heal, you absolutely need to be able to reference data in the source system, or it will be impossible to resolve support issues.</li>
             <li>One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID.</li>
 	    <li>Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It would prevent parallelism and mess with error handling, and assumes that everything happens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.</li>
@@ -226,15 +274,7 @@ String search =
 	  <li>The disadvantage to this approach is that some words may occur then on many or all files.</li>
          </aside>
         </section>
-        <section>
-          <h2>0x0100</h2>
-          <aside class="notes">
-          <li>To go beyond loading commit messages and authors, there are a couple interesting tidbits within the code- these are things I've experimented with at varying levels, so this next section contains some things which are thought experiments.</li>
-	  <li>I want to talk about them, as they introduces some interesting puzzles, which demonstrate some of the challenges in building ETL processes.</li>
-          <li>So this is actually just the number 256, but it's interesting because it's presence indicates the presence of some code that handles encryption in Word documents, along with a discussion of endian-ness in comments</li>
-          <li>It might be of interest to build a facet that stores the text of integer or string constants - they often indicate interesting features of a codebase. For instance, you might expect to see a lot of prime numbers in a codebase where people really like writing hashcode methods, or to help you find files which have base-64 encoded strings, which are a common hallmark of hacked php code. </li>
-          </aside>
-          </section>
+       
          <section>
           <h2>Company Lists</h2>
           <aside class="notes">
