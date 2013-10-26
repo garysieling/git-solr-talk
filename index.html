@@ -70,6 +70,21 @@
           <aside class="notes">
           </aside>
           </section>
+        <section>
+          <h2>Versions of this tool</h2>
+          <p>
+          </p>
+          <aside class="notes">
+          <li>These two use cases are problems we've see at Wingspan, but they are still somewhat contrived for our company, as we're small enough that these problems are well-answered by expert knowledge rather than a tool. When we tested this tool as a proof of concept, we were able to get answers that were strikingly accurate to our organization.</li>
+          </aside>
+          </section>
+        <section>
+          <h2>Using Github</h2>
+          <aside class="notes">
+          <li>After I set this up with Wingspan source code, I also downloaded around eighteen thousand repositories from github. Once loaded, this was about four million commits, although this is quite small in comparison to Github itself.</li>
+          </aside>
+          </section>
+          
           <section>
           <h1>Full Text Search vs. Google</h1>
           <aside class="notes">
@@ -134,67 +149,19 @@ $.ajax({
 	<li>If you include the contents of a PDF and other metadata, by default these have equal weight, unless you tell Solr otherwise. In fact, the Solr index just stores text, so if you started with a bunch of PDFs you’d have to build your own processing pipeline to extract and process text from them.</li>
           </aside>
         </section>
+          
         <section>
-          <h2>Versions of this tool</h2>
-          <p>
-          </p>
-          <aside class="notes">
-          <li>These two use cases are problems we've see at Wingspan, but they are still somewhat contrived for our company, as we're small enough that these problems are well-answered by expert knowledge rather than a tool. When we tested this tool as a proof of concept, we were able to get answers that were strikingly accurate to our organization.</li>
-          </aside>
-        </section>
-        <section>
-          <h2>What Needs Building</h2>
-          <aside class="notes">
+        <h2>What Needs Building</h2>
+        <ul>
+                <li>Extracting Git Commits</li>
+                <li>Transforming Commits</li>
+                <li>Loading data to Solr</li>
+        </ul>
+        <aside class="notes">
+        <li>We need to do three things</li>
             <li>I'm going to show how to build up an ETL process in Java to build this tool using two libraries, SolrJ and JGit. While this talk is focused on extracting data from git, it's fairly easy to combine data across various data sources, since we're going to write Java code to extract data and populate an index. There are also suitable tools to convert older repositories into git data, such as cvs2git, which is suitable for this purpose.</li>
           </aside>
         </section>
-        <section>
-          <h2>Using Github</h2>
-          <aside class="notes">
-          <li>After I set this up with Wingspan source code, I also downloaded around eighteen thousand repositories from github. Once loaded, this was about four million commits, although this is quite small in comparison to Github itself.</li>
-          </aside>
-          </section>
-        <section>
-        <h2>Indexing Large Numbers of Repositories</h2>
-        <aside class="notes">
-          <li>If you do something like this, you will discover that a folder with, say, 18,000 subfolders is a troublesome structure. Windows can open this, but it's very slow to even list the files. On a different project, I got up to a half million files in a folder, and was forced to come up with a different structure.</li>
-          <li>An alternate approach is to do something like an MD5 hash of each filename, and use the first four characters to divide them up. I like to build a two level folder structure with this, because it resembles a B+ tree and shares it's properties, and for a half million files, each folder ends up with 5-10 items in it. If you use something like md5 you're basically randomly distributing files into folders, in a repeatable way, which gives you a nice way to sample arbitrary percentages of the dataset.</li>
-          <li>It's worth noting as well that Github also has a nice API for inspecting repositories and pull back JSON, but we're going to do it a harder way here so we can see how it works.</li>
-          </aside>
-        </section>
-        <section>
-          <h2>Constraints on ETL processes</h2>
-          <aside class="notes">
-            <li>An ETL process that does a lot of work may take hours, weeks, or months to finish.</li>
-            <li>A natural consequence of this is that you may need to consider inevitable power failures. This is true of webapps too, but typically that means you lose a user's session, which is different from interrupting something like a long SQL statement.</li>
-            <li>Even if you don't have something that takes weeks, the time to generate final data is an issue, as it limits the developer's ability to cycle through fixes.</li>
-          </aside>
-        </section>
-          
-        <section>
-          <h2>Testing ETL processes</h2>
-          <aside class="notes">
-          <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
-            <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
-          </aside>
-        </section>
-          
-        <section>
-          <h2>Error Handing in ETL processes</h2>
-          <aside class="notes">
-          <li>For some types of tools, you probably don't want to fail, but note problems and move on, then incrementally reload parts that failed. This is especially true of data that is scraped or scanned.</li>
-          </aside>
-        </section>
-
-        <section>
-          <h2>IDs in ETL processes</h2>
-          <aside class="notes">
-
-            <li>If you want to keep your sanity, and be able to incrementally self-heal, you absolutely need to be able to reference data in the source system, or it will be impossible to resolve support issues.</li>
-            <li>One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID.</li>
-	    <li>Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It would prevent parallelism and mess with error handling, and assumes that everything happens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.</li>
-          </aside>
-          </section>
           <section>
           <h2>Initializing a git repository</h2>
           <pre><code data-trim>
@@ -287,6 +254,52 @@ if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
           </aside>
         </section>
         <section>
+          <h2>Transforming Git Data</h2>
+          <pre><code data-trim>
+Pattern capitals = Pattern.compile(".*([a-z])([A-Z]).*");
+Matcher m = capitals.matcher(file);
+
+// myAbstractFactory => my Abstract Factory
+String fileNameTokens = 
+  m.replaceAll("\1 \2");
+
+// /project/src/large_grid.js => project src large grid js
+fileNameTokens = fileNameTokens
+   .replace("/", " ")
+   .replace("-", " ")
+   .replace(".", " ")
+   .replace("_", " ");
+  
+String search =
+   commit.getFullMessage() + 
+   " " + file;
+    </code></pre>
+          <aside class="notes">
+          <li>This is putting metadata into the search (project name, file name, java class)</li>
+	  <li>The spaces are significant because Solr is going to use these as token delimeters.</li>
+          <li>In what I built, I've included filenames and paths in the data that you can search in solr, because sometimes these indicate client names or features that someone might have worked on.</li>
+	  <li>The disadvantage to this approach is that some words may occur then on many or all files.</li>
+         </aside>
+        </section>
+         <section>
+         <h2>Extracting Company Names</h2>
+          <pre><code data-trim>
+// x.y@google.com => google.com
+String company = emailAddress.split("@")[1];
+
+if (company.contains("."))
+{	
+  // abc.com => google
+  company = company.substring(0, company.lastIndexOf("."));
+}
+			
+return company;
+    </code></pre>
+          <aside class="notes">
+            <li>In repositories from github, you can get a good approximation of companies that contribute to repositories by taking the “@x.com” from emails, although to do this successfully, you must remove common hosts like gmail, and exclude contributions by some bots. Some of the major ones can be hidden easily, but this takes some work to find a general solution.
+          </aside>
+        </section>
+        <section>
           <h2>Commit Metadata</h2>
           <p>Signed-off-by</p>
           <p>Acked-by</p>
@@ -304,36 +317,49 @@ if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
 	    <li>Since there is built-in support in the tools, I thought it worth mentioning this, since this information can be useful if it's added consistently.</li>
           </aside>
         </section>
+          
         <section>
-          <h2>Constructing data available for search</h2>
-          <pre><code data-trim>
-Pattern capitals = Pattern.compile(".*([a-z])([A-Z]).*");
-Matcher m = capitals.matcher(file);
-
-String fileNameTokens = 
-  m.replaceAll("\1 \2")
-   .replace("/", " ")
-   .replace("-", " ")
-   .replace("_", " ");
-  
-String search =
-   commit.getFullMessage() + 
-   " " + file;
-    </code></pre>
-          <aside class="notes">
-          <li>This is putting metadata into the search (project name, file name, java class)</li>
-	  <li>The spaces are significant because Solr is going to use these as token delimeters.</li>
-          <li>In what I built, I've included filenames and paths in the data that you can search in solr, because sometimes these indicate client names or features that someone might have worked on.</li>
-	  <li>The disadvantage to this approach is that some words may occur then on many or all files.</li>
-         </aside>
-        </section>
-       
-         <section>
-          <h2>Company Lists</h2>
-          <aside class="notes">
-            <li>In repositories from github, you can get a good approximation of companies that contribute to repositories by taking the “@x.com” from emails, although to do this successfully, you must remove common hosts like gmail, and exclude contributions by some bots. Some of the major ones can be hidden easily, but this takes some work to find a general solution.
+        <h2>Indexing Large Numbers of Repositories</h2>
+        <aside class="notes">
+          <li>If you do something like this, you will discover that a folder with, say, 18,000 subfolders is a troublesome structure. Windows can open this, but it's very slow to even list the files. On a different project, I got up to a half million files in a folder, and was forced to come up with a different structure.</li>
+          <li>An alternate approach is to do something like an MD5 hash of each filename, and use the first four characters to divide them up. I like to build a two level folder structure with this, because it resembles a B+ tree and shares it's properties, and for a half million files, each folder ends up with 5-10 items in it. If you use something like md5 you're basically randomly distributing files into folders, in a repeatable way, which gives you a nice way to sample arbitrary percentages of the dataset.</li>
+          <li>It's worth noting as well that Github also has a nice API for inspecting repositories and pull back JSON, but we're going to do it a harder way here so we can see how it works.</li>
           </aside>
         </section>
+        <section>
+          <h2>Constraints on ETL processes</h2>
+          <aside class="notes">
+            <li>An ETL process that does a lot of work may take hours, weeks, or months to finish.</li>
+            <li>A natural consequence of this is that you may need to consider inevitable power failures. This is true of webapps too, but typically that means you lose a user's session, which is different from interrupting something like a long SQL statement.</li>
+            <li>Even if you don't have something that takes weeks, the time to generate final data is an issue, as it limits the developer's ability to cycle through fixes.</li>
+          </aside>
+        </section>
+          
+        <section>
+          <h2>Testing ETL processes</h2>
+          <aside class="notes">
+          <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
+            <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
+          </aside>
+        </section>
+          
+        <section>
+          <h2>Error Handing in ETL processes</h2>
+          <aside class="notes">
+          <li>For some types of tools, you probably don't want to fail, but note problems and move on, then incrementally reload parts that failed. This is especially true of data that is scraped or scanned.</li>
+          </aside>
+        </section>
+
+        <section>
+          <h2>IDs in ETL processes</h2>
+          <aside class="notes">
+
+            <li>If you want to keep your sanity, and be able to incrementally self-heal, you absolutely need to be able to reference data in the source system, or it will be impossible to resolve support issues.</li>
+            <li>One of the important design considerations is what to use for a unique ID; each document needs an ID for later updates or deletions. When you push an existing document to a solr repository again, the original document is soft deleted, and the replacement is added (a soft delete). I used the commit ID for this, because I only indexed commit metadata; however, if I were to add entries for each file in the diff, I would need to use a different value for the ID.</li>
+	    <li>Database style sequence-based IDs would be a very poor choice because it would make updates very difficult. It would prevent parallelism and mess with error handling, and assumes that everything happens in the same order each time - if you fixed and issue or added old branches in this might caused a lot of updates.</li>
+          </aside>
+          </section>
+       
         <section>
         <h2>Parsing Challenges: Comments</h2>
 <pre><code data-trim>        
