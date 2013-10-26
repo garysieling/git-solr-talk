@@ -112,7 +112,6 @@
           <li>It's worth noting as well that Github also has a nice API for inspecting repositories and pull back JSON, but we're going to do it a harder way here so we can see how it works.</li>
           </aside>
         </section>
-          
         <section>
           <h2>Constraints on ETL processes</h2>
           <aside class="notes">
@@ -256,16 +255,20 @@ if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
           </aside>
         </section>
         <section>
-          <h2>Handling Diffs</h2>
+          <h2>Constructing data available for search</h2>
           <pre><code data-trim>
+Pattern capitals = Pattern.compile(".*([a-z])([A-Z]).*");
+Matcher m = capitals.matcher(file);
+
+String fileNameTokens = 
+  m.replaceAll("\1 \2")
+   .replace("/", " ")
+   .replace("-", " ")
+   .replace("_", " ");
+  
 String search =
    commit.getFullMessage() + 
-   " " +
-   diff.getNewPath()
-       .toLowerCase()
-       .replace("_", " ")
-       .replace("-", " ")
-       .replace("/", " ");
+   " " + file;
     </code></pre>
           <aside class="notes">
           <li>This is putting metadata into the search (project name, file name, java class)</li>
@@ -402,8 +405,6 @@ Collection&lt;SolrInputDocument&gt; docs = new ArrayList&lt;SolrInputDocument&gt
 &lt;field name="email" type="string" indexed="true" stored="false" required="true" /&gt; 
 &lt;field name="message" type="string" indexed="true" stored="false" required="true" /&gt; 
 &lt;field name="search" type="text_general" indexed="true" stored="false" required="false" /&gt; 
-&lt;copyField source="*" dest="search"/&gt;
-
     </code></pre>
           <aside class="notes">
           <li>A common use for copyField is to combine multiple fields into one, although you can also use it to truncate data.
