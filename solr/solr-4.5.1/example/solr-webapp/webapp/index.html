@@ -23,6 +23,12 @@
       .reveal pre {
       width:110%;
       }
+
+      #button1 {
+        padding: 7px 25px;
+        background: #4479BA;
+        color: #FFF;
+      }
     </style>
   </head>
   <body>
@@ -45,12 +51,12 @@
           </aside>
         </section>
         <section>
-          <h2>Parts</h2>
-          <p>
+          <h2>Overview</h2>
+          <ul>
           <li>Tool Demo</li>
           <li>How-to</li>
           <li>Inspiration</li>
-          </p>
+          </ul>
           <aside class="notes">
             <li>Since Wingspan does some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. That said, the person who may have done the change may not be the most knowledgeable about it, and you'd prefer to know who the lead for a project was.</li>
             <li>Similarly, when someone calls the company, it’s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project.</li>
@@ -70,14 +76,12 @@
         <h1>Demo (Authors)</h1>
 
 <div style="padding-top:50px; width:960px; margin: 0px auto;"/>
-<form id="form1" action="index.html">
-        <h3>
+<h3>
 Search for experts in...
 </h3>
-<input type="text" id="query1" style="width:70%;padding:8px;margin:0px 5px;"/><input type="button" id="search1" value="Go" /><br/>
+<input type="text" id="query1" style="width:70%;padding:8px;margin:0px 5px;"/><input type="button" id="button1" value="Go" /><br/>
 <p>Examples: <a href="#">nodejs</a>, <a href="#">javascript</a>, <a href="#">linux</a>, <a href="#">orm</a>, <a href="#">intellij</a>.
 </p>
-</form>
 <br/>
 <div id="results1">
 </div>
@@ -601,69 +605,66 @@ var MarkdownEditor = React.createClass({
           { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
         ]
 });
+$("#query1").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#button1").click();
+        return false;
+    }
+});
 
 $(document).ready(function() {
-  $('#search1').click(function() {
+  $('#button1').click(function() {
     search('#query1', '#results1');
+    return false;
   });
 
   function search(searchBox, searchResults)
   { 		
     var q = $(searchBox)[0];
-  	$(searchResults).innerHTML='Loading...';
-	  var query = '';
+    $(searchResults).innerHTML='Loading...';
+    var query = '';
 
-  	var url = '/expert-search/search_results.php?type=search&query=' + q.value;
-  	$.ajax({
-	  	type: "GET",
-  		url: url,
-	    success:
+    var url = 'sample.json';
+    $.ajax({
+      type: "GET",
+      url: url,
+      success:
         function(response){
+
           var data = JSON.parse(response);
-          var records = data.facet_counts.facet_fields;
-			
-          records = records.author;
+          var records = data.facet_counts.facet_fields.author;
 
           var count = Math.max(records.length, 11);
-          var html = '<table style="text-align:left; width:500px">';
-          var printed = {};
-          if (!records ||	records.length === 0)
+          var html = '<table style="text-align:left;">';
+          if (!records || records.length === 0)
           {
             html+= "<tr><td>No results found.</td></tr>";
           }
 
+          var count = 0;
           for (var i = 1; i < records.length; i+=2)
           {
-            count += records[i];			
+            count += records[i];
           }
-          
           for (var i = 0; i < records.length; i+=2)
           {
-            if (records[i+1] === 0)
-              continue;
-
-          count--;
-          var auth = records[i];
-          if (printed[auth] == '1')
-          {
-            continue;
-          }
+            var auth = records[i];
           
-          printed[auth] = '1';
-          html += '<tr><td><a href="http://www.google.com/search?q='+escape(auth)+'+github" onclick="_gaq.push(\'_trackEvent\',\'search\', \'result_click\', \'row\', '+i+', true);">' + auth;
-          html += '</a></td><td>';
-          for (var j = 0; j < (100*records[i+1])/count+1; j++)
-          {
-            html += '.';
-          }
-          html += '</td></tr>';	
-          }
+            html += '<tr><td>' + auth + '</td><td>';
 
-          html += '</table>';
-          document.getElementById("results").innerHTML=html;
-        }
-	    });
-    }
+            for (var j = 0; j < 100 * (records[i+1])/(count+1); j++)
+            {
+              html += '.';
+            }
+            html += '</td></tr>';	
+          }
+console.log(html);
+
+        html += '</table>';
+        $(searchResults)[0].innerHTML=html;
+      }
+    });
+  }
 });
     </script>
   </body>
