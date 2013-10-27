@@ -481,6 +481,7 @@ for (File f : files) {
         </section>
         <section>
           <h2>Indexing Large Numbers of Repositories</h2>
+<img src="files.png" />
           <aside class="notes">
             <li>If you do something like this, you will discover that a folder with, say, 18,000 subfolders is a troublesome structure. Windows can open this, but it's very slow to even list the files. On a different project, I got up to a half million files in a folder, and was forced to come up with a different structure.</li>
             <li>An alternate approach is to do something like an MD5 hash of each filename, and use the first four characters to divide them up. I like to build a two level folder structure with this, because it resembles a B+ tree and shares it's properties, and for a half million files, each folder ends up with 5-10 items in it. If you use something like md5 you're basically randomly distributing files into folders, in a repeatable way, which gives you a nice way to sample arbitrary percentages of the dataset.</li>
