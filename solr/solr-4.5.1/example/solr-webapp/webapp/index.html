@@ -51,7 +51,7 @@
           </aside>
         </section>
         <section>
-          <h2>Overview</h2>
+          <h1>Overview</h1>
           <ul>
           <li>Tool Demo</li>
           <li>How-to</li>
@@ -63,7 +63,7 @@
           </aside>
         </section>
         <section>
-          <h2>Motivation</h2>
+          <h1>Motivation</h1>
           <p>
             Which engineer worked on a particular client/project/technology? 
           </p>
@@ -73,12 +73,8 @@
           </aside>
         </section>
         <section>
-        <h1>Demo (Authors)</h1>
-
-<div style="padding-top:50px; width:960px; margin: 0px auto;"/>
-<h3>
-Search for experts in...
-</h3>
+        <h2>Search for Experts In...</h1>
+<div style="width:960px; margin: 0px auto;"/>
 <input type="text" id="query1" style="width:70%;padding:8px;margin:0px 5px;"/><input type="button" id="button1" value="Go" /><br/>
 <p>Examples: <a href="#">nodejs</a>, <a href="#">javascript</a>, <a href="#">linux</a>, <a href="#">orm</a>, <a href="#">intellij</a>.
 </p>
@@ -93,7 +89,7 @@ Search for experts in...
           </aside>
         </section>
         <section>
-          <h2>Motivation</h2>
+          <h1>Motivation</h1>
           <p>
             Corporate open source contributions
           </p>
@@ -107,7 +103,7 @@ Search for experts in...
           </aside>
         </section>
         <section>
-          <h2>Motivation</h2>
+          <h1>Motivation</h1>
           <p>
             Who is an expert in technology X?
           </p>
@@ -118,7 +114,7 @@ Search for experts in...
           </aside>
         </section>
         <section>
-          <h2>Wingspan version of this tool</h2>
+          <h1>Wingspan Source Code</h1>
           <ul>
             <li>2,000 MB Git Archive => 90 MB Solr Index</li>
           </ul>
@@ -127,17 +123,12 @@ Search for experts in...
           </aside>
         </section>
         <section>
-          <h2>Github Archive</h2>
+          <h1>Github Archive</h1>
           <ul>
             <li>202 GB Git Archive => 1 GB Solr Index</li>
             <li>18,000 repositories</li>
             <li>2 hour ETL process</li>
           </ul>
-          <aside class="notes">
-          </aside>
-        </section>
-        <section>
-          <h2>Using Github</h2>
           <aside class="notes">
             <li>After I set this up with Wingspan source code, I also downloaded around eighteen thousand repositories from github. Once loaded, this was about four million commits, although this is quite small in comparison to Github itself.</li>
           </aside>
@@ -158,14 +149,14 @@ Search for experts in...
           </aside>
         </section>
         <section>
-          <h2>How this is built</h2>
+          <h1>How this is built</h1>
           <li>Front-end</li>
           <li>Back-end</li>
           <aside class="notes">      
           </aside>
         </section>
         <section>
-          <h2>Getting search results through JSON</h2>
+          <h1>JSON API</h1>
           <p>
             /select/?q=search:(search:jug)
           </p>
@@ -176,7 +167,10 @@ Search for experts in...
             &amp;start=0&amp;rows=0
           </p>
           <p>
-            &amp;indent=on&amp;facet=on
+            &amp;indent=on
+          </p>
+          <p>
+            &amp;facet=on
           </p>
           <p>
             &amp;facet.field=author
@@ -198,7 +192,7 @@ Search for experts in...
           </aside>
         </section>
         <section>
-          <h2>Building a facet UI</h2>
+          <h1>Building a facet UI</h1>
           <pre><code data-trim>
 var url = 'http://solr/core1/select/?q=search:(search:jug)';
 $.ajax({
@@ -213,7 +207,7 @@ $.ajax({
           </aside>
         </section>
         <section>
-          <h2>Backend ETL</h2>
+          <h1>Backend ETL</h1>
           <ul>
             <li>Extracting Git Commits</li>
             <li>Transforming Commits</li>
@@ -232,7 +226,7 @@ $.ajax({
           </aside>
         </section>
         <section>
-          <h2>Initializing a git repository</h2>
+          <h1>Opening Git Repositories</h1>
           <pre><code data-trim>
 FileRepositoryBuilder builder = new FileRepositoryBuilder();
 Repository repository = 
@@ -252,7 +246,7 @@ RevWalk walk = new RevWalk(repository);
           </aside>
         </section>
         <section>
-          <h2>Branches</h2>
+          <h1>Branches</h1>
           <pre><code data-trim>
 for (Ref ref : repository.getAllRefs().values()) {
  try {
@@ -279,7 +273,7 @@ for (RevCommit commit : walk) {
           </aside>
         </section>
         <section>
-          <h2>Patches</h2>
+          <h1>Patches</h1>
           <pre><code data-trim>
 // To fetch file diffs, we must provide a stream, where they will be written:
 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -306,7 +300,7 @@ for (Object obj : diffs) {
           </aside>
         </section>
         <section>
-          <h2>Commit Comments</h2>
+          <h1>Commit Comments</h1>
           <pre><code data-trim>
 // For this application, only find new or modified files
 if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
@@ -326,7 +320,7 @@ if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
           </aside>
         </section>
         <section>
-          <h2>Transforming Git Data</h2>
+          <h1>Transforming Git Data</h1>
           <pre><code data-trim>
 Pattern capitals = Pattern.compile(".*([a-z])([A-Z]).*");
 Matcher m = capitals.matcher(file);
@@ -354,7 +348,7 @@ String search =
           </aside>
         </section>
         <section>
-          <h2>Extracting Company Names</h2>
+          <h1>Extracting Company Names</h1>
           <pre><code data-trim>
 // x.y@google.com => google.com
 String company = emailAddress.split("@")[1];
@@ -373,13 +367,15 @@ return company;
           </aside>
         </section>
         <section>
-        <h2>Commit Metadata</h2>
-        <p>Signed-off-by</p>
-        <p>Acked-by</p>
-        <p>Reported-by</p>
-        <p>Tested-by</p>
-        <p>CC, Cc</p>
-        <p>Bug</p>
+        <h1>Commit Metadata</h1>
+        <ul>
+          <li>Signed-off-by</li>
+          <li>Acked-by</li>
+          <li>Reported-by</li>
+          <li>Tested-by</li>
+          <li>CC, Cc</li>
+          <li>Bug</li>
+        </ul>
         <aside class="notes">
         RevCommit.getFooterLines
         public final List
@@ -391,7 +387,12 @@ return company;
         </aside>
         </section>
         <section>
-          <h2>Setting up Solr</h2>
+          <h1>Setting up Solr</h1>
+          <ul>
+            <li>Download Solr</li>
+            <li>Modify schema.xml</li>
+            <li>Start Jetty: <br/>java -jar start.jar</li>
+          </ul>
           <aside class="notes">
             <li>Drop in a .war</li>
             <li>Use Jetty/Tomcat</li>
@@ -404,14 +405,17 @@ return company;
           </aside>
         </section>
         <section>
-          <h2>Solr - Limitations</h2>
+          <h1>Solr - Limitations</h1>
+          <ul>
+            <li>Don't expose Solr publically</li>
+          </ul>
           <aside class="notes">
             <li>Solr aims to be as fast at returning results as possible. It avoids features which slow this down; for instance, if you want to enforce ACLs on items in search results, you need to add columns and figure out how to populate them on your own. It has very limited support for inner joins, which allows for a way to implement more complex ACL structures if you do need them.</li>
             <li>Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository.</li>
           </aside>
         </section>
         <section>
-          <h2>Solr - Schema</h2>
+          <h1>Solr - Schema</h1>
           <pre><code data-trim>
 &lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
 &lt;field name="author" type="git_author" indexed="true" stored="true" required="true" /&gt; 
@@ -430,7 +434,7 @@ return company;
           </aside>
         </section>
         <section>
-          <h2>Sending Data to Solr</h2>
+          <h1>Sending Data to Solr</h1>
           <pre><code data-trim>
 // Connections happen over HTTP:
 HttpSolrServer server = new HttpSolrServer(
@@ -457,7 +461,7 @@ doc.addField("search", search);
           </aside>
         </section>
         <section>
-          <h2>Threading Updates</h2>
+          <h1>Threading Updates</h1>
           <pre><code data-trim>
 File[] files = new File("repositories\\").listFiles();
 String lastRepository = getLastRepository(); // resume after failure
@@ -483,7 +487,7 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-          <h2>Inspiration</h2>
+          <h1>Inspiration</h1>
           <ul>
             <li>High Volume Indexing</li>
             <li>Parsing Code Comments</li>
@@ -491,7 +495,8 @@ for (File f : files) {
           </ul>
         </section>
         <section>
-          <h2>Indexing Large Numbers of Repositories</h2>
+          <h2>Indexing Many Repositories</h2>
+INSERT A SLOW LOADING SCREENSHOT HERE
 <img src="files.png" />
           <aside class="notes">
             <li>If you do something like this, you will discover that a folder with, say, 18,000 subfolders is a troublesome structure. Windows can open this, but it's very slow to even list the files. On a different project, I got up to a half million files in a folder, and was forced to come up with a different structure.</li>
@@ -500,7 +505,7 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-          <h2>Constraints on ETL processes</h2>
+          <h1>Constraints on ETL processes</h1>
           <aside class="notes">
             <li>An ETL process that does a lot of work may take hours, weeks, or months to finish.</li>
             <li>A natural consequence of this is that you may need to consider inevitable power failures. This is true of webapps too, but typically that means you lose a user's session, which is different from interrupting something like a long SQL statement.</li>
@@ -508,7 +513,8 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-          <h2>Testing ETL processes</h2>
+          <h1>Testing ETL processes</h1>
+INSERT WINMERGE SCREENSHOT HERE
           <aside class="notes">
             <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
             <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
@@ -516,13 +522,14 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-          <h2>Error Handing in ETL processes</h2>
+          <h1>Error Handing in ETL processes</h1>
+NEED A PICTURE OR SOMETHING HERE
           <aside class="notes">
             <li>For some types of tools, you probably don't want to fail, but note problems and move on, then incrementally reload parts that failed. This is especially true of data that is scraped or scanned.</li>
           </aside>
         </section>
         <section>
-          <h2>Parsing Comments</h2>
+          <h1>Parsing Comments</h1>
           <pre><code data-trim>        
 @@ -1,9 +1,9 @@
 /* 
@@ -569,18 +576,22 @@ var MarkdownEditor = React.createClass({
           </aside>
         </section>
         <aside class="notes">
-          <li>Solr accepts queries through a REST API, which gives you an easy, ready-built API, if needed.  You can add, insert, update, delete any amount through the API.</li>
-          <li>This shows which collection we want to hit</li>
-          <li>The query, *:* brings back everything</li>
-          <li>We can set paging parameters</li>
-          <li>We can also set faceting parameters</li>
+          <ul>
+            <li>Solr accepts queries through a REST API, which gives you an easy, ready-built API, if needed.  You can add, insert, update, delete any amount through the API.</li>
+            <li>This shows which collection we want to hit</li>
+            <li>The query, *:* brings back everything</li>
+            <li>We can set paging parameters</li>
+            <li>We can also set faceting parameters</li>
+          </ul>
         </aside>
         </section>
         <section>
-          <h2>Variations</h2>
+          <h1>Variations</h1>
           <aside class="notes">
-            <li>You can also imagine importing data from other sources and combining it, such as a defect tracking systems, a Sharepoint site, or even old emails. In fact, depending how you spin this, you can end up with a variety of products- I once worked for a company that had a product that did this to find contact information, i.e. which lawyer in our firm has a contact at, say, eBay.</li>
-            <li>Using Solr facets this way resembles a business intelligence systems used for reporting projects, in that it gives you counts across lots of denormalized data. Since Solr acts as a single table, I’m not sure if anyone uses it that way, but since it typically returns results quickly, I find myself tempted to use it rather than a relational database at times.</li>
+            <ul>
+              <li>You can also imagine importing data from other sources and combining it, such as a defect tracking systems, a Sharepoint site, or even old emails. In fact, depending how you spin this, you can end up with a variety of products- I once worked for a company that had a product that did this to find contact information, i.e. which lawyer in our firm has a contact at, say, eBay.</li>
+              <li>Using Solr facets this way resembles a business intelligence systems used for reporting projects, in that it gives you counts across lots of denormalized data. Since Solr acts as a single table, I’m not sure if anyone uses it that way, but since it typically returns results quickly, I find myself tempted to use it rather than a relational database at times.</li>
+            <ul>
           </aside>
         </section>
         <section>
