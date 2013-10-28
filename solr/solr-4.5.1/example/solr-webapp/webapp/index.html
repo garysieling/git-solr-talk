@@ -75,7 +75,7 @@
           </aside>
         </section>
         <section>
-          <h1>Motivation</h1>
+          <h2>Motivation</h2>
           <p>
             Which engineer worked on a particular client/project/technology? 
           </p>
@@ -150,7 +150,7 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>Motivation</h1>
+          <h2>Motivation</h2>
           <p>
             Who is an expert in technology X?
           </p>
@@ -161,7 +161,7 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>Solr - Schema</h1>
+          <h2>Solr - Schema</h2>
           <pre><code data-trim>
 &lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
 &lt;field name="author" type="git_author" indexed="true" stored="true" required="true" /&gt; 
@@ -178,7 +178,7 @@ facet.field=author
         </section>
           
         <section>
-          <h1>Stats for Live Demo</h1>
+          <h2>Stats for Live Demo</h2>
           <ul>
                   <li>2.1 GB Git History => 132 MB Solr Repository</li>
                   <li>Index of 232,839 commits</li>
@@ -188,7 +188,7 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>Wingspan Source Code</h1>
+          <h2>Wingspan Source Code</h2>
           <ul>
             <li>2,000 MB Git Archive => 90 MB Solr Index</li>
             <li>Works well for finding project leads</li>
@@ -199,7 +199,7 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>Github Archive</h1>
+          <h2>Github Archive</h2>
           <ul>
             <li>202 GB Git Archive => 1 GB Solr Index</li>
             <li>18,000 repositories</li>
@@ -221,7 +221,7 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>Full Text Search vs. Google</h1>
+          <h2>Full Text Search vs. Google</h2>
           <aside class="notes">
             <li>Google uses citations to influence rankings</li>
             <li>Lucene calculates a similary score between each query and document</li>
@@ -245,7 +245,7 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>JSON API</h1>
+          <h2>JSON API</h2>
           <p>
             /select/?q=search:(search:jug)
           </p>
@@ -281,7 +281,7 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>Building a facet UI</h1>
+          <h2>Building a facet UI</h2>
           <pre><code data-trim>
 var url = 'http://solr/core1/select/?q=search:(search:jug)';
 $.ajax({
@@ -310,7 +310,7 @@ $.ajax({
           </aside>
         </section>
         <section>
-          <h1>Why do you need Java code?</h1>
+          <h2>Why do you need Java code?</h2>
           <ul>
            <li>Extract data (e.g. PDF contents)</li>
            <li>Data transformations (email -> company)</li>
@@ -327,7 +327,7 @@ $.ajax({
           </aside>
         </section>
         <section>
-          <h1>Extracting Data from Git</h1>
+          <h2>Extracting Data from Git</h2>
           <pre><code data-trim>
 FileRepositoryBuilder builder = new FileRepositoryBuilder();
 Repository repository = 
@@ -352,7 +352,7 @@ for (RevCommit commit : walk) {
           </aside>
         </section>
         <section>
-          <h1>Extracting Data - Patches</h1>
+          <h2>Extracting Data - Patches</h2>
           <pre><code data-trim>
 // To fetch file diffs, we must provide a stream, where they will be written:
 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -378,7 +378,7 @@ for (Object obj : diffs) {
           </aside>
         </section>
         <section>
-          <h1>Extracting Commit Metadata </h1>
+          <h2>Extracting Commit Metadata </h2>
           <pre><code data-trim>
 // For this application, only find new or modified files
 if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
@@ -398,7 +398,7 @@ if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
           </aside>
         </section>
         <section>
-          <h1>Transformations - Search Data</h1>
+          <h2>Transformations - Search Data</h2>
           <pre><code data-trim>
 Pattern capitals = Pattern.compile(".*([a-z])([A-Z]).*");
 Matcher m = capitals.matcher(file);
@@ -426,7 +426,7 @@ String search =
           </aside>
         </section>
         <section>
-          <h1>Transformations - Companies</h1>
+          <h2>Transformations - Companies</h2>
           <pre><code data-trim>
 // x.y@google.com => google.com
 String company = emailAddress.split("@")[1];
@@ -444,7 +444,7 @@ return company;
           </aside>
         </section>
         <section>
-        <h1>Transformations - Commit Footers</h1>
+        <h2>Transformations - Commit Footers</h2>
         <ul>
           <li>Signed-off-by</li>
           <li>Acked-by</li>
@@ -491,7 +491,7 @@ doc.addField("search", search);
           </aside>
           </section>
          <section>
-          <h1>Loading Data - Threading</h1>
+          <h2>Loading Data - Threading</h2>
           <pre><code data-trim>
 File[] files = new File("repositories\\").listFiles();
 String lastRepository = getLastRepository(); // resume after failure
@@ -515,7 +515,7 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-          <h1>Setting up Solr</h1>
+          <h2>Setting up Solr</h2>
           <ul>
             <li>Download Solr</li>
             <li>Modify schema.xml</li>
@@ -525,7 +525,7 @@ for (File f : files) {
           </aside>
         </section>
           <section>
-          <h1>Solr - Limitations</h1>
+          <h2>Solr - Limitations</h2>
           <ul>
             <li>Don't expose Solr publically</li>
             <li>Don't rely on joins</li>
@@ -563,7 +563,7 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-        <h1>Constraints on ETL processes</h1>
+        <h2>Constraints on ETL processes</h2>
         <ul>
                 <li>
                 Plan for power failures
@@ -582,7 +582,7 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-          <h1>Testing ETL processes</h1>
+          <h2>Testing ETL processes</h2>
           <img src="diff.png" class="diffimage" />
           <aside class="notes">
             <li>Use real data - finds edge cases</li>
@@ -592,7 +592,7 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-          <h1>Parsing Comments</h1>
+          <h2>Parsing Comments</h2>
           <pre><code data-trim>        
 @@ -1,9 +1,9 @@
 /* 
