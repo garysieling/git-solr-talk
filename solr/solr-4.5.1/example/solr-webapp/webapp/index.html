@@ -25,9 +25,17 @@
       }
 
       #button0, #button1, #button2 {
-        padding: 7px 25px;
+        margin-top:2px;
+        height: 62px;
+        padding: 4px 26px;
         background: #4479BA;
         color: #FFF;
+        font-size: 30pt;
+      }
+
+      #query0, #query1, #query2 {
+          height: 44px;
+          font-size: 24pt;
       }
 
       .loadingimage, .diffimage, .solrimage {
@@ -77,6 +85,7 @@
             <li>This is faceted search.</li>
           </aside>
           </section>
+
         <section>
         <h2>Search for Experts In...</h1>
 <div style="width:960px; margin: 0px auto;"/>
@@ -152,7 +161,24 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>Stats</h1>
+          <h1>Solr - Schema</h1>
+          <pre><code data-trim>
+&lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="author" type="git_author" indexed="true" stored="true" required="true" /&gt; 
+&lt;field name="company" type="string" indexed="true" stored="true" required="true" /&gt; 
+&lt;field name="year" type="string" indexed="true" stored="true" required="true" /&gt; 
+&lt;field name="email" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="message" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="search" type="text_general" indexed="true" stored="false" required="false" /&gt; 
+    </code></pre>
+          <aside class="notes">
+            <li>When you define the schema, you tell Solr what index information you want to store with columns - for instance, if you want to retrive data, or just use it in search.</li>
+            <li>There are various other things you can turn off</li>
+          </aside>
+        </section>
+          
+        <section>
+          <h1>Stats for Live Demo</h1>
           <ul>
                   <li>2.1 GB Git History => 132 MB Solr Repository</li>
                   <li>Index of 232,839 commits</li>
@@ -165,6 +191,8 @@ facet.field=author
           <h1>Wingspan Source Code</h1>
           <ul>
             <li>2,000 MB Git Archive => 90 MB Solr Index</li>
+            <li>Works well for finding project leads</li>
+            <li>Works well for finding technology experts</li>
           </ul>
           <aside class="notes">
           <li>Built over a few hours/days during a conference</li>
@@ -176,7 +204,8 @@ facet.field=author
             <li>202 GB Git Archive => 1 GB Solr Index</li>
             <li>18,000 repositories</li>
             <li>4,554,502</li>
-            <li>2 hour ETL process</li>
+            <li>2-3 hour conversion process</li>
+            <li>Developer workstation (i7 / 16 GB RAM)</li>
           </ul>
           <aside class="notes">
             <li>Shows what you can do with a decent developer workstation</li>
@@ -282,14 +311,23 @@ $.ajax({
         </section>
         <section>
           <h1>Why do you need Java code?</h1>
+          <ul>
+           <li>Extract data (e.g. PDF contents)</li>
+           <li>Data transformations (email -> company)</li>
+          </ul>
           <aside class="notes">
+	    <li>Denormalized data</li>
+	    <li>Row = document</li>
+            <li>Document comes from PDF / Office / etc</li>
+            <li>Must eval document yourself</li>
+            <li>Fiddle with data as needed</li>
             <li>Solr Repositories resemble a single, denormalized database table, which they call a core. Each row in the table is referred to as a “document”, which comes from the idea that you may have indexed the contents of a PDF, HTML file, or Word document, although there is no particular requirement on what a document must be.</li>
             <li>Even though Solr refers to rows a documents, Solr index just stores text, so if you started with a bunch of PDFs you’d have to build your own processing pipeline to extract and process text from them.</li>
             <li>Some customizations can be done with configurations in Solr - if these work, they tend to be pretty easy to figure out, and when you can't figure them out quickly, you usually need to resort to code.</li>
           </aside>
         </section>
         <section>
-          <h1>Branches</h1>
+          <h1>Extracting Data from Git</h1>
           <pre><code data-trim>
 FileRepositoryBuilder builder = new FileRepositoryBuilder();
 Repository repository = 
@@ -314,7 +352,7 @@ for (RevCommit commit : walk) {
           </aside>
         </section>
         <section>
-          <h1>Patches</h1>
+          <h1>Extracting Data - Patches</h1>
           <pre><code data-trim>
 // To fetch file diffs, we must provide a stream, where they will be written:
 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -340,7 +378,7 @@ for (Object obj : diffs) {
           </aside>
         </section>
         <section>
-          <h1>Commit Comments</h1>
+          <h1>Extracting Commit Metadata </h1>
           <pre><code data-trim>
 // For this application, only find new or modified files
 if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
@@ -360,7 +398,7 @@ if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
           </aside>
         </section>
         <section>
-          <h1>Transforming Git Data</h1>
+          <h1>Transformations - Search Data</h1>
           <pre><code data-trim>
 Pattern capitals = Pattern.compile(".*([a-z])([A-Z]).*");
 Matcher m = capitals.matcher(file);
@@ -388,7 +426,7 @@ String search =
           </aside>
         </section>
         <section>
-          <h1>Extracting Company Names</h1>
+          <h1>Transformations - Companies</h1>
           <pre><code data-trim>
 // x.y@google.com => google.com
 String company = emailAddress.split("@")[1];
@@ -406,7 +444,7 @@ return company;
           </aside>
         </section>
         <section>
-        <h1>Commit Metadata</h1>
+        <h1>Transformations - Commit Footers</h1>
         <ul>
           <li>Signed-off-by</li>
           <li>Acked-by</li>
@@ -425,54 +463,8 @@ return company;
         <li>Since there is built-in support in the tools, I thought it worth mentioning this, since this information can be useful if it's added consistently.</li>
         </aside>
         </section>
-        <section>
-          <h1>Threading Updates</h1>
-          <pre><code data-trim>
-File[] files = new File("repositories\\").listFiles();
-String lastRepository = getLastRepository(); // resume after failure
-
-int i = 0;
-int numThreads = Runtime.getRuntime().availableProcessors();
-        
-for (File f : files) {
-  if (i++ % numThreads == _myIndex) { // load every nth repository
-    String filename = f.getAbsolutePath() + "\\.git";
-            
-    convertRepo(server, filename);
-  }
-  i++;
-}
-    </code></pre>
-          <aside class="notes">
-            <li>Currently I have the application set up to run with several threads</li>
-            <li>Most of the time is spent loading git data</li>
-            <li>For this process, order of operations doesn't matter. But for some people it does.</li>
-          </aside>
-        </section>
-        
-        <section>
-          <h1>Solr</h1>
-          <ul>
-            <li>Setting up Solr</li>
-            <li>Pushing Data</li>
-            <li>Configuration</li>
-            <li>Limitations</li>
-          </ul>
-          <aside class="notes">
-          </aside>
-        </section>
-        <section>
-          <h1>Setting up Solr</h1>
-          <ul>
-            <li>Download Solr</li>
-            <li>Modify schema.xml</li>
-            <li>Start Jetty: <br/>java -jar start.jar</li>
-          </ul>
-          <aside class="notes">
-          </aside>
-        </section>
-        <section>
-          <h1>Sending Data to Solr</h1>
+       <section>
+          <h1>Loading Data in Solr</h1>
           <pre><code data-trim>
 // Connections happen over HTTP:
 HttpSolrServer server = new HttpSolrServer(
@@ -498,6 +490,40 @@ doc.addField("search", search);
             <li>Note multiple columns - can facet on one, and search on the other</li>
           </aside>
           </section>
+         <section>
+          <h1>Loading Data - Threading</h1>
+          <pre><code data-trim>
+File[] files = new File("repositories\\").listFiles();
+String lastRepository = getLastRepository(); // resume after failure
+
+int i = 0;
+int numThreads = Runtime.getRuntime().availableProcessors();
+        
+for (File f : files) {
+  if (i++ % numThreads == _myIndex) { // load every nth repository
+    String filename = f.getAbsolutePath() + "\\.git";
+            
+    convertRepo(server, filename);
+  }
+  i++;
+}
+    </code></pre>
+          <aside class="notes">
+            <li>Currently I have the application set up to run with several threads</li>
+            <li>Most of the time is spent loading git data</li>
+            <li>For this process, order of operations doesn't matter. But for some people it does.</li>
+          </aside>
+        </section>
+        <section>
+          <h1>Setting up Solr</h1>
+          <ul>
+            <li>Download Solr</li>
+            <li>Modify schema.xml</li>
+            <li>Start Jetty: <br/>java -jar start.jar</li>
+          </ul>
+          <aside class="notes">
+          </aside>
+        </section>
           <section>
           <h1>Solr - Limitations</h1>
           <ul>
@@ -510,22 +536,7 @@ doc.addField("search", search);
             <li>Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository.</li>
           </aside>
         </section>
-          <section>
-          <h1>Solr - Schema</h1>
-          <pre><code data-trim>
-&lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="author" type="git_author" indexed="true" stored="true" required="true" /&gt; 
-&lt;field name="email" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="message" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="search" type="text_general" indexed="true" stored="false" required="false" /&gt; 
-    </code></pre>
-          <aside class="notes">
-            <li>When you define the schema, you tell Solr what index information you want to store with columns - for instance, if you want to retrive data, or just use it in search.</li>
-            <li>There are various other things you can turn off</li>
-          </aside>
-        </section>
-          
-        <section>
+       <section>
           <h1>Inspiration</h1>
           <ul>
             <li>High Volume Indexing</li>
@@ -559,6 +570,9 @@ doc.addField("search", search);
                 </li>
                 <li>
                 Plan for reloading data
+                </li>
+                <li>
+                Real-time updates are hard
                 </li>
         </ul>
           <aside class="notes">
