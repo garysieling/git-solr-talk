@@ -24,13 +24,13 @@
       width:110%;
       }
 
-      #button1, #button2 {
+      #button0, #button1, #button2 {
         padding: 7px 25px;
         background: #4479BA;
         color: #FFF;
       }
 
-      .loadingimage, .diffimage {
+      .loadingimage, .diffimage, .solrimage {
               border: 0px !important; 
               background: rgba(0, 0, 0, 0) !important;
               margin: 0px !important;
@@ -74,6 +74,7 @@
           <aside class="notes">
             <li>Since Wingspan does some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. That said, the person who may have done the change may not be the most knowledgeable about it, and you'd prefer to know who the lead for a project was.</li>
             <li>Similarly, when someone calls the company, it’s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project.</li>
+            <li>This is faceted search.</li>
           </aside>
           </section>
         <section>
@@ -154,6 +155,7 @@ facet.field=author
           <h1>Stats</h1>
           <ul>
                   <li>2.1 GB Git History => 132 MB Solr Repository</li>
+                  <li>Index of 232,839 commits</li>
                   <li>Drupal, Git, Lucene, Lucene.NET, Solr, Mono, Node.JS, PHP, Postgres, Vagrant</li>
           </ul>
           <aside class="notes">
@@ -165,7 +167,7 @@ facet.field=author
             <li>2,000 MB Git Archive => 90 MB Solr Index</li>
           </ul>
           <aside class="notes">
-            <li>These two use cases are problems we've see at Wingspan, but they are still somewhat contrived for our company, as we're small enough that these problems are well-answered by expert knowledge rather than a tool. When we tested this tool as a proof of concept, we were able to get answers that were strikingly accurate to our organization.</li>
+          <li>Built over a few hours/days during a conference</li>
           </aside>
         </section>
         <section>
@@ -173,10 +175,12 @@ facet.field=author
           <ul>
             <li>202 GB Git Archive => 1 GB Solr Index</li>
             <li>18,000 repositories</li>
+            <li>4,554,502</li>
             <li>2 hour ETL process</li>
           </ul>
           <aside class="notes">
-            <li>After I set this up with Wingspan source code, I also downloaded around eighteen thousand repositories from github. Once loaded, this was about four million commits, although this is quite small in comparison to Github itself.</li>
+            <li>Shows what you can do with a decent developer workstation</li>
+            <li>3-4 hours tuning the process to load this</li>
           </aside>
           </section>
         <section>
@@ -196,7 +200,8 @@ facet.field=author
           </aside>
         </section>
         <section>
-          <h1>What is Solr?</h1>
+        <h2>What is Solr?</h2>
+          <img src="solr.png" class="solrimage" />
           <aside class="notes">
           <li>Solr was built as an administration webapp around Lucene</li>
           <li>Lucene is just a bunch of Jars for doing full-text search.</li>
@@ -251,8 +256,8 @@ facet.field=author
           <pre><code data-trim>
 var url = 'http://solr/core1/select/?q=search:(search:jug)';
 $.ajax({
-	type: "GET",
-	url: url,
+  type: "GET",
+  url: url,
   success: function(response){
     // display search results
 });
@@ -269,8 +274,10 @@ $.ajax({
             <li>Loading data to Solr</li>
           </ul>
           <aside class="notes">
-            <li>We need to do three things</li>
-            <li>I'm going to show how to build up an ETL process in Java to build this tool using two libraries, SolrJ and JGit. While this talk is focused on extracting data from git, it's fairly easy to combine data across various data sources, since we're going to write Java code to extract data and populate an index. There are also suitable tools to convert older repositories into git data, such as cvs2git, which is suitable for this purpose.</li>
+            <li>JGit</li>
+            <li>SolrJ</li>
+            <li>CVS2GIT</li>
+            <li>Many others are possible</li>
           </aside>
         </section>
         <section>
@@ -377,7 +384,7 @@ String search =
             <li>This is putting metadata into the search (project name, file name, java class)</li>
             <li>The spaces are significant because Solr is going to use these as token delimeters.</li>
             <li>In what I built, I've included filenames and paths in the data that you can search in solr, because sometimes these indicate client names or features that someone might have worked on.</li>
-            <li>The disadvantage to this approach is that some words may occur then on many or all files.</li>
+            <li>Remove large commits</li>
           </aside>
         </section>
         <section>
@@ -419,6 +426,42 @@ return company;
         </aside>
         </section>
         <section>
+          <h1>Threading Updates</h1>
+          <pre><code data-trim>
+File[] files = new File("repositories\\").listFiles();
+String lastRepository = getLastRepository(); // resume after failure
+
+int i = 0;
+int numThreads = Runtime.getRuntime().availableProcessors();
+        
+for (File f : files) {
+  if (i++ % numThreads == _myIndex) { // load every nth repository
+    String filename = f.getAbsolutePath() + "\\.git";
+            
+    convertRepo(server, filename);
+  }
+  i++;
+}
+    </code></pre>
+          <aside class="notes">
+            <li>Currently I have the application set up to run with several threads</li>
+            <li>Most of the time is spent loading git data</li>
+            <li>For this process, order of operations doesn't matter. But for some people it does.</li>
+          </aside>
+        </section>
+        
+        <section>
+          <h1>Solr</h1>
+          <ul>
+            <li>Setting up Solr</li>
+            <li>Pushing Data</li>
+            <li>Configuration</li>
+            <li>Limitations</li>
+          </ul>
+          <aside class="notes">
+          </aside>
+        </section>
+        <section>
           <h1>Setting up Solr</h1>
           <ul>
             <li>Download Solr</li>
@@ -426,16 +469,6 @@ return company;
             <li>Start Jetty: <br/>java -jar start.jar</li>
           </ul>
           <aside class="notes">
-          </aside>
-        </section>
-        <section>
-          <h1>Solr - Limitations</h1>
-          <ul>
-            <li>Don't expose Solr publically</li>
-          </ul>
-          <aside class="notes">
-            <li>Solr aims to be as fast at returning results as possible. It avoids features which slow this down; for instance, if you want to enforce ACLs on items in search results, you need to add columns and figure out how to populate them on your own. It has very limited support for inner joins, which allows for a way to implement more complex ACL structures if you do need them.</li>
-            <li>Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository.</li>
           </aside>
         </section>
         <section>
@@ -465,7 +498,19 @@ doc.addField("search", search);
             <li>Note multiple columns - can facet on one, and search on the other</li>
           </aside>
           </section>
-        <section>
+          <section>
+          <h1>Solr - Limitations</h1>
+          <ul>
+            <li>Don't expose Solr publically</li>
+            <li>Don't rely on joins</li>
+            <li>Roll your own ACLs, if needed</li>
+          </ul>
+          <aside class="notes">
+            <li>Solr aims to be as fast at returning results as possible. It avoids features which slow this down; for instance, if you want to enforce ACLs on items in search results, you need to add columns and figure out how to populate them on your own. It has very limited support for inner joins, which allows for a way to implement more complex ACL structures if you do need them.</li>
+            <li>Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository.</li>
+          </aside>
+        </section>
+          <section>
           <h1>Solr - Schema</h1>
           <pre><code data-trim>
 &lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
@@ -481,35 +526,12 @@ doc.addField("search", search);
         </section>
           
         <section>
-          <h1>Threading Updates</h1>
-          <pre><code data-trim>
-File[] files = new File("repositories\\").listFiles();
-String lastRepository = getLastRepository(); // resume after failure
-
-int i = 0;
-int numThreads = Runtime.getRuntime().availableProcessors();
-        
-for (File f : files) {
-  if (i++ % numThreads == _myIndex) { // load every nth repository
-    String filename = f.getAbsolutePath() + "\\.git";
-            
-    convertRepo(server, filename);
-  }
-  i++;
-}
-    </code></pre>
-          <aside class="notes">
-            <li>Currently I have the application set up to run with several threads</li>
-            <li>Most of the time is spent loading git data</li>
-          </aside>
-        </section>
-        <section>
           <h1>Inspiration</h1>
           <ul>
             <li>High Volume Indexing</li>
             <li>Parsing Code Comments</li>
             <li>Testing</li>
-            <li>Other options</li>
+            <li>Concepts for similar tools</li>
           </ul>
         </section>
         <section>
@@ -530,7 +552,15 @@ for (File f : files) {
           </aside>
         </section>
         <section>
-          <h1>Constraints on ETL processes</h1>
+        <h1>Constraints on ETL processes</h1>
+        <ul>
+                <li>
+                Plan for power failures
+                </li>
+                <li>
+                Plan for reloading data
+                </li>
+        </ul>
           <aside class="notes">
             <li>An ETL process that does a lot of work may take hours, weeks, or months to finish.</li>
             <li>A natural consequence of this is that you may need to consider inevitable power failures. This is true of webapps too, but typically that means you lose a user's session, which is different from interrupting something like a long SQL statement.</li>
@@ -597,7 +627,7 @@ var MarkdownEditor = React.createClass({
         <h1>Variations</h1>
         <ul>
                 <li>Public Datasets - PACER, U.S. Code</li>
-                <li>MS Exchange</li>
+                <li>MS Exchange / Sharepoint</li>
                 <li>D3.js</li>
         </ul>
           <aside class="notes">
@@ -650,6 +680,13 @@ var MarkdownEditor = React.createClass({
           { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
         ]
 });
+$("#query0").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#button0").click();
+        return false;
+    }
+});
+
 $("#query1").keyup(function(event){
     if(event.keyCode == 13){
         $("#button1").click();
@@ -657,7 +694,21 @@ $("#query1").keyup(function(event){
     }
 });
 
+$("#query2").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#button2").click();
+        return false;
+    }
+});
+
+
+
 $(document).ready(function() {
+  $('#button0').click(function() {
+    search('#query0', '#results0',  'search', 'author', 'count', 0);
+    return false;
+  });
+        
   $('#button1').click(function() {
     search('#query1', '#results1',  'search', 'author', 'count', 0);
     return false;
