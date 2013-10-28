@@ -30,7 +30,7 @@
         color: #FFF;
       }
 
-      .loadingimage {
+      .loadingimage, .diffimage {
               border: 0px !important; 
               background: rgba(0, 0, 0, 0) !important;
               margin: 0px !important;
@@ -64,8 +64,6 @@
           <li>Inspiration</li>
           </ul>
           <aside class="notes">
-            <li>Since Wingspan does some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. That said, the person who may have done the change may not be the most knowledgeable about it, and you'd prefer to know who the lead for a project was.</li>
-            <li>Similarly, when someone calls the company, it’s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project.</li>
           </aside>
         </section>
         <section>
@@ -77,7 +75,29 @@
             <li>Since Wingspan does some consulting projects, it’s often valuable for engineers to look at a change and know if it was done for a particular client - for instance, if an API feature does not appear to be used, it may actually be in use by a client. That said, the person who may have done the change may not be the most knowledgeable about it, and you'd prefer to know who the lead for a project was.</li>
             <li>Similarly, when someone calls the company, it’s also helpful to know who to route phone calls to - especially since the person who picked up the phone could be a marketing or administrative person receiving the call and not someone with knowledge of the project.</li>
           </aside>
+          </section>
+        <section>
+        <h2>Search for Experts In...</h1>
+<div style="width:960px; margin: 0px auto;"/>
+<input type="text" id="query0" style="width:70%;padding:8px;margin:0px 5px;" value="solr"/><input type="button" id="button0" value="Go" /><br/>
+</p>
+<div id="results0">
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</div>
+<aside class="notes">
+Mark Robert Miller	(909)	- Apache foundation
+Yonik Seeley	(718)	- Creator of Solr
+Robert Muir	(530)	- Lucene Committer
+Chris M Hostetter	(365)	- Solr/Lucene/Lucidworks
+Steven Rowe	(273)	- Apache Lucene/Solr PMC member & committer
+          </aside>
         </section>
+          
         <section>
         <h2>Search for Experts In...</h1>
 <div style="width:960px; margin: 0px auto;"/>
@@ -133,7 +153,7 @@ facet.field=author
         <section>
           <h1>Stats</h1>
           <ul>
-                  <li>2.1 GB => 108 MB Solr Repository</li>
+                  <li>2.1 GB Git History => 132 MB Solr Repository</li>
                   <li>Drupal, Git, Lucene, Lucene.NET, Solr, Mono, Node.JS, PHP, Postgres, Vagrant</li>
           </ul>
           <aside class="notes">
@@ -519,8 +539,8 @@ for (File f : files) {
         </section>
         <section>
           <h1>Testing ETL processes</h1>
-INSERT WINMERGE SCREENSHOT HERE
-<aside class="notes">
+          <img src="diff.png" class="diffimage" />
+          <aside class="notes">
             <li>Use real data - finds edge cases</li>
             <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
             <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
