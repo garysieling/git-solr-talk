@@ -911,13 +911,15 @@
    <field name="_version_" type="long" indexed="true" stored="true"/>
 
    <field name="id" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
-   <field name="name" type="string" indexed="false" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
-   <field name="author" type="git_author" indexed="false" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
-   <field name="company" type="string" indexed="false" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
-   <field name="github" type="string" indexed="false" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
-   <field name="email" type="string" indexed="false" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
-   <field name="date" type="string" indexed="false" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
-   <field name="message" type="string" indexed="true" stored="false" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="name" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="author" type="git_author" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="company" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="year" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="year-month" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="github" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="email" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="date" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
+   <field name="message" type="string" indexed="true" stored="true" required="true" omitNorms="true" omitTermFreqAndPositions="true" /> 
    <field name="search" type="text_general" indexed="true" stored="false" required="false" multiValued="false" /> 
    <field name="text" type="text_general" indexed="true" stored="false" required="false" multiValued="false" /> 
    
