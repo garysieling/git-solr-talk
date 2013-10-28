@@ -24,7 +24,7 @@
       width:110%;
       }
 
-      #button1 {
+      #button1, #button2 {
         padding: 7px 25px;
         background: #4479BA;
         color: #FFF;
@@ -59,7 +59,7 @@
         <section>
           <h1>Overview</h1>
           <ul>
-          <li>Tool Demo</li>
+          <li>Demo</li>
           <li>How-to</li>
           <li>Inspiration</li>
           </ul>
@@ -81,31 +81,42 @@
         <section>
         <h2>Search for Experts In...</h1>
 <div style="width:960px; margin: 0px auto;"/>
-<input type="text" id="query1" style="width:70%;padding:8px;margin:0px 5px;"/><input type="button" id="button1" value="Go" /><br/>
-<p>Examples: <a href="#">nodejs</a>, <a href="#">javascript</a>, <a href="#">linux</a>, <a href="#">orm</a>, <a href="#">intellij</a>.
+<input type="text" id="query1" style="width:70%;padding:8px;margin:0px 5px;" value="sql"/><input type="button" id="button1" value="Go" /><br/>
 </p>
-<br/>
 <div id="results1">
 </div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 </div>
-        
-
-
-          <aside class="notes">
+<aside class="notes">
+search:sql
+facet.field=author
+"Ilia Alshanetsky" - Postgres committer
+"Wez Furlong"- oracle OCI driver for PHP
+"Daniel Morgan" - oracle dba consultant
+"Ulf Wendel" - principal on mysql
+"Felipe Pena" - MS Sql driver for php?
           </aside>
         </section>
         <section>
-          <h1>Motivation</h1>
-          <p>
-            Corporate open source contributions
-          </p>
-          <aside class="notes">
-            <li>With the advent of Microsoft's cloud hosting, they've been claiming a new era of contributing to open-source, to make things like PHP work on Windows.</li>
-          </aside>
-        </section>
-        <section>
-          <h1>Demo (Companies)</h1>
-          <aside class="notes">
+        <h2>Corporate Open Source...</h1>
+<div style="width:960px; margin: 0px auto;"/>
+<input type="text" id="query2" style="width:70%;padding:8px;margin:0px 5px;" value="microsoft"/><input type="button" id="button2" value="Go" /><br/>
+</p>
+<div id="results2">
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</div>
+<aside class="notes">
+* At a Conference - MS says they support Open Source now because of Azure
+* Azure - commercially available 2010
           </aside>
         </section>
         <section>
@@ -117,6 +128,15 @@
             <li>In some large companies, it’s also helpful to know how many engineers have worked with a particular technology, and what the trends are. For instance, Microsoft’s MSDN program awards points based on certifications of developers in the organization, so it’s useful to know if you have a lot of certified C# developers, or people who could go get a certification if needed.</li>
             <li>You can answer these types of questions by counting the number of commits a person has that reference a client or tool, which is essentially faceted search. If you imagine the UI for Amazon, on the left hand side it shows you categories and category counts for fields that apply to items in your search results, such as the genre or studio for a movie. What we are going to do here is to build a facet for an author or other commit attributes. </li>
             <li>This is different from a typical search, where you're looking for the commits individually, which serves different use cases than I'm after here. This technique works especially well if you company is diligent about what you put in commits; clearly counting numbers of commits will not be helpful if your average commit is hundreds of files and infrequent.</li>
+          </aside>
+        </section>
+        <section>
+          <h1>Stats</h1>
+          <ul>
+                  <li>2.1 GB => 108 MB Solr Repository</li>
+                  <li>Drupal, Git, Lucene, Lucene.NET, Solr, Mono, Node.JS, PHP, Postgres, Vagrant</li>
+          </ul>
+          <aside class="notes">
           </aside>
         </section>
         <section>
@@ -138,20 +158,29 @@
           <aside class="notes">
             <li>After I set this up with Wingspan source code, I also downloaded around eighteen thousand repositories from github. Once loaded, this was about four million commits, although this is quite small in comparison to Github itself.</li>
           </aside>
+          </section>
+        <section>
+        <h1>What is Full Text Search?</h1>
+        <li>The dogs ran home => dog run home</li>
+        <li>The dog runs home => dog run home</li>
+          <aside class="notes">
+            <li>Solr and Lucene are part of a class of products which are used for full-text search. The idea of full-text search is to use natural language processing techniques to massage text data into a form that lends itself to search. For instance, finding words which are similar and treating them as equivalents. </li>
+          </aside>
         </section>
         <section>
           <h1>Full Text Search vs. Google</h1>
           <aside class="notes">
-            <li>Solr and Lucene are part of a class of products which are used for full-text search. The idea of full-text search is to use natural language processing techniques to massage text data into a form that lends itself to search. For instance, finding words which are similar and treating them as equivalents. </li>
-            <li>Typically search results are ordered by a relevance function, which is determined by word frequencies. Frequently occurring words have a small effect, and rare words matching between a document and a query have a large effect - the actual calculation is done with vector multiplication.</li>
-            <li>This is a different understanding of search from the techniques that Google pioneered, which use citations to effect ranking. If you're interested in combining that type of search with Lucene, there is an apache project called Nutch, although I haven't used it, so I can't speak to how well it works.</li>
+            <li>Google uses citations to influence rankings</li>
+            <li>Lucene calculates a similary score between each query and document</li>
+            <li>Math makes it so common words don't have much effect</li>
           </aside>
         </section>
         <section>
           <h1>What is Solr?</h1>
           <aside class="notes">
-            <li>Solr was built as an administration webapp around Lucene, which is just a bunch of Jars for doing full-text search. Solr also adds some nice customizations, like replication, faceted search, caching, and highlighting. From talking to people at a Solr conference, I got the impression as well that when the lucene team doesn’t work at the pace they want, they will add features to Solr, so sometimes there is some overlap in functionality.</li>
-            <li>As a project, the Solr team has recently been billing itself as a NoSQL database, and while I think that is a bit of marketing, it does perform very well and fits in the category loosely, as it can be fairly flexible about schemas, avoids joins, and has some horizontal scaling features.</li>
+          <li>Solr was built as an administration webapp around Lucene</li>
+          <li>Lucene is just a bunch of Jars for doing full-text search.</li>
+          <li>Solr adds replication, faceted search, caching, and highlighting.</li>
           </aside>
         </section>
         <section>
@@ -228,41 +257,24 @@ $.ajax({
           <h1>Why do you need Java code?</h1>
           <aside class="notes">
             <li>Solr Repositories resemble a single, denormalized database table, which they call a core. Each row in the table is referred to as a “document”, which comes from the idea that you may have indexed the contents of a PDF, HTML file, or Word document, although there is no particular requirement on what a document must be.</li>
-            <li>If you include the contents of a PDF and other metadata, by default these have equal weight, unless you tell Solr otherwise. In fact, the Solr index just stores text, so if you started with a bunch of PDFs you’d have to build your own processing pipeline to extract and process text from them.</li>
-          </aside>
-        </section>
-        <section>
-          <h1>Opening Git Repositories</h1>
-          <pre><code data-trim>
-FileRepositoryBuilder builder = new FileRepositoryBuilder();
-Repository repository = 
-  builder.setGitDir(new File(path))
-    .readEnvironment() 
-    .findGitDir() 
-    .build();
-
-RevWalk walk = new RevWalk(repository);
-    </code></pre>
-          <aside class="notes">
-            <li>There are a few different ways to push this data into a Solr repository, depending on the nature of the application. For instance, Solr has a class call the Data Import Handler, which can connect directly to a database and pull information in - for some people this works well, although I was advised that if you can't get this working in an hour or two, you'll never get it working, and should move on to another approach.</li>
-            <li>I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and was very flaky when I tested it, and OS specific.</li>
-            <li>It is also the basis for the Eclipse plugin EGit, so you know that there is a team mantaining it. Reading repositories is by far the slowest part of this script. JGit only reads what you ask for— it is much faster to read just the commit history, without file diffs.</li>
-            <li>readEnvironment - read environment variables</li>
-            <li>findGitDir - scan up the file system tree</li>
+            <li>Even though Solr refers to rows a documents, Solr index just stores text, so if you started with a bunch of PDFs you’d have to build your own processing pipeline to extract and process text from them.</li>
+            <li>Some customizations can be done with configurations in Solr - if these work, they tend to be pretty easy to figure out, and when you can't figure them out quickly, you usually need to resort to code.</li>
           </aside>
         </section>
         <section>
           <h1>Branches</h1>
           <pre><code data-trim>
+FileRepositoryBuilder builder = new FileRepositoryBuilder();
+Repository repository = 
+  builder.setGitDir(new File(path))
+    .build();
+
+RevWalk walk = new RevWalk(repository);
+
 for (Ref ref : repository.getAllRefs().values()) {
- try {
-   System.out.println(ref.getObjectId()); 
-   System.out.println(ref.getName()); // e.g. "HEAD"
-   System.out.println(ref.isPeeled()); // "annotated" tag
-   System.out.println(ref.isSymbolic()); // pointer instead of a SHA
-  } catch (InvalidObjectException notACommit) {
-    System.out.println("err");
-    continue;
+  if ("HEAD".equals(ref.getName())) {
+    walk.markStart(walk.parseCommit(ref.getObjectId()));
+    break;
   }
 }
 
@@ -271,11 +283,7 @@ for (RevCommit commit : walk) {
 }
     </code></pre>
           <aside class="notes">
-            <li>How do you find HEAD / master?</li>
-            <li>How do you walk down branches?</li>
-            <li>Can you just get one commit here?</li>
-            <li>Can you get rid of the loop?</li>
-            <li>Interesting complexity here - tags can be annotated, i.e. securely signed with author info</li>
+            <li>I settled on JGit to read git repositories, after testing a couple Java-based libraries. JGit is a re-implementation of git in Java, and differs from other libraries in that it doesnt wrap the command line interface. Wrapping the command line is fraught with peril, and was very flaky when I tested it, and OS specific.</li>         
           </aside>
         </section>
         <section>
@@ -301,8 +309,7 @@ for (Object obj : diffs) {
 </code></pre>
           <aside class="notes">
             <li>JGit lets you generate patch sets, or patch sets with several lines of context. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.</li>
-            <li>Once we get to this point, we can apply any transformations we'd want to do before sending data to solr. Some transformations are best done in code. Depending on your needs, you can alternattely write custom Solr classes that modify data on a column by column basis, or just fix the data before it gets into the index. The difference between these two approaches will vary depending on whether you want global state, like caching, whether data manipulation requires complex cross-column lookups, and whether the transformations must be applied to both queries and documents.</li>
-            <li>Example transformations include entity name normalization or extracting data from external systems like LDAP - for instance, you might validate that things you think are ticket numbers are valid. Because I combined several git repositories into one full-text index, I needed to normalize author names (“gsieling” and “Gary Sieling”). I also found that many tools will add metadata to commits, for instance Intellij adds a line to commits identifying itself, so I added an artificial field identifying the commit author’s IDE of choice.</li>
+            <li>Example transformations include entity name normalization or extracting data from external systems like LDAP - for instance, you might validate that things you think are ticket numbers are valid. </li>
           </aside>
         </section>
         <section>
@@ -368,8 +375,7 @@ if (company.contains("."))
 return company;
     </code></pre>
           <aside class="notes">
-            <li>
-              In repositories from github, you can get a good approximation of companies that contribute to repositories by taking the “@x.com” from emails, although to do this successfully, you must remove common hosts like gmail, and exclude contributions by some bots. Some of the major ones can be hidden easily, but this takes some work to find a general solution.
+          <li>Here we see the code we use to extract the company name from email addresses.</li>
           </aside>
         </section>
         <section>
@@ -400,14 +406,6 @@ return company;
             <li>Start Jetty: <br/>java -jar start.jar</li>
           </ul>
           <aside class="notes">
-            <li>Drop in a .war</li>
-            <li>Use Jetty/Tomcat</li>
-            <li>Set configuration parameters to point to index</li>
-            <li>Logging settings/jars</li>
-            <li>Permissions for index writing</li>
-            <li>Index is adjacent to config files</li>
-            <li>Point to core(s)</li>
-            <li>Drop in other jars if needed (e.g. to connect to jdbc drivers)</li>
           </aside>
         </section>
         <section>
@@ -418,25 +416,6 @@ return company;
           <aside class="notes">
             <li>Solr aims to be as fast at returning results as possible. It avoids features which slow this down; for instance, if you want to enforce ACLs on items in search results, you need to add columns and figure out how to populate them on your own. It has very limited support for inner joins, which allows for a way to implement more complex ACL structures if you do need them.</li>
             <li>Solr also assumes that you secure the machine it lives on - it’s not intended to directly face the internet, although for simple examples I’ve done that, but there is a risk that someone could modify your repository.</li>
-          </aside>
-        </section>
-        <section>
-          <h1>Solr - Schema</h1>
-          <pre><code data-trim>
-&lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="author" type="git_author" indexed="true" stored="true" required="true" /&gt; 
-&lt;field name="email" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="message" type="string" indexed="true" stored="false" required="true" /&gt; 
-&lt;field name="search" type="text_general" indexed="true" stored="false" required="false" /&gt; 
-    </code></pre>
-          <aside class="notes">
-            <li>A common use for copyField is to combine multiple fields into one, although you can also use it to truncate data.
-            <li>multiValued - can be array valued for a document</li>
-            <li>compressed - gzip / compressThreshold</li>
-            <li>omitNorms / termVectors - can remove data needed for full text indexing</li>
-            <li>omitTermFreqAndPositions / omitPositions - can remove data used for highlighting</li>
-            <li>What is the purpose of the 'facet' type in solr?</li>
-            <li>What is 'string' vs. text_general?</li>
           </aside>
         </section>
         <section>
@@ -465,7 +444,22 @@ doc.addField("search", search);
             <li>Specify boost</li>
             <li>Note multiple columns - can facet on one, and search on the other</li>
           </aside>
+          </section>
+        <section>
+          <h1>Solr - Schema</h1>
+          <pre><code data-trim>
+&lt;field name="id" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="author" type="git_author" indexed="true" stored="true" required="true" /&gt; 
+&lt;field name="email" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="message" type="string" indexed="true" stored="false" required="true" /&gt; 
+&lt;field name="search" type="text_general" indexed="true" stored="false" required="false" /&gt; 
+    </code></pre>
+          <aside class="notes">
+            <li>When you define the schema, you tell Solr what index information you want to store with columns - for instance, if you want to retrive data, or just use it in search.</li>
+            <li>There are various other things you can turn off</li>
+          </aside>
         </section>
+          
         <section>
           <h1>Threading Updates</h1>
           <pre><code data-trim>
@@ -473,23 +467,20 @@ File[] files = new File("repositories\\").listFiles();
 String lastRepository = getLastRepository(); // resume after failure
 
 int i = 0;
-boolean start = false;
+int numThreads = Runtime.getRuntime().availableProcessors();
         
 for (File f : files) {
-  if (i++ % _numThreads == _myIndex) { // load every nth repository
+  if (i++ % numThreads == _myIndex) { // load every nth repository
     String filename = f.getAbsolutePath() + "\\.git";
-            
-    start = start || filename.contains(lastRepository);
-    if (!start) 
-      continue;
             
     convertRepo(server, filename);
   }
+  i++;
 }
     </code></pre>
           <aside class="notes">
-            <li>Inside run method</li>
-            <li>For this application I've chosen to have multiple threads which loop over all the available repositories. If there are ten threads, each thread knows it's number, from 1 to 10 - the first thread picks up files 1, 11, 21, the second thread picks up files 2, 12, 22, and so on. This allows the threads to be killed and restart part way without any communication, although it won't help you if you download new data out of sequence.</li>
+            <li>Currently I have the application set up to run with several threads</li>
+            <li>Most of the time is spent loading git data</li>
           </aside>
         </section>
         <section>
@@ -498,6 +489,7 @@ for (File f : files) {
             <li>High Volume Indexing</li>
             <li>Parsing Code Comments</li>
             <li>Testing</li>
+            <li>Other options</li>
           </ul>
         </section>
         <section>
@@ -512,7 +504,9 @@ for (File f : files) {
           <h2>Indexing Many Repositories</h2>
 <img src="files.png"  class="loadingimage" />
           <aside class="notes">
-            <li>An alternate approach is to do something like an MD5 hash of each filename, and use the first four characters to divide them up. I like to build a two level folder structure with this, because it resembles a B+ tree and shares it's properties, and for a half million files, each folder ends up with 5-10 items in it. If you use something like md5 you're basically randomly distributing files into folders, in a repeatable way, which gives you a nice way to sample arbitrary percentages of the dataset.</li>
+          <li>You can do a SHA or MD5 hash and take 2-4 characters</li>
+          <li>One or two level deep folder hierarchy of this</li>
+          <li>Makes it easier to split up data for a test, if you have a lot</li>          
           </aside>
         </section>
         <section>
@@ -526,17 +520,11 @@ for (File f : files) {
         <section>
           <h1>Testing ETL processes</h1>
 INSERT WINMERGE SCREENSHOT HERE
-          <aside class="notes">
+<aside class="notes">
+            <li>Use real data - finds edge cases</li>
             <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
             <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
             <li>Use a key that lets you get back to the original data, rather than a sequence number</li>
-          </aside>
-        </section>
-        <section>
-          <h1>Error Handing in ETL processes</h1>
-NEED A PICTURE OR SOMETHING HERE
-          <aside class="notes">
-            <li>For some types of tools, you probably don't want to fail, but note problems and move on, then incrementally reload parts that failed. This is especially true of data that is scraped or scanned.</li>
           </aside>
         </section>
         <section>
@@ -557,11 +545,11 @@ String a = "x"; // here is a comment at the end of a line
           <aside class="notes">
             <li>At this point, you may have noticed that I haven't attempted to parse code - however, I have given a lot of thought to why I don't want to parse code, or at least handle it as a special case of unstructured text. What I want to show now is a couple interesting theoretical challenges, which I think provide some compelling cases of why it can be really challenging to get an ETL process or a data migration project to be successful.</li>
             <li>Code comments also provide good insight into who worked on what. Obviously these aren't code, but often contain valuable information, and should be relatively easy to detect, at least in most languages which descend from C. In a source file, you could detect these by looking for lines which contain two slashes, or the slash-star form for multi-line comments.
-            <li>
-            <li>In this slide I've shown a few of the testing scenarios, where comments appear in any part of a line. In fact, I haven't captured all the scenarios here, as there could be a multi-line comment that uses the two-slash style. The real point I want to make here though is that when you're looking at patches combined with authors, it's going to be tricky. You have to decide if you want to grab the whole comment, or just the part that changed, and whether you care about lines outside the commit, which you mights.</li>
+            </li>
           </aside>
         </section>
         <section>
+        <h2>JSX</h2>
           <pre><code data-trim>
 var MarkdownEditor = React.createClass({
   render: function() {
@@ -580,31 +568,34 @@ var MarkdownEditor = React.createClass({
 });
 </code></pre>
           <aside class="notes">
-            <li>If you felt that example was contrived, here's an illustrative snippet of actual code, which I got from the Documentation for React, which is a new Javascript library for building UIs - you can see here that there is XML code inside the Javascript code, which gets compiled into something valid.</li>
-            <li>I chose React because it's a new tool, and having nested languages in files is not a new concept, considering the number of Java string containing SQL, and I think it shows the challenge of keeping up with what's out there. Because of this challenge you probably want to avoid techniques that aren't going to be maintainable.</li>
-            <li>Many large projects have some sort of custom DSL - any tool you'd build to parse code would have to deal with a lot of unrecognizable formats. I think that if you were going to tackle this, the best approach would be some loose regular expression style syntax highlighting tool, like the Vim plugins, since you'd have a chance at getting something useful.</li>
-            <li>Say you still wanted to parse the code though - what could you do? You'd want to reconstruct the file as it was at the commit time, build a syntax tree, and diff the tree between commits, ideally maintaining line numbers for verification purposes.</li>
+            <li>If you felt that example was contrived, here's an illustrative snippet of actual code, which I got from the Documentation for JSX, which is a language that compiles to Javascript</li>
+            <li>With all the new languages like this, you'd be hard press to build a generalized soluation.</li>
+            <li>Many large projects also have a DSL</li>
           </aside>
-        </section>
-        <aside class="notes">
-          <ul>
-            <li>Solr accepts queries through a REST API, which gives you an easy, ready-built API, if needed.  You can add, insert, update, delete any amount through the API.</li>
-            <li>This shows which collection we want to hit</li>
-            <li>The query, *:* brings back everything</li>
-            <li>We can set paging parameters</li>
-            <li>We can also set faceting parameters</li>
-          </ul>
-        </aside>
         </section>
         <section>
-          <h1>Variations</h1>
+        <h1>Variations</h1>
+        <ul>
+                <li>Public Datasets - PACER, U.S. Code</li>
+                <li>MS Exchange</li>
+                <li>D3.js</li>
+        </ul>
           <aside class="notes">
-            <ul>
-              <li>You can also imagine importing data from other sources and combining it, such as a defect tracking systems, a Sharepoint site, or even old emails. In fact, depending how you spin this, you can end up with a variety of products- I once worked for a company that had a product that did this to find contact information, i.e. which lawyer in our firm has a contact at, say, eBay.</li>
-              <li>Using Solr facets this way resembles a business intelligence systems used for reporting projects, in that it gives you counts across lots of denormalized data. Since Solr acts as a single table, I’m not sure if anyone uses it that way, but since it typically returns results quickly, I find myself tempted to use it rather than a relational database at times.</li>
+          <ul>
+                  <li>Lots of datasets available now</li>
+                  <li>Lots of data hidden inside companies</li>
+                  <li>Nice graphing library made by artists for interactive infographics</li>
             <ul>
           </aside>
+          </section>
+        <section>
+        <h1>References</h1>
+        <a href="https://github.com/garysieling/git-solr-talk">https://github.com/garysieling/git-solr-talk</a>
+        <a href="https://github.com/garysieling/solr-git">https://github.com/garysieling/solr-git</a>
+          <aside class="notes">
+          </aside>
         </section>
+          
         <section>
           <h1>THE END</h1>
           <h3>BY <a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></h3>
@@ -648,28 +639,41 @@ $("#query1").keyup(function(event){
 
 $(document).ready(function() {
   $('#button1').click(function() {
-    search('#query1', '#results1');
+    search('#query1', '#results1',  'search', 'author', 'count', 0);
     return false;
   });
 
-  function search(searchBox, searchResults)
+  $('#button2').click(function() {
+    search('#query2', '#results2',  'company', 'year', 'index', 10);
+    return false;
+  });
+
+
+  function search(searchBox, searchResults, searchOn, facetOn, facetOrder, facetOffset)
   { 		
     var q = $(searchBox)[0];
     $(searchResults).innerHTML='Loading...';
-    var query = '';
 
-    var url = 'sample.json';
+    var url = 
+      'http://localhost:8983/solr/collection1/select?q='  +
+       searchOn +
+      '%3A'  + 
+      q.value +
+      '&rows=0&wt=json&indent=true&facet=true&facet.field=' + 
+      facetOn +
+      '&facet.limit=5' +
+      '&facet.sort=' + facetOrder +
+      '&facet.offset=' + facetOffset;
     $.ajax({
       type: "GET",
       url: url,
       success:
         function(response){
-
           var data = JSON.parse(response);
-          var records = data.facet_counts.facet_fields.author;
+          var records = data.facet_counts.facet_fields[facetOn];
 
           var count = Math.max(records.length, 11);
-          var html = '<table style="text-align:left;">';
+          var html = '<center><table style="text-align:left;">';
           if (!records || records.length === 0)
           {
             html+= "<tr><td>No results found.</td></tr>";
@@ -684,7 +688,7 @@ $(document).ready(function() {
           {
             var auth = records[i];
           
-            html += '<tr><td>' + auth + '</td><td>';
+            html += '<tr><td>' + auth + '</td><td>(' + records[i+1] + ")</td><td>";
 
             for (var j = 0; j < 100 * (records[i+1])/(count+1); j++)
             {
@@ -694,7 +698,7 @@ $(document).ready(function() {
           }
 console.log(html);
 
-        html += '</table>';
+html += '</table></center>';
         $(searchResults)[0].innerHTML=html;
       }
     });
