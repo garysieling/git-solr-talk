@@ -549,59 +549,13 @@ for (File f : files) {
           </aside>
         </section>
        <section>
-          <h1>Inspiration</h1>
+          <h1>Lessons Learned</h1>
           <ul>
-            <li>High Volume Indexing</li>
             <li>Parsing Code Comments</li>
             <li>Testing</li>
-            <li>Concepts for similar tools</li>
+            <li>High Volume Indexing</li>
+            <li>Inspiration for similar tools</li>
           </ul>
-        </section>
-        <section>
-          <h2>Indexing Many Repositories</h2>
-<img src="windows-cursor.gif" class="loadingimage" />
-<img src="files2.png"  class="loadingimage" />
-          <aside class="notes">
-            <li>If you do something like this, you will discover that a folder with, say, a half million files, is a troublesome structure. Windows can open this, but it's very slow to even list the files. On a different project, I got up to a half million files in a folder, and was forced to come up with a different structure.</li>
-          </aside>
-          </section>
-          <section>
-          <h2>Indexing Many Repositories</h2>
-<img src="files.png"  class="loadingimage" />
-          <aside class="notes">
-          <li>You can do a SHA or MD5 hash and take 2-4 characters</li>
-          <li>One or two level deep folder hierarchy of this</li>
-          <li>Makes it easier to split up data for a test, if you have a lot</li>          
-          </aside>
-        </section>
-        <section>
-        <h2>Constraints on ETL processes</h2>
-        <ul>
-                <li>
-                Real-time updates are hard
-                </li>
-                <li>
-                Plan for power failures
-                </li>
-                <li>
-                Plan for reloading data
-                </li>
-        </ul>
-          <aside class="notes">
-            <li>An ETL process that does a lot of work may take hours, weeks, or months to finish.</li>
-            <li>A natural consequence of this is that you may need to consider inevitable power failures. This is true of webapps too, but typically that means you lose a user's session, which is different from interrupting something like a long SQL statement.</li>
-            <li>Even if you don't have something that takes weeks, the time to generate final data is an issue, as it limits the developer's ability to cycle through fixes.</li>
-          </aside>
-        </section>
-        <section>
-          <h2>Testing ETL processes</h2>
-          <img src="diff.png" class="diffimage" />
-          <aside class="notes">
-            <li>Use real data - finds edge cases</li>
-            <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
-            <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
-            <li>Use a key that lets you get back to the original data, rather than a sequence number</li>
-          </aside>
         </section>
         <section>
           <h2>Parsing Comments</h2>
@@ -652,8 +606,54 @@ var MarkdownEditor = React.createClass({
             <li>Many large projects also have a DSL</li>
           </aside>
         </section>
+         <section>
+          <h2>Testing ETL processes</h2>
+          <img src="diff.png" class="diffimage" />
+          <aside class="notes">
+            <li>Use real data - finds edge cases</li>
+            <li>Consequently, you want to be able to load sample data, which ideally is a subset of a production system. Data you make up on your own is ok, if you are just starting out, but really does not reflect the full potential for edge cases found in real data.</li>
+            <li>Once you have a running system, it's very helpful if you are able to run side-by-side processes to test new and old versions side-by-side- I worked with someone once on a reporting system, he told me that at a bank he'd worked at, they would run new versions of the code side-by-side with the old for a month, to not discrepancies.</li>
+            <li>Use a key that lets you get back to the original data, rather than a sequence number</li>
+          </aside>
+        </section>
         <section>
-        <h1>Variations</h1>
+          <h2>Indexing Many Repositories</h2>
+<img src="windows-cursor.gif" class="loadingimage" />
+<img src="files2.png"  class="loadingimage" />
+          <aside class="notes">
+            <li>If you do something like this, you will discover that a folder with, say, a half million files, is a troublesome structure. Windows can open this, but it's very slow to even list the files. On a different project, I got up to a half million files in a folder, and was forced to come up with a different structure.</li>
+          </aside>
+          </section>
+          <section>
+          <h2>Indexing Many Repositories</h2>
+<img src="files.png"  class="loadingimage" />
+          <aside class="notes">
+          <li>You can do a SHA or MD5 hash and take 2-4 characters</li>
+          <li>One or two level deep folder hierarchy of this</li>
+          <li>Makes it easier to split up data for a test, if you have a lot</li>          
+          </aside>
+        </section>
+        <section>
+        <h2>Constraints on ETL processes</h2>
+        <ul>
+                <li>
+                Real-time updates are hard
+                </li>
+                <li>
+                Plan for power failures
+                </li>
+                <li>
+                Plan for reloading data
+                </li>
+        </ul>
+          <aside class="notes">
+            <li>An ETL process that does a lot of work may take hours, weeks, or months to finish.</li>
+            <li>A natural consequence of this is that you may need to consider inevitable power failures. This is true of webapps too, but typically that means you lose a user's session, which is different from interrupting something like a long SQL statement.</li>
+            <li>Even if you don't have something that takes weeks, the time to generate final data is an issue, as it limits the developer's ability to cycle through fixes.</li>
+          </aside>
+        </section>
+        <section>
+       <h1>Variations</h1>
         <ul>
                 <li>Lots of free data, especially Government - PACER extracts, U.S. Code, Philly Code</li>
                 <li>MS Exchange / Sharepoint</li>
