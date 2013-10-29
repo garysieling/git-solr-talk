@@ -379,6 +379,8 @@ for (Object obj : diffs) {
 
   // Reset the stream, so we can get each patch separately
   out.reset();
+
+  ...
 }
 </code></pre>
           <aside class="notes">
@@ -398,6 +400,7 @@ if (diff.getChangeType() == DiffEntry.ChangeType.MODIFY ||
   System.out.println(diff.getNewPath());
   System.out.println(commit.getFullMessage());
   System.out.println(commit.getAuthorIdent().getName());
+  System.out.println(commit.getAuthorIdent().getEmailAddress());
 }
             </code></pre>
           <aside class="notes">
@@ -575,13 +578,13 @@ for (File f : files) {
         <h2>Constraints on ETL processes</h2>
         <ul>
                 <li>
+                Real-time updates are hard
+                </li>
+                <li>
                 Plan for power failures
                 </li>
                 <li>
                 Plan for reloading data
-                </li>
-                <li>
-                Real-time updates are hard
                 </li>
         </ul>
           <aside class="notes">
@@ -616,6 +619,9 @@ String a = "x"; // here is a comment at the end of a line
 // String c = "d";       
 </code></pre>
           <aside class="notes">
+	    <li>Haven't tried to parse code yet - couple example challenges</li>
+	    <li>Comments show challenges of attributing which work a person did within a file to what they're really working on</li>
+	    <li>Would have to build parse tree for code and compare before/after</li>
             <li>At this point, you may have noticed that I haven't attempted to parse code - however, I have given a lot of thought to why I don't want to parse code, or at least handle it as a special case of unstructured text. What I want to show now is a couple interesting theoretical challenges, which I think provide some compelling cases of why it can be really challenging to get an ETL process or a data migration project to be successful.</li>
             <li>Code comments also provide good insight into who worked on what. Obviously these aren't code, but often contain valuable information, and should be relatively easy to detect, at least in most languages which descend from C. In a source file, you could detect these by looking for lines which contain two slashes, or the slash-star form for multi-line comments.
             </li>
@@ -649,9 +655,9 @@ var MarkdownEditor = React.createClass({
         <section>
         <h1>Variations</h1>
         <ul>
-                <li>Public Datasets - PACER, U.S. Code</li>
+                <li>Lots of free data, especially Government - PACER extracts, U.S. Code, Philly Code</li>
                 <li>MS Exchange / Sharepoint</li>
-                <li>D3.js</li>
+                <li>D3.js, Tilemill</li>
         </ul>
           <aside class="notes">
           <ul>
@@ -663,8 +669,12 @@ var MarkdownEditor = React.createClass({
           </section>
         <section>
         <h1>References</h1>
+	<p>
         <a href="https://github.com/garysieling/git-solr-talk">https://github.com/garysieling/git-solr-talk</a>
+	</p>
+	<p>
         <a href="https://github.com/garysieling/solr-git">https://github.com/garysieling/solr-git</a>
+	</p>
           <aside class="notes">
           </aside>
         </section>
