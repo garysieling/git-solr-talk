@@ -9,6 +9,6 @@ cd git-solr-talk/solr/solr-4.5.1/example
 java -jar start.jar
 ```
 
-Open http://localhost:8983/index.html
+Open http://localhost:8983/solr/index.html
 
 To view the talk without the demo, open http://www.garysieling.com/jug
