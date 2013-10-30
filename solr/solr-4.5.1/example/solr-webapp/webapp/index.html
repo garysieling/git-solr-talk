@@ -256,7 +256,7 @@ facet.field=author
         <section>
           <h2>JSON API</h2>
           <p>
-            /select/?q=search:(search:jug)
+            /select/?q=search:sql
           </p>
           <p>
             &amp;version=2.2
@@ -385,7 +385,8 @@ for (Object obj : diffs) {
 </code></pre>
           <aside class="notes">
             <li>JGit lets you generate patch sets, or patch sets with several lines of context. The API is a bit weird - pass it an output stream, and it will write a diff to the stream. The neat thing about this is it lets you control a bunch of options - checking for renames, number of lines of context.</li>
-            <li>Example transformations include entity name normalization or extracting data from external systems like LDAP - for instance, you might validate that things you think are ticket numbers are valid. </li>
+           <li>Looping over files</li> 
+		<li>Example transformations include entity name normalization or extracting data from external systems like LDAP - for instance, you might validate that things you think are ticket numbers are valid. </li>
           </aside>
         </section>
         <section>
@@ -604,6 +605,7 @@ var MarkdownEditor = React.createClass({
             <li>If you felt that example was contrived, here's an illustrative snippet of actual code, which I got from the Documentation for JSX, which is a language that compiles to Javascript</li>
             <li>With all the new languages like this, you'd be hard press to build a generalized soluation.</li>
             <li>Many large projects also have a DSL</li>
+	    <li>For a customer facing project, you have to decide if it's worth the support volume to be 95% correct.</li>
           </aside>
         </section>
          <section>
@@ -682,6 +684,7 @@ var MarkdownEditor = React.createClass({
         <section>
           <h1>THE END</h1>
           <h3>BY <a href="http://www.garysieling.com">Gary Sieling</a> / <a href="http://twitter.com/garysieling">@garysieling</a></h3>
+	  <p><a href="mailto:gsieling@wingspan.com">gsieling@wingspan.com</a></p>
           <aside class="notes">
             The unoptimized Solr index for the Wingspan source code is 90 MB of commits versus 2,000 MB of git history. The trade-offs that make Solr indexes small also make it fast, even without any kind of scaling infrastructure.
           </aside>
